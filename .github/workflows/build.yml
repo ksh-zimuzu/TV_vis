@@ -28,4 +28,12 @@ jobs:
         cd frontend/vis_frontend
         yarn install
         yarn build
-
+        REPOSITORY_NAME="${GITHUB_REPOSITORY}"
+        DEPLOY_REPO="https://${{ secrets.ACCESS_TOKEN }}@github.com/${REPOSITORY_NAME}.git"
+        git init
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        git add .
+        git commit -m 'Auto deploy'
+        git push --force $DEPLOY_REPO master:gh-pages
+        rm -fr .git
