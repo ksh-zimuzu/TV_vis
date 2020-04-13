@@ -26,7 +26,6 @@ jobs:
     - name: build
       run: |
         cd frontend/vis_frontend
-        yarn global add @vue/cli
-        yarn global add @vue/cli-service
-        yarn & yarn build
+        yarn install
+        yarn build
 
