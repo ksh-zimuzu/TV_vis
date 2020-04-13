@@ -26,6 +26,7 @@ jobs:
     - name: build
       run: |
         cd frontend/vis_frontend
+        export NODE_ENV=gh-pages
         yarn install
         yarn build
         REPOSITORY_NAME="${GITHUB_REPOSITORY}"
