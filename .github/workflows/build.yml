@@ -27,5 +27,5 @@ jobs:
       run: |
         cd frontend/vis_frontend
         yarn global add @vue/cli
-        yarn build
+        yarn & yarn build
 
