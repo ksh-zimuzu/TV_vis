@@ -1,9 +1,7 @@
 <template>
-  <smart-widget-grid :layout="layout" @resize="resizeEvent">
-  <smart-widget slot="0" title="演员生涯分析">
-    <PlayerChart  :chartData="chartData" ref="player_chart"/>
+  <smart-widget title="演员生涯分析">
+    <PlayerChart :chartData="chartData" ref="player_chart"/>
   </smart-widget>
-  </smart-widget-grid>
 </template>
 
 <script>
@@ -12,32 +10,19 @@ import _ from "lodash";
 
 export default {
   name: "PlayerChartBox",
+  props:{
+    boxlayout:{
+      tyle:Object,
+      required:true
+    }
+  },
   data: function() {
     return {
       chartData: {
         西部世界: {
           name: "Clabs",
           present: [
-            7,
-            1,
-            0,
-            3,
-            6,
-            1,
-            0,
-            6,
-            2,
-            11,
-            4,
-            2,
-            0,
-            1,
-            1,
-            0,
-            0,
-            1,
-            0,
-            0
+            7,1,0,3,6,1,0,6,2,11,4,2,0,1,1,0,0,1,0,0
           ],
           rating: {
             豆瓣: 7
@@ -58,7 +43,7 @@ export default {
           }
         }
       },
-      layout:[{ x: 0, y: 0, w: 12, h: 8, i: '0' },]
+      //layout:[{ x: 0, y: 0, w: 6, h: 4, i: '0'},{ x: 6, y: 0, w: 6, h: 2, i: '1' }]
     };
   },
   components: {
@@ -73,6 +58,7 @@ export default {
     //防抖动，降低重绘开销，500ms
     this.resizeFunc=_.debounce(this.$refs.player_chart.chart.resize,500);
     this.resizeFunc();  //绘制完成后修改一下尺寸
+    this.$parent.$on("resize",this.resizeEvent);  //接收外层resize事件
   }
 };
 </script>

@@ -24,7 +24,8 @@ export default {
     colors:{
         type:Array,
         default:()=>(["#E3BA22", "#E6842A", "#137B80", "#8E6C8A", "#978F80"]),
-    } 
+    },
+
   },
   data: function() {
     return {
