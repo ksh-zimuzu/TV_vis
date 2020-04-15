@@ -11,7 +11,6 @@
         :min-w="4"
       >
         <PlayerChartBox :boxlayout="layout[0]"/>
-        <ActorPlot :boxlayout="layout[1]"/>
       </GridItem>
     </GridLayout>
   </div>
@@ -20,12 +19,11 @@
 <script>
 import PlayerChartBox from "./components/PlayerChartBox";
 import VueGridLayout from 'vue-grid-layout';
-import PlayerChartBox from "./components/ActorPlot";
 
 export default {
   name: "App",
   components: {
-    PlayerChartBox,ActorPlot,
+    PlayerChartBox,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   },
