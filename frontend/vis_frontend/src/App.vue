@@ -12,6 +12,17 @@
       >
         <PlayerChartBox :boxlayout="layout[0]"/>
       </GridItem>
+      <GridItem 
+        :i="layout[1].i" 
+        :x="layout[1].x" 
+        :y="layout[1].y" 
+        :w="layout[1].w" 
+        :h="layout[1].h" 
+        :is-resizable="true" 
+        :min-w="4"
+      >
+        <ActorPlot :boxlayout="layout[1]"/>
+      </GridItem>
     </GridLayout>
   </div>
 </template>
@@ -19,11 +30,12 @@
 <script>
 import PlayerChartBox from "./components/PlayerChartBox";
 import VueGridLayout from 'vue-grid-layout';
+import ActorPlot from "./components/ActorPlot";
 
 export default {
   name: "App",
   components: {
-    PlayerChartBox,
+    PlayerChartBox,ActorPlot,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem
   },
