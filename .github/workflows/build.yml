@@ -27,6 +27,7 @@ jobs:
       run: |
         cd frontend/vis_frontend
         export NODE_ENV=gh-pages
+        export VUE_APP_TMDBKEY=${TMDB_KEY}
         yarn install
         yarn build
         REPOSITORY_NAME="${GITHUB_REPOSITORY}"
