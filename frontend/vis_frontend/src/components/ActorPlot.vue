@@ -14,12 +14,12 @@
                   color="red"
                   text-color="white"
                   large
-                  @click="actor(actor0_name)"
+                  @click="actor(actor_name[0].content)"
                 >
                 <v-avatar>
                     <img src="../assets/images/xiaozhan.jpg"/>
                 </v-avatar>
-                  {{actor0_name}}
+                  {{actor_name[0].content}}
                 </v-chip>
 
                 <v-chip draggable
@@ -27,12 +27,12 @@
                   color="indigo"
                   text-color="white"
                   large
-                  @click="actor(actor1_name)"
+                  @click="actor(actor_name[1].content)"
                 >
                 <v-avatar>
                     <img src="../assets/images/wangyibo.jpg"/>
                   </v-avatar>
-                  {{actor1_name}}
+                  {{actor_name[1].content}}
                 </v-chip>
             </div>
         </v-app>
@@ -48,17 +48,21 @@ export default {
         actorplots:{
             type:Object,
             required:true
+        },
+        actor_name:{
+            type:Array,
+            required:true,
         }
     },
     methods:{
         actor: function(actor){
-            if(actor==this.actor0_name)
+            if(actor==this.actor_name[0].content)
             {
                  checkflag(actorFlag[0],actor);
                 actorFlag[0]=!actorFlag[0];
             }
             else{
-                if(actor==this.actor1_name)
+                if(actor==this.actor_name[1].content)
                 {
                     checkflag(actorFlag[1],actor);
                     actorFlag[1]=!actorFlag[1];
@@ -72,8 +76,10 @@ export default {
     data() {
         return{
             msg:'剧情',
-            actor0_name:"魏无羡",
-            actor1_name:"蓝湛",
+            /*actorname:[
+                {content:actor_name[0].content},
+                {content:actor_name[1].content},
+            ]*/
         }
     },
     
