@@ -8,13 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@svgdotjs/svg.topath.js": "^2.0.3",
+    "@mdi/js": "^5.1.45",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "echarts": "^4.7.0",
     "jimp": "^0.10.2",
     "lodash": "^4.17.15",
-    "svg.js": "^2.7.1",
     "vue": "^2.6.11",
     "vue-grid-layout": "^2.3.7",
     "vue-smart-widget": "^0.5.5",

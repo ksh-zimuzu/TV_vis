@@ -2,7 +2,13 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueSmartWidget from 'vue-smart-widget'
 import Vuetify from 'vuetify'
+import "vuetify/dist/vuetify.min.css";
 
+const opts = {
+  icons: {
+    iconfont: "mdi"
+  }
+};
 
 Vue.use(VueSmartWidget);
 Vue.use(Vuetify);
@@ -12,6 +18,6 @@ Vue.config.productionTip = false;
 Vue.prototype.$EventBus = new Vue();
 
 new Vue({
-  vuetify:new Vuetify,
+  vuetify: new Vuetify(opts),
   render: h => h(App)
 }).$mount("#app");

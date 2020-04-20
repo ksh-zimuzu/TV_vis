@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <GridLayout :layout="layout" :col-num="12">
       <GridItem
         :i="layout[0].i"
@@ -34,8 +34,19 @@
       >
         <PlayerAvatarBox />
       </GridItem>
+      <GridItem
+        :i="layout[3].i"
+        :x="layout[3].x"
+        :y="layout[3].y"
+        :w="layout[3].w"
+        :h="layout[3].h"
+        :is-resizable="true"
+        :min-w="2"
+      >
+        <SeasonMeta tv_id="63247" :season="3" :episodes="[1,2,3,4,5]" />
+      </GridItem>
     </GridLayout>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -43,6 +54,7 @@ import PlayerChartBox from "./components/PlayerChartBox";
 import VueGridLayout from "vue-grid-layout";
 import ActorPlot from "./components/ActorPlot";
 import PlayerAvatarBox from "./components/PlayerAvatarBox";
+import SeasonMeta from "./components/SeasonMeta";
 
 export default {
   name: "App",
@@ -51,14 +63,16 @@ export default {
     ActorPlot,
     PlayerAvatarBox,
     GridLayout: VueGridLayout.GridLayout,
-    GridItem: VueGridLayout.GridItem
+    GridItem: VueGridLayout.GridItem,
+    SeasonMeta
   },
   data: function() {
     return {
       layout: [
         { x: 0, y: 0, w: 6, h: 4, i: "0" },
         { x: 6, y: 0, w: 6, h: 2, i: "1" },
-        { x: 6, y: 2, w: 6, h: 2, i: "2" }
+        { x: 0, y: 2, w: 6, h: 2, i: "2" },
+        { x: 6, y: 2, w: 2, h: 2, i: "3" }
       ],
       plot: [
         {
@@ -77,7 +91,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>
