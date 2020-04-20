@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <div id="app">
     <GridLayout :layout="layout" :col-num="12">
       <GridItem
         :i="layout[0].i"
@@ -46,7 +46,7 @@
         <SeasonMeta tv_id="63247" :season="3" :episodes="[1,2,3,4,5]" />
       </GridItem>
     </GridLayout>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -70,9 +70,9 @@ export default {
     return {
       layout: [
         { x: 0, y: 0, w: 6, h: 4, i: "0" },
-        { x: 6, y: 0, w: 6, h: 2, i: "1" },
+        { x: 6, y: 0, w: 4, h: 4, i: "1" },
         { x: 0, y: 2, w: 6, h: 2, i: "2" },
-        { x: 6, y: 2, w: 2, h: 2, i: "3" }
+        { x: 10, y: 2, w: 2, h: 2, i: "3" }
       ],
       plot: [
         {
@@ -85,12 +85,14 @@ export default {
         {
           name: "cql1",
           content: "魏无羡",
-          src: require("./assets/images/xiaozhan.jpg")
+          src: require("./assets/images/xiaozhan.jpg"),
+          show:true
         },
         {
           name: "cql2",
           content: "蓝湛",
-          src: require("./assets/images/wangyibo.jpg")
+          src: require("./assets/images/wangyibo.jpg"),
+          show:true
         }
       ]
     };

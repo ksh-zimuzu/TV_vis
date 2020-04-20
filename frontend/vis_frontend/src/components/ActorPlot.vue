@@ -7,20 +7,20 @@
             <div class="text-center" id="plot">
                 {{actorplots.content}}
             </div>
-            <p v-for="user in actor_name" :key="user" class="nowrap">
+            <a v-for="user in actor_name" :key="user" class="nowrap">
                 <v-chip draggable
                   class="ma-2"
                   color="red"
                   text-color="white"
                   large
-                  @click="actor(user.content)"
+                  @click="actor(user)"
                 >
                 <v-avatar>
                     <img :src="user.src"/>
                   </v-avatar>
                   {{user.content}}
                 </v-chip>
-            </p>
+            </a>
         </v-app>
     </div>
 </template>
@@ -42,33 +42,25 @@ export default {
     },
     methods:{
         actor: function(actor){
-            if(actor==this.actor_name[0].content)
+            if(actor!=null)
             {
-                checkflag(actorFlag[0],actor);
-                actorFlag[0]=!actorFlag[0];
+                checkflag(actor.show,actor.content);
+                actor.show=!actor.show;
             }
-            else{
-                if(actor==this.actor_name[1].content)
-                {
-                    checkflag(actorFlag[1],actor);
-                    actorFlag[1]=!actorFlag[1];
-                }
-                else{
-                     alert(" error1! ");
-                 }
+            else
+            {
+                alert(" error1! ");
             }
         },
     },
     data() {
         return{
             msg:'剧情',
-
         }
     },
     
 }
 
-var actorFlag=[true,true];
 String.prototype.Trim = function()
 {//去空格
     return this.replace(/\s/gi,"")
