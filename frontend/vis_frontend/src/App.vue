@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <GridLayout :layout="layout" :col-num="12">
       <GridItem
         :i="layout[0].i"
@@ -46,7 +46,7 @@
         <SeasonMeta tv_id="63247" :season="3" :episodes="[1,2,3,4,5]" />
       </GridItem>
     </GridLayout>
-  </div>
+  </v-app>
 </template>
 
 <script>
