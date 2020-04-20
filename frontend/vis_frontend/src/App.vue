@@ -68,8 +68,8 @@ export default {
         }
       ],
       actorname:[
-        {name:"cql1",content:"魏无羡"},
-        {name:"cql2",content:"蓝湛"}],
+        {name:"cql1",content:"魏无羡",src: require('./assets/images/xiaozhan.jpg')},
+        {name:"cql2",content:"蓝湛",src: require('./assets/images/wangyibo.jpg')}],
     };
   }
 };

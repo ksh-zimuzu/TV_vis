@@ -7,34 +7,20 @@
             <div class="text-center" id="plot">
                 {{actorplots.content}}
             </div>
-    
-            <div class="text-center">
+            <p v-for="user in actor_name" :key="user" class="nowrap">
                 <v-chip draggable
                   class="ma-2"
                   color="red"
                   text-color="white"
                   large
-                  @click="actor(actor_name[0].content)"
+                  @click="actor(user.content)"
                 >
                 <v-avatar>
-                    <img src="../assets/images/xiaozhan.jpg"/>
-                </v-avatar>
-                  {{actor_name[0].content}}
-                </v-chip>
-
-                <v-chip draggable
-                  class="ma-2"
-                  color="indigo"
-                  text-color="white"
-                  large
-                  @click="actor(actor_name[1].content)"
-                >
-                <v-avatar>
-                    <img src="../assets/images/wangyibo.jpg"/>
+                    <img :src="user.src"/>
                   </v-avatar>
-                  {{actor_name[1].content}}
+                  {{user.content}}
                 </v-chip>
-            </div>
+            </p>
         </v-app>
     </div>
 </template>
@@ -58,7 +44,7 @@ export default {
         actor: function(actor){
             if(actor==this.actor_name[0].content)
             {
-                 checkflag(actorFlag[0],actor);
+                checkflag(actorFlag[0],actor);
                 actorFlag[0]=!actorFlag[0];
             }
             else{
@@ -76,10 +62,7 @@ export default {
     data() {
         return{
             msg:'剧情',
-            /*actorname:[
-                {content:actor_name[0].content},
-                {content:actor_name[1].content},
-            ]*/
+
         }
     },
     
