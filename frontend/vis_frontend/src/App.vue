@@ -45,6 +45,17 @@
       >
         <SeasonMeta tv_id="63247" :season="3" :episodes="[1,2,3,4,5]" />
       </GridItem>
+       <GridItem
+        :i="layout[4].i"
+        :x="layout[4].x"
+        :y="layout[4].y"
+        :w="layout[4].w"
+        :h="layout[4].h"
+        :is-resizable="true"
+        :min-w="4"
+      >
+        <SankeyBox />
+      </GridItem>
     </GridLayout>
   </v-app>
 </template>
@@ -55,6 +66,7 @@ import VueGridLayout from "vue-grid-layout";
 import ActorPlot from "./components/ActorPlot";
 import PlayerAvatarBox from "./components/PlayerAvatarBox";
 import SeasonMeta from "./components/SeasonMeta";
+import SankeyBox from "./components/SankeyBox";
 
 export default {
   name: "App",
@@ -64,7 +76,8 @@ export default {
     PlayerAvatarBox,
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
-    SeasonMeta
+    SeasonMeta,
+    SankeyBox,
   },
   data: function() {
     return {
@@ -72,7 +85,8 @@ export default {
         { x: 0, y: 0, w: 6, h: 4, i: "0" },
         { x: 6, y: 0, w: 4, h: 4, i: "1" },
         { x: 0, y: 2, w: 6, h: 2, i: "2" },
-        { x: 10, y: 2, w: 2, h: 2, i: "3" }
+        { x: 10, y: 2, w: 2, h: 2, i: "3" },
+        { x: 6, y: 4, w: 8, h:6, i: "4" },
       ],
       plot: [
         {
