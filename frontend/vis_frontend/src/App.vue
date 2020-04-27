@@ -45,7 +45,7 @@
       >
         <SeasonMeta tv_id="63247" :season="3" :episodes="[1,2,3,4,5]" />
       </GridItem>
-       <GridItem
+      <GridItem
         :i="layout[4].i"
         :x="layout[4].x"
         :y="layout[4].y"
@@ -54,7 +54,7 @@
         :is-resizable="true"
         :min-w="4"
       >
-        <SankeyBox />
+        <MainChartBox />
       </GridItem>
     </GridLayout>
   </v-app>
@@ -66,7 +66,7 @@ import VueGridLayout from "vue-grid-layout";
 import ActorPlot from "./components/ActorPlot";
 import PlayerAvatarBox from "./components/PlayerAvatarBox";
 import SeasonMeta from "./components/SeasonMeta";
-import SankeyBox from "./components/SankeyBox";
+import MainChartBox from "./components/MainChartBox";
 
 export default {
   name: "App",
@@ -77,7 +77,7 @@ export default {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
     SeasonMeta,
-    SankeyBox,
+    MainChartBox
   },
   data: function() {
     return {
@@ -86,7 +86,7 @@ export default {
         { x: 6, y: 0, w: 4, h: 4, i: "1" },
         { x: 0, y: 2, w: 6, h: 2, i: "2" },
         { x: 10, y: 2, w: 2, h: 2, i: "3" },
-        { x: 6, y: 4, w: 8, h:6, i: "4" },
+        { x: 6, y: 4, w: 8, h: 6, i: "4" }
       ],
       plot: [
         {
@@ -100,13 +100,13 @@ export default {
           name: "cql1",
           content: "魏无羡",
           src: require("./assets/images/xiaozhan.jpg"),
-          show:true
+          show: true
         },
         {
           name: "cql2",
           content: "蓝湛",
           src: require("./assets/images/wangyibo.jpg"),
-          show:true
+          show: true
         }
       ]
     };
