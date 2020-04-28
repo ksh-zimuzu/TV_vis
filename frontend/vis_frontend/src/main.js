@@ -2,7 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueSmartWidget from 'vue-smart-widget'
 import Vuetify from 'vuetify'
-import "vuetify/dist/vuetify.min.css";
+import router from './router'
+import "vuetify/dist/vuetify.min.css"
 
 const opts = {
   icons: {
@@ -19,5 +20,6 @@ Vue.prototype.$EventBus = new Vue();
 
 new Vue({
   vuetify: new Vuetify(opts),
+  router,
   render: h => h(App)
 }).$mount("#app");
