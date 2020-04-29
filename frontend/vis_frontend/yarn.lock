@@ -8607,6 +8607,11 @@ vue-loader@^15.9.1:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-router@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.npm.taobao.org/vue-router/download/vue-router-3.1.6.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-router%2Fdownload%2Fvue-router-3.1.6.tgz#45f5a3a3843e31702c061dd829393554e4328f89"
+  integrity sha1-RfWjo4Q+MXAsBh3YKTk1VOQyj4k=
+
 vue-smart-widget@^0.5.5:
   version "0.5.5"
   resolved "https://registry.npm.taobao.org/vue-smart-widget/download/vue-smart-widget-0.5.5.tgz#753010982acd713dfaacb9755c2913348ad09211"
