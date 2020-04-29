@@ -1,70 +1,82 @@
 <template>
-    <v-app id="app">
-      <router-view/>
-        <p>导航:
-          <router-link to="/">首页</router-link>
-          <router-link to="/index">主页</router-link>
-          <router-link to="/test">地图测试</router-link>
-        </p>
-      <GridLayout :layout="layout" :col-num="12">
-        <GridItem
-          :i="layout[0].i"
-          :x="layout[0].x"
-          :y="layout[0].y"
-          :w="layout[0].w"
-          :h="layout[0].h"
-          :is-resizable="true"
-          :min-w="4"
-        >
-          <PlayerChartBox />
-        </GridItem>
-        <GridItem
-          :i="layout[1].i"
-          :x="layout[1].x"
-          :y="layout[1].y"
-          :w="layout[1].w"
-          :h="layout[1].h"
-          :is-resizable="true"
-          :min-w="4"
-        >
-          <ActorPlot :boxlayout="layout[1]" :actorplots="plot[0]" :actor_name="actorname" />
-        </GridItem>
-        <GridItem
-          :i="layout[2].i"
-          :x="layout[2].x"
-          :y="layout[2].y"
-          :w="layout[2].w"
-          :h="layout[2].h"
-          :is-resizable="true"
-          :min-w="4"
-        >
-          <PlayerAvatarBox />
-        </GridItem>
-        <GridItem
-          :i="layout[3].i"
-          :x="layout[3].x"
-          :y="layout[3].y"
-          :w="layout[3].w"
-          :h="layout[3].h"
-          :is-resizable="true"
-          :min-w="2"
-        >
-          <SeasonMeta tv_id="63247" :season="3" :episodes="[1,2,3,4,5]" />
-        </GridItem>
-        <GridItem
-          :i="layout[4].i"
-          :x="layout[4].x"
-          :y="layout[4].y"
-          :w="layout[4].w"
-          :h="layout[4].h"
-          :is-resizable="true"
-          :min-w="4"
-        >
-          <MainChartBox />
-        </GridItem>
-      </GridLayout>
-    </v-app>
-  </template>
+  <v-app id="app">
+    <router-view />
+    <p>
+      导航:
+      <router-link to="/">首页</router-link>
+      <router-link to="/index">主页</router-link>
+      <router-link to="/test">地图测试</router-link>
+    </p>
+    <GridLayout :layout="layout" :col-num="12">
+      <GridItem
+        :i="layout[0].i"
+        :x="layout[0].x"
+        :y="layout[0].y"
+        :w="layout[0].w"
+        :h="layout[0].h"
+        :is-resizable="true"
+        :min-w="4"
+      >
+        <PlayerChartBox />
+      </GridItem>
+      <GridItem
+        :i="layout[1].i"
+        :x="layout[1].x"
+        :y="layout[1].y"
+        :w="layout[1].w"
+        :h="layout[1].h"
+        :is-resizable="true"
+        :min-w="4"
+      >
+        <ActorPlot :boxlayout="layout[1]" :actorplots="plot[0]" :actor_name="actorname" />
+      </GridItem>
+      <GridItem
+        :i="layout[2].i"
+        :x="layout[2].x"
+        :y="layout[2].y"
+        :w="layout[2].w"
+        :h="layout[2].h"
+        :is-resizable="true"
+        :min-w="4"
+      >
+        <PlayerAvatarBox />
+      </GridItem>
+      <GridItem
+        :i="layout[3].i"
+        :x="layout[3].x"
+        :y="layout[3].y"
+        :w="layout[3].w"
+        :h="layout[3].h"
+        :is-resizable="true"
+        :min-w="2"
+      >
+        <SeasonMeta tv_id="63247" :season="3" :episodes="[1,2,3,4,5]" />
+      </GridItem>
+      <GridItem
+        :i="layout[4].i"
+        :x="layout[4].x"
+        :y="layout[4].y"
+        :w="layout[4].w"
+        :h="layout[4].h"
+        :is-resizable="true"
+        :min-w="4"
+      >
+        <MainChartBox />
+      </GridItem>
+      <GridItem
+        :i="layout[5].i"
+        :x="layout[5].x"
+        :y="layout[5].y"
+        :w="layout[5].w"
+        :h="layout[5].h"
+        :is-resizable="true"
+        :min-w="4"
+      >
+        <WorldCloudBox />
+      </GridItem>
+    </GridLayout>
+  </v-app>
+</template>
 
 <script>
 import PlayerChartBox from "./PlayerChartBox";
@@ -73,6 +85,7 @@ import ActorPlot from "./ActorPlot";
 import PlayerAvatarBox from "./PlayerAvatarBox";
 import SeasonMeta from "./SeasonMeta";
 import MainChartBox from "./MainChartBox";
+import WorldCloudBox from "./WorldCloudBox";
 
 export default {
   name: "MainInterface",
@@ -83,7 +96,8 @@ export default {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
     SeasonMeta,
-    MainChartBox
+    MainChartBox,
+    WorldCloudBox
   },
   data: function() {
     return {
@@ -92,7 +106,8 @@ export default {
         { x: 6, y: 0, w: 4, h: 4, i: "1" },
         { x: 0, y: 2, w: 6, h: 2, i: "2" },
         { x: 10, y: 2, w: 2, h: 2, i: "3" },
-        { x: 6, y: 4, w: 8, h: 6, i: "4" }
+        { x: 6, y: 4, w: 8, h: 6, i: "4" },
+        { x: 0, y: 6, w: 4, h: 2, i: "5" }
       ],
       plot: [
         {
