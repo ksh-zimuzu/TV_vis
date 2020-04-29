@@ -56,6 +56,17 @@
       >
         <MainChartBox />
       </GridItem>
+      <GridItem
+        :i="layout[5].i"
+        :x="layout[5].x"
+        :y="layout[5].y"
+        :w="layout[5].w"
+        :h="layout[5].h"
+        :is-resizable="true"
+        :min-w="4"
+      >
+        <WorldCloudBox />
+      </GridItem>
     </GridLayout>
   </v-app>
 </template>
@@ -67,6 +78,7 @@ import ActorPlot from "./components/ActorPlot";
 import PlayerAvatarBox from "./components/PlayerAvatarBox";
 import SeasonMeta from "./components/SeasonMeta";
 import MainChartBox from "./components/MainChartBox";
+import WorldCloudBox from "./components/WorldCloudBox";
 
 export default {
   name: "App",
@@ -77,7 +89,8 @@ export default {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
     SeasonMeta,
-    MainChartBox
+    MainChartBox,
+    WorldCloudBox
   },
   data: function() {
     return {
@@ -86,7 +99,8 @@ export default {
         { x: 6, y: 0, w: 4, h: 4, i: "1" },
         { x: 0, y: 2, w: 6, h: 2, i: "2" },
         { x: 10, y: 2, w: 2, h: 2, i: "3" },
-        { x: 6, y: 4, w: 8, h: 6, i: "4" }
+        { x: 6, y: 4, w: 8, h: 6, i: "4" },
+        { x: 0, y: 6, w: 4, h: 2, i: "5" }
       ],
       plot: [
         {
