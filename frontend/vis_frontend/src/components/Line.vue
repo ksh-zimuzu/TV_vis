@@ -97,6 +97,10 @@ export default {
     myChart.showLoading()
     myChart.setOption(option)
     myChart.hideLoading()
+    myChart.on('click', function (param) {
+      // var name = param.name
+      window.location.href = '/'
+    })
   }
 }
 </script>
