@@ -1,8 +1,11 @@
 <template>
-    <div id="echartContainer" style="width:1000px; height:500px"></div>
+    <div class="echarts">
+    <div :style="{height:height,width:width}" ref="myEchart"></div>
+  </div>
 </template>
 
 <script>
+import echarts from 'echarts' // 引入组件
 export default {
   name: 'Line',
   data () {
@@ -15,11 +18,13 @@ export default {
       ]
     }
   },
-  props () {},
+  props: {
+    width: { type: String, default: '1000px' },
+    height: {type: String, default: '500px'}
+  },
   mounted () {
-    var echarts = require('echarts')
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('echartContainer'))
+    this.chart = echarts.init(this.$refs.myEchart)
+    window.onresize = echarts.init(this.$refs.myEchart).resize
     var se = []
     this.nameofmovie.forEach((item, index) => {
       var seri = {
@@ -94,10 +99,8 @@ export default {
       // 数据-data是最终要显示的数据
       series: se
     }
-    myChart.showLoading()
-    myChart.setOption(option)
-    myChart.hideLoading()
-    myChart.on('click', function (param) {
+    this.chart.setOption(option)
+    this.chart.on('click', function (param) {
       // var name = param.name
       window.location.href = '/'
     })
