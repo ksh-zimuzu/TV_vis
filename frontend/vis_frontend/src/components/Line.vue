@@ -6,6 +6,7 @@
 
 <script>
 import echarts from 'echarts' // 引入组件
+import '../../node_modules/echarts/lib/chart/line'
 export default {
   name: 'Line',
   data () {
@@ -100,10 +101,6 @@ export default {
       series: se
     }
     this.chart.setOption(option)
-    this.chart.on('click', function (param) {
-      // var name = param.name
-      window.location.href = '/'
-    })
   }
 }
 </script>
