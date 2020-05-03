@@ -6,7 +6,7 @@
 
 <script>
     import echarts from "echarts" //引入组件
-    import '../service/world.js'    //引入组件
+    import '../services/world.js'    //引入组件
 
     export default {
       name: "worldMap",
