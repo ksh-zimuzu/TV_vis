@@ -86,6 +86,7 @@ import PlayerAvatarBox from "./PlayerAvatarBox";
 import SeasonMeta from "./SeasonMeta";
 import MainChartBox from "./MainChartBox";
 import WorldCloudBox from "./WorldCloudBox";
+import worldMap from "./worldMap";
 
 export default {
   name: "MainInterface",
@@ -97,7 +98,8 @@ export default {
     GridItem: VueGridLayout.GridItem,
     SeasonMeta,
     MainChartBox,
-    WorldCloudBox
+    WorldCloudBox,
+    worldMap
   },
   data: function() {
     return {

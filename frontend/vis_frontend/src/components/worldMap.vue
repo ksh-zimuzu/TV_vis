@@ -6,7 +6,7 @@
 
 <script>
     import echarts from "echarts" //引入组件
-    import '../../node_modules/echarts/map/js/world.js'    //引入组件
+    import '../service/world.js'    //引入组件
 
     export default {
       name: "worldMap",
@@ -164,37 +164,42 @@
             //b8dfe6
             backgroundColor: "#B8DFE6",
             title: {    //地图显示标题
-              text: '全球剧集流行程度',
-              subtext: 'Global popularity of TV series',
+              text: 'TMDB：全球剧集数量',
+              subtext: 'Number of global TV series',
               //sublink: 'http://www.baidu.com',
               top: "30px",
               left: 'center',
               textStyle: {color: '#fff'}
             },
             visualMap: {   //图列显示柱
-              type: 'continuous',
+              type: 'piecewise',
+              splitNumber: 15,
+              pieces:[
+                {lte: 0},
+                {gt: 0, lte: 5},
+                {gt: 5, lte: 10},
+                {gt: 10, lte: 20},
+                {gt: 20, lte: 50},
+                {gt: 50, lte: 100},
+                {gt: 100, lte: 200},
+                {gt: 200, lte: 500},
+                {gt: 500, lte: 1000},
+                {gt: 1000, lte: 2000},
+                {gt: 2000, lte: 3000},
+                {gt: 3000, lte: 5000},
+                {gt: 5000, lte: 8000},
+                {gt: 8000, lte: 12000},
+                {gt: 12000}
+              ],
               min: 0,
+              max: 17606,
               left: 30,
-              bottom: 50,
-              max: 6000,
+              bottom: 100,
               text:['高','低'],
               realtime: false,
               calculable : true,
               color: ['#0C4E00', '#5C8100', '#A0B700', '#D2CF00', '#E6E4A6', '#E5E2E0']
               //color: ['orangered','yellow','lightskyblue']
-            },
-            toolbox: {  //工具栏
-              show: true,
-              orient: 'vertical',
-              left: 'right',
-              top:50,
-              itemGap:20,
-              left:30,
-              feature: {
-                dataView: {readOnly: false},
-                restore: {},
-                saveAsImage: {}
-              }
             },
             tooltip: {  //提示框组件
               trigger: 'item',
