@@ -74,6 +74,17 @@
       >
         <WorldCloudBox />
       </GridItem>
+      <GridItem
+              :i="layout[5].i"
+              :x="layout[5].x"
+              :y="layout[5].y"
+              :w="layout[5].w"
+              :h="layout[5].h"
+              :is-resizable="true"
+              :min-w="4"
+      >
+        <worldMap />
+      </GridItem>
     </GridLayout>
   </v-app>
 </template>
