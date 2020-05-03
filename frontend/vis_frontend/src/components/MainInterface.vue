@@ -111,7 +111,8 @@ export default {
     SeasonMeta,
     MainChartBox,
     WorldCloudBox,
-    worldMap
+    worldMap,
+    Line
   },
   data: function() {
     return {
