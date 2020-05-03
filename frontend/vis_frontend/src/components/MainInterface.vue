@@ -98,6 +98,7 @@ import SeasonMeta from "./SeasonMeta";
 import MainChartBox from "./MainChartBox";
 import WorldCloudBox from "./WorldCloudBox";
 import worldMap from "./worldMap";
+import Line from "./Line"
 
 export default {
   name: "MainInterface",
