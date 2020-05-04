@@ -74,7 +74,7 @@
       >
         <WorldCloudBox />
       </GridItem>
-      <GridItem 
+      <GridItem
         :i="layout[6].i"
         :x="layout[6].x"
         :y="layout[6].y"
