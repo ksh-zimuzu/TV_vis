@@ -8,7 +8,7 @@
 import echarts from 'echarts' // 引入组件
 import '../../node_modules/echarts/lib/chart/line'
 export default {
-  name: 'Line',
+  name: 'Liner',
   data () {
     return {
       chart: null,
@@ -24,6 +24,11 @@ export default {
     height: {type: String, default: '500px'}
   },
   mounted () {
+    this.initChart()
+  },
+  
+  methods: {
+    initChart(){
     this.chart = echarts.init(this.$refs.myEchart)
     window.onresize = echarts.init(this.$refs.myEchart).resize
     var se = []
@@ -101,6 +106,15 @@ export default {
       series: se
     }
     this.chart.setOption(option)
+    this.chart.on('click', (param) => {
+      var name = param.seriesName
+      window.location.href = '/HelloWorld'+name
+    })
   }
 }
+}
 </script>
+
+<style scoped>
+
+</style>
