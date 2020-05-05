@@ -1,12 +1,5 @@
 <template>
   <v-app id="app">
-    <router-view />
-    <p>
-      导航:
-      <router-link to="/">首页</router-link>
-      <router-link to="/index">主页</router-link>
-      <router-link to="/test">地图测试</router-link>
-    </p>
     <GridLayout :layout="layout" :col-num="12">
       <GridItem
         :i="layout[0].i"
