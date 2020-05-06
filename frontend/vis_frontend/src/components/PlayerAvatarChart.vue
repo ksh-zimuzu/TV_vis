@@ -21,7 +21,7 @@ export default {
           //position: "top",
           show: true,
           formatter: params => {
-            console.log(params);
+            //console.log(params);
             var popularity = params.data.symbolSize / 10;
             var name = params.name;
             return `${name}: ${popularity}`;
@@ -68,6 +68,9 @@ export default {
       this.updateOption();
       this.updateImg();
     });
+    this.chart.on("click", function(params) {
+      console.log(params);
+    });
   },
   computed: {},
   watch: {
@@ -75,7 +78,10 @@ export default {
       this.chart.setOption(this.options);
     },
     players: function() {
-      this.reloadPlayerInfo().then(this.updateOption);
+      this.reloadPlayerInfo().then(() => {
+        this.updateOption();
+        this.updateImg();
+      });
     }
   },
   methods: {

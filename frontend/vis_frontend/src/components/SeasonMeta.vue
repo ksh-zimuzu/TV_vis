@@ -1,37 +1,82 @@
 <template>
   <div class="season-meta">
     <v-list no-action>
-      <EpisodeMeta
-        v-for="episode in episodes"
-        :episode="episode"
-        :season="season"
-        :tv_id="tv_id"
-        :key="episode"
-      />
+      <v-list-item-group @change="change" v-model="model" ref="epList">
+        <EpisodeMeta
+          v-for="record in zippedEp"
+          :episode="record[0]"
+          :season="season"
+          :tv_id="tv_id"
+          :active="record[1]"
+          :key="record[0]"
+        />
+      </v-list-item-group>
     </v-list>
   </div>
 </template>
 <script>
 import EpisodeMeta from "./EpisodeMeta";
+import _ from "lodash";
+
 export default {
   components: {
     EpisodeMeta
   },
-  data: () => ({}),
+  data: () => ({
+    model: 0,
+    active: []
+  }),
   props: {
     tv_id: {
       required: true,
-      type: String
+      type: [String, Number]
     },
     season: {
       required: false,
       default: 1,
-      type: Number
+      type: [String, Number]
     },
     episodes: {
       required: false,
       type: Array,
       default: () => [1]
+    }
+  },
+  methods: {
+    change(msg) {
+      msg = msg ? msg : -1;
+      this.$EventBus.$emit("episode-focus", {
+        focusIndex: msg
+      });
+    },
+    onChange(msg) {
+      console.log("change!", msg, this.model);
+      if (msg.focusIndex != this.model) {
+        if (this.model >= 0) {
+          this.active[this.model] = false;
+        }
+        console.log(this.$refs.epList);
+        this.model = msg.focusIndex;
+        this.active[this.model] = true;
+        $vuetify.goTo(this.$refs.epList.$children[this.model]);
+      }
+    }
+  },
+  created() {
+    this.$EventBus.$on("episode-focus", this.onChange);
+  },
+  computed: {
+    zippedEp() {
+      return _.zip(this.episodes, this.active);
+    }
+  },
+  watch: {
+    episodes: function() {
+      if (this.active.length != this.episodes.length) {
+        var l = this.episodes.length;
+        this.active = new Array(l);
+        this.active.fill(false);
+      }
     }
   }
 };

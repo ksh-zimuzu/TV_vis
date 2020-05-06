@@ -12,8 +12,15 @@ export default {
   components: {
     PlayerAvatarChart
   },
+  props: {
+    players: {
+      type: Array,
+      required: true
+    }
+  },
   data: function() {
     return {
+      /*
       players: [
         {
           name: "Evan Rachel Wood",
@@ -41,6 +48,7 @@ export default {
           character: "Man in Black"
         }
       ]
+      */
     };
   },
   methods: {

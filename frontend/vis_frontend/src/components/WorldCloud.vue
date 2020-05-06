@@ -28,7 +28,9 @@ export default {
             data: _.toPairs(this.word_freq).map(([key, value]) => ({
               name: key,
               value: value
-            }))
+            })),
+            width: "90%",
+            height: "90%"
           }
         ],
         textStyle: {
@@ -46,6 +48,11 @@ export default {
   mounted: function() {
     this.chart = echarts.init(this.$el);
     this.chart.setOption(this.options);
+  },
+  watch: {
+    options: function() {
+      this.chart.setOption(this.options);
+    }
   }
 };
 </script>

@@ -12,9 +12,16 @@ export default {
   components: {
     WorldCloud
   },
+  props: {
+    word_freq: {
+      required: true
+    }
+  },
+  /*
   data: () => ({
     word_freq: require("./../assets/word_freq.json")
   }),
+  */
   methods: {
     resizeEvent: function() {
       this.resizeFunc();
@@ -25,6 +32,7 @@ export default {
     this.resizeFunc = _.debounce(this.$refs.worldcloud.chart.resize, 500);
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
-  }
+  },
+  watch: {}
 };
 </script>

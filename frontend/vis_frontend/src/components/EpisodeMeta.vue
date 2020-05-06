@@ -1,5 +1,5 @@
 <template>
-  <v-list-group>
+  <v-list-group v-model="active">
     <template v-slot:activator>
       <v-list-item-content>
         <v-list-item-title>第{{episode}}集</v-list-item-title>
@@ -76,17 +76,21 @@ export default {
   }),
   props: {
     tv_id: {
-      type: String,
+      type: [String, Number],
       required: true
     },
     season: {
-      type: Number,
+      type: [String, Number],
       default: 1,
       required: false
     },
     episode: {
       type: Number,
       default: 1,
+      required: false
+    },
+    active: {
+      default: false,
       required: false
     }
   },
@@ -104,9 +108,11 @@ export default {
         this.loading = false;
         this.raw_rating = res.data.vote_average;
         this.air_date = res.data.air_date;
-        this.director = res.data.crew.find(item => {
+        var directorFind = res.data.crew.find(item => {
           return item.job.toLowerCase() === "director";
-        }).name;
+        });
+
+        this.director = directorFind == undefined ? "未知" : directorFind.name;
         this.image = res.data.still_path;
       });
     }
