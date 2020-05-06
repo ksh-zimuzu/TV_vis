@@ -45,12 +45,12 @@ export default {
     this.resizeFunc = _.debounce(this.$refs.worldcloud.chart.resize, 500);
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+    this.$parent.$on("container-resized", this.resizeEvent);
   },
   watch: {
     plot: function() {
       this.loading = true;
       call_jieba_cut(this.plot, res => {
-        console.log(res.map(t => typeof t));
         res = _.filter(
           res,
           word =>
@@ -60,7 +60,6 @@ export default {
         );
         var count = _.countBy(res);
         this.word_freq = count;
-        console.log(count);
         this.loading = false;
       });
     }

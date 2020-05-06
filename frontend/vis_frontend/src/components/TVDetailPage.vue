@@ -15,6 +15,9 @@
     <GridItem :i="layout[3].i" :x="layout[3].x" :y="layout[3].y" :w="layout[3].w" :h="layout[3].h">
       <MainChartBox :EpisodeData="Math.max(...meta.episodes)" :SankeyData="FPs" />
     </GridItem>
+    <GridItem :i="layout[5].i" :x="layout[5].x" :y="layout[5].y" :w="layout[5].w" :h="layout[5].h">
+      <SimilarTVBox :current_tv_id="meta.tv_id" />
+    </GridItem>
   </GridLayout>
 </template>
 
@@ -27,8 +30,10 @@ import ActorPlot from "./ActorPlot"; //剧情
 import SeasonMeta from "./SeasonMeta"; //剧集元信息
 import PlayerAvatarBox from "./PlayerAvatarBox"; //气泡
 import WorldCloudBox from "./WorldCloudBox"; //词云
-import TV_loader from "../services/TV_loader";
 import MainChartBox from "./MainChartBox"; //主视图
+import SimilarTVBox from "./SimilarTVBox"; //柱状图
+
+import TV_loader from "../services/TV_loader";
 
 export default {
   name: "TVDetailPage",
@@ -49,6 +54,7 @@ export default {
     MainChartBox,
     WorldCloudBox,
     PlayerAvatarBox,
+    SimilarTVBox,
     SeasonMeta
   },
   data: () => ({
@@ -62,11 +68,12 @@ export default {
     FPs: {},
     word_freq: undefined,
     layout: [
-      { x: 0, y: 2, w: 2, h: 2, i: "3" },
-      { x: 2, y: 2, w: 7, h: 2, i: "2" },
-      { x: 9, y: 0, w: 3, h: 3, i: "4" },
-      { x: 2, y: 0, w: 7, h: 3, i: "1" },
-      { x: 0, y: 0, w: 2, h: 3, i: "0" }
+      { x: 0, y: 0, w: 2, h: 3, i: "元数据" },
+      { x: 2, y: 2, w: 7, h: 2, i: "气泡图" },
+      { x: 9, y: 0, w: 3, h: 3, i: "词云图" },
+      { x: 2, y: 0, w: 7, h: 3, i: "主视图" },
+      { x: 9, y: 3, w: 3, h: 2, i: "演员高亮" },
+      { x: 0, y: 3, w: 2, h: 2, i: "柱状图" }
     ],
     actors: [],
     plot: undefined

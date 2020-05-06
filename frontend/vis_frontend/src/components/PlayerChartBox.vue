@@ -72,6 +72,7 @@ export default {
     this.resizeFunc = _.debounce(this.$refs.player_chart.chart.resize, 500);
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+    this.$parent.$on("container-resized", this.resizeEvent);
   }
 };
 </script>

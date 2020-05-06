@@ -11,5 +11,8 @@ export default {
     },
     fetch_info(tv_id) {
         return requests.get(`/tv/${tv_id}`);
+    },
+    fetch_similar(tv_id) {
+        return requests.get(`/tv/${tv_id}/similar`);
     }
 }
