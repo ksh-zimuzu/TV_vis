@@ -10,7 +10,7 @@
       <PlayerAvatarBox :players="slicedActors" />
     </GridItem>
     <GridItem :i="layout[2].i" :x="layout[2].x" :y="layout[2].y" :w="layout[2].w" :h="layout[2].h">
-      <WorldCloudBox :word_freq="word_freq" />
+      <WorldCloudBox :plot="plot" />
     </GridItem>
     <GridItem :i="layout[3].i" :x="layout[3].x" :y="layout[3].y" :w="layout[3].w" :h="layout[3].h">
       <MainChartBox :EpisodeData="Math.max(...meta.episodes)" :SankeyData="FPs" />
@@ -68,7 +68,8 @@ export default {
       { x: 2, y: 0, w: 7, h: 3, i: "1" },
       { x: 0, y: 0, w: 2, h: 3, i: "0" }
     ],
-    actors: []
+    actors: [],
+    plot: undefined
   }),
   mounted: function() {
     var load_data = TV_loader.fetch_all(this.tv_name);
@@ -76,13 +77,21 @@ export default {
       this.meta = res.data;
     });
     load_data.FPs.then(fps =>
-      fps.map(t => {
-        t.p.then(res => {
-          this.$set(this.FPs, t.episode, res.data);
-        });
+      Promise.all(
+        fps.map(t =>
+          t.p.then(res => {
+            this.$set(this.FPs, t.episode, res.data);
+          })
+        )
+      ).then(() => {
+        this.plot = this.plots[1];
       })
     );
-    
+    load_data.plots.then(plots =>
+      plots.map(t =>
+        t.p.then(res => this.$set(this.plots, t.episode, res.data))
+      )
+    );
     load_data.word_freq.then(res => {
       this.word_freq = res.data;
     });
@@ -98,7 +107,8 @@ export default {
   },
   methods: {
     focus: function(msg) {
-      console.log("focus", msg);
+      console.log("focus on Page");
+      this.plot = this.plots[msg.focusIndex + 1];
     }
   }
 };
