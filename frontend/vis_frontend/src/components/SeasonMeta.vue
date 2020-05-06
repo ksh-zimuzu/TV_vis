@@ -58,7 +58,7 @@ export default {
         console.log(this.$refs.epList);
         this.model = msg.focusIndex;
         this.active[this.model] = true;
-        $vuetify.goTo(this.$refs.epList.$children[this.model]);
+        this.$vuetify.goTo(this.$refs.epList.$children[this.model]);
       }
     }
   },
