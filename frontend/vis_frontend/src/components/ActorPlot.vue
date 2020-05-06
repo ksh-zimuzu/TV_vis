@@ -1,6 +1,9 @@
 <template>
-    <smart-widget title="剧情">
+    <div class="plotw-meta">
         <v-app>
+            <h1>
+                {{msg}}
+            </h1>
             <div class="text-center" id="plot">
                 {{actorplots.content}}
             </div>
@@ -21,8 +24,7 @@
                 </a>
             </div>
         </v-app>
-    </smart-widget>
-    
+    </div>
 </template>
 
 
@@ -110,5 +112,11 @@ function revertTarget(searchtext){//查找处理
 
 </script>
 <style scoped>
-.div2{overflow-y:scroll}
+.plotw-meta {
+  overflow-y: auto;
+  height: inherit;
+  background-color: white;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 0 10px 0 #e9e9e9;
+}
 </style>
