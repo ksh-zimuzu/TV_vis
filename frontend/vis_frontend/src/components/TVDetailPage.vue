@@ -57,7 +57,7 @@ export default {
       episodes: [0],
       id: 0
     },
-    plot: undefined,
+    plots: {},
     CPs: undefined,
     FPs: {},
     word_freq: undefined,
@@ -82,6 +82,7 @@ export default {
         });
       })
     );
+    
     load_data.word_freq.then(res => {
       this.word_freq = res.data;
     });

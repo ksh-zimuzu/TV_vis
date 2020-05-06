@@ -30,5 +30,17 @@ export default {
     },
     fetch_actors(tv_name) {
         return axios.get(`/TVs/${tv_name}/actor_list.json`);
+    },
+    fetch_plot(tv_name, season, episode) {
+        var season_str = String(season).padStart(2, "0");
+        var episode_str = String(episode).padStart(2, "0");
+        return axios.get(`/TVs/${tv_name}/plot_S${season_str}E${episode_str}.json`);
+    },
+    fetch_plots(tv_name, meta) {
+        var res = meta.episode.map((ep) => ({
+            episode: ep,
+            p: this.fetch_plot(tv_name, meta.season, ep)
+        }));
+        return res;
     }
 }
