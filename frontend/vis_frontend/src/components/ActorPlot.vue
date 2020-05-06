@@ -7,22 +7,6 @@
             <div class="text-center" id="plot">
                 {{actorplots.content}}
             </div>
-            <div class="text-center">
-                <a v-for="user in actor_name" :key="user" class="nowrap">
-                    <v-chip draggable
-                      class="ma-2"
-                      color="red"
-                      text-color="white"
-                      large
-                      @click="actor(user)"
-                    >
-                    <v-avatar>
-                        <img :src="user.src"/>
-                      </v-avatar>
-                      {{user.content}}
-                    </v-chip>
-                </a>
-            </div>
         </v-app>
     </div>
 </template>
