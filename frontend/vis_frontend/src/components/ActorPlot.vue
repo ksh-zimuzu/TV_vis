@@ -1,28 +1,28 @@
 <template>
-    <div>
+    <smart-widget title="剧情">
         <v-app>
-            <h1>
-                {{msg}}
-            </h1>
             <div class="text-center" id="plot">
                 {{actorplots.content}}
             </div>
-            <a v-for="user in actor_name" :key="user" class="nowrap">
-                <v-chip draggable
-                  class="ma-2"
-                  color="red"
-                  text-color="white"
-                  large
-                  @click="actor(user)"
-                >
-                <v-avatar>
-                    <img :src="user.src"/>
-                  </v-avatar>
-                  {{user.content}}
-                </v-chip>
-            </a>
+            <div class="text-center">
+                <a v-for="user in actor_name" :key="user" class="nowrap">
+                    <v-chip draggable
+                      class="ma-2"
+                      color="red"
+                      text-color="white"
+                      large
+                      @click="actor(user)"
+                    >
+                    <v-avatar>
+                        <img :src="user.src"/>
+                      </v-avatar>
+                      {{user.content}}
+                    </v-chip>
+                </a>
+            </div>
         </v-app>
-    </div>
+    </smart-widget>
+    
 </template>
 
 
@@ -110,5 +110,5 @@ function revertTarget(searchtext){//查找处理
 
 </script>
 <style scoped>
-
+.div2{overflow-y:scroll}
 </style>
