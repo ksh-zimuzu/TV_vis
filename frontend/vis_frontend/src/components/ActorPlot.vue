@@ -1,28 +1,14 @@
 <template>
-    <smart-widget title="剧情">
+    <div class="plotw-meta">
         <v-app>
+            <h1>
+                {{msg}}
+            </h1>
             <div class="text-center" id="plot">
                 {{actorplots.content}}
             </div>
-            <div class="text-center">
-                <a v-for="user in actor_name" :key="user" class="nowrap">
-                    <v-chip draggable
-                      class="ma-2"
-                      color="red"
-                      text-color="white"
-                      large
-                      @click="actor(user)"
-                    >
-                    <v-avatar>
-                        <img :src="user.src"/>
-                      </v-avatar>
-                      {{user.content}}
-                    </v-chip>
-                </a>
-            </div>
         </v-app>
-    </smart-widget>
-    
+    </div>
 </template>
 
 
@@ -110,5 +96,11 @@ function revertTarget(searchtext){//查找处理
 
 </script>
 <style scoped>
-.div2{overflow-y:scroll}
+.plotw-meta {
+  overflow-y: auto;
+  height: inherit;
+  background-color: white;
+  border: 1px solid #ebeef5;
+  box-shadow: 0 0 10px 0 #e9e9e9;
+}
 </style>
