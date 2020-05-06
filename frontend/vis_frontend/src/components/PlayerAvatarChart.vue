@@ -17,6 +17,7 @@ export default {
     return {
       chart: undefined,
       options: {
+        animation: true,
         tooltip: {
           //position: "top",
           show: true,
@@ -68,9 +69,7 @@ export default {
       this.updateOption();
       this.updateImg();
     });
-    this.chart.on("click", function(params) {
-      console.log(params);
-    });
+    //this.chart.on("click", function(params) {});
   },
   computed: {},
   watch: {

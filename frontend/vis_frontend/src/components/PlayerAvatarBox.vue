@@ -19,37 +19,7 @@ export default {
     }
   },
   data: function() {
-    return {
-      /*
-      players: [
-        {
-          name: "Evan Rachel Wood",
-          id: 38940,
-          character: "Dolores Abernathy"
-        },
-        {
-          name: "Thandie Newton",
-          id: 9030,
-          character: "Maeve Millay"
-        },
-        {
-          name: "Jeffrey Wright",
-          id: 2954,
-          character: "Bernard Lowe"
-        },
-        {
-          name: "Tessa Thompson",
-          id: 62561,
-          character: "Charlotte Hale"
-        },
-        {
-          name: "Ed Harris",
-          id: 228,
-          character: "Man in Black"
-        }
-      ]
-      */
-    };
+    return {};
   },
   methods: {
     resizeEvent: function() {

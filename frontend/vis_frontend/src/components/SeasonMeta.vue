@@ -3,12 +3,13 @@
     <v-list no-action>
       <v-list-item-group @change="change" v-model="model" ref="epList">
         <EpisodeMeta
-          v-for="record in zippedEp"
+          v-for="(record,index) in zippedEp"
           :episode="record[0]"
           :season="season"
           :tv_id="tv_id"
           :active="record[1]"
           :key="record[0]"
+          :id="'i'+index"
         />
       </v-list-item-group>
     </v-list>
@@ -17,6 +18,7 @@
 <script>
 import EpisodeMeta from "./EpisodeMeta";
 import _ from "lodash";
+import goTo from "vuetify/es5/services/goto";
 
 export default {
   components: {
@@ -55,10 +57,13 @@ export default {
         if (this.model >= 0) {
           this.active[this.model] = false;
         }
-        console.log(this.$refs.epList);
+
         this.model = msg.focusIndex;
         this.active[this.model] = true;
-        this.$vuetify.goTo(this.$refs.epList.$children[this.model]);
+        goTo(this.$refs.epList.$children[this.model], {
+          container: this.$refs.epList
+        });
+        console.log(this.$refs.epList.$children[this.model]);
       }
     }
   },

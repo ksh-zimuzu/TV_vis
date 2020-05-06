@@ -1,5 +1,8 @@
 <template>
   <GridLayout :layout="layout" :col-num="12">
+    <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
+      <smart-widget title="占位"></smart-widget>
+    </GridItem>
     <GridItem :i="layout[0].i" :x="layout[0].x" :y="layout[0].y" :w="layout[0].w" :h="layout[0].h">
       <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
     </GridItem>
@@ -62,7 +65,8 @@ export default {
       { x: 0, y: 2, w: 2, h: 2, i: "3" },
       { x: 2, y: 2, w: 7, h: 2, i: "2" },
       { x: 9, y: 0, w: 3, h: 3, i: "4" },
-      { x: 2, y: 0, w: 7, h: 3, i: "1" }
+      { x: 2, y: 0, w: 7, h: 3, i: "1" },
+      { x: 0, y: 0, w: 2, h: 3, i: "0" }
     ],
     actors: []
   }),
