@@ -1,7 +1,7 @@
 <template>
   <GridLayout :layout="layout" :col-num="12">
     <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
-      <ActorPlot :actorplots="plot" :actorname="heighlightActors" />
+      <ActorPlot :plot="plot" :highlightRole="heighlightAt" />
     </GridItem>
     <GridItem :i="layout[0].i" :x="layout[0].x" :y="layout[0].y" :w="layout[0].w" :h="layout[0].h">
       <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
@@ -102,6 +102,7 @@ export default {
       this.actors = res.data;
     });
     this.$EventBus.$on("episode-focus", this.focus);
+    this.$EventBus.$on("actor-focus", this.hover);
   },
   computed: {
     slicedActors: function() {
@@ -117,9 +118,10 @@ export default {
   },
   methods: {
     focus: function(msg) {
-      console.log("focus on Page");
       this.plot = this.plots[msg.focusIndex + 1];
-      this.$EventBus.$emit("snackbar", `你选择了第${msg.focusIndex + 1}集`);
+      if (msg.focusIndex >= 0) {
+        this.$EventBus.$emit("snackbar", `你选择了第${msg.focusIndex + 1}集`);
+      }
     },
     hover: function(msg) {
       this.heighlightAt = msg.character;

@@ -1,7 +1,7 @@
 <template>
   <div class="plotw-meta">
-    <h1>{{msg}}</h1>
-    <div class="text-center" id="plot">{{actorplots}}</div>
+    <h2>剧情</h2>
+    <div id="plot" v-html="raw_html"></div>
   </div>
 </template>
 
@@ -10,13 +10,27 @@
 export default {
   name: "ActorPlot",
   props: {
-    actorplots: {
+    plot: {
       type: String,
       required: true
     },
-    actor_name: {
-      type: Array,
-      required: true
+    highlightRole: {
+      type: String,
+      required: false,
+      default: ""
+    }
+  },
+  computed: {
+    raw_html: function() {
+      if (this.highlightRole.length > 0) {
+        var re = new RegExp(this.highlightRole, "g");
+        return this.plot.replace(
+          re,
+          `<span class="font-weight-black" style="color:red">${this.highlightRole}</span>`
+        );
+      } else {
+        return this.plot;
+      }
     }
   },
   methods: {
@@ -35,13 +49,6 @@ export default {
     };
   }
 };
-
-/*
-String.prototype.Trim = function() {
-  //去空格
-  return this.replace(/\s/gi, "");
-};
-*/
 
 function checkflag(flag, searchtext) {
   if (flag == 1) {

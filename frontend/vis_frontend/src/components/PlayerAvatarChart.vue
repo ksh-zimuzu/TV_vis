@@ -70,11 +70,13 @@ export default {
       this.updateImg();
     });
     this.chart.on("mouseover", params => {
-      console.log(params);
       this.$EventBus.$emit("actor-focus", {
         name: this.players[params.dataIndex].name,
         character: this.players[params.dataIndex].character
       });
+    });
+    this.chart.on("mouseout", params => {
+      this.$EventBus.$emit("actor-focus", { character: "", name: "" });
     });
   },
   computed: {},
