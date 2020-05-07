@@ -129,18 +129,24 @@ export default {
         this.chart.setOption(option);
       }
       //console.log(msg, this.chart.getOption());
+    },
+    calSymbolSize(n, min, max) {
+      //return 2 * n;
+      return Math.pow(2 + (19 * (n - min)) / (max - min), 1.43);
     }
   },
 
   computed: {
     animate_option() {
       var times = this.edata;
-      var Nodes = this.Nodes;
+      var Nodes = this.Nodes.map(item => _.filter(item, t => t.value > 0));
       var Links = this.Links;
       for (var c = 0; c < Nodes.length; c++) {
-        Nodes[c].forEach(function(node) {
+        var minV = _.min(Nodes[c].map(t => t.value));
+        var maxV = _.max(Nodes[c].map(t => t.value));
+        Nodes[c].forEach(node => {
           node.itemStyle = null;
-          node.symbolSize = node.value * 2;
+          node.symbolSize = this.calSymbolSize(node.value, minV, maxV);
           node.label = {
             normal: {
               show: node.symbolSize > 4
@@ -213,7 +219,7 @@ export default {
                   circular: {
                     rotateLabel: true
                   },
-                  data: _.filter(Nodes[i], t => t.value > 0).sort(
+                  data: Nodes[i].sort(
                     (a, b) =>
                       +(a.category > b.category) || +(a.value < b.value) - 1
                   ),

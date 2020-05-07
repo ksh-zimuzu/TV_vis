@@ -6,6 +6,7 @@
 import echarts from "echarts";
 import Jimp from "jimp";
 import PeopleService from "../services/people";
+import _ from "lodash";
 
 var IMG_BASE_URL = "https://image.tmdb.org/t/p/w300";
 
@@ -22,8 +23,8 @@ export default {
           //position: "top",
           show: true,
           formatter: params => {
-            //console.log(params);
-            var popularity = params.data.symbolSize / 10;
+            console.log(params);
+            var popularity = this.player_infos[params.dataIndex].popularity;
             var name = params.name;
             return `${name}: ${popularity}`;
           }
@@ -79,11 +80,15 @@ export default {
       this.$EventBus.$emit("actor-focus", { character: "", name: "" });
     });
   },
-  computed: {},
-  watch: {
-    options: function() {
-      this.chart.setOption(this.options);
+  computed: {
+    maxP: function() {
+      return _.maxBy(this.player_infos, t => t.popularity).popularity;
     },
+    minP: function() {
+      return _.minBy(this.player_infos, t => t.popularity).popularity;
+    }
+  },
+  watch: {
     players: function() {
       this.reloadPlayerInfo().then(() => {
         this.updateOption();
@@ -94,7 +99,6 @@ export default {
   methods: {
     updateImg: function() {
       var promises = this.player_infos.map((item, index) => {
-        console.log("item=", item);
         if (item.image) {
           return Jimp.read(IMG_BASE_URL + item.image)
             .then(img => {
@@ -105,7 +109,7 @@ export default {
                 value: [item.name],
                 symbol: "image://" + src,
                 name: item.name,
-                symbolSize: item.popularity * 10
+                symbolSize: this.calSymbolSize(item.popularity)
               });
             })
             .catch(err => {
@@ -119,7 +123,7 @@ export default {
               show: true
             },
             name: item.name,
-            symbolSize: item.popularity * 10
+            symbolSize: this.calSymbolSize(item.popularity)
           });
           /*
           this.options.series[0].data.push({
@@ -152,6 +156,12 @@ export default {
         });
       });
       return Promise.all(promises).then(this.updateOption);
+    },
+    calSymbolSize(n) {
+      return Math.pow(
+        20 + (25 * (n - this.minP)) / (this.maxP - this.minP),
+        1.43
+      );
     }
   }
 };
