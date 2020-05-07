@@ -12,7 +12,14 @@
     <GridItem :i="layout[2].i" :x="layout[2].x" :y="layout[2].y" :w="layout[2].w" :h="layout[2].h">
       <WorldCloudBox :plot="plot" />
     </GridItem>
-    <GridItem :i="layout[3].i" :x="layout[3].x" :y="layout[3].y" :w="layout[3].w" :h="layout[3].h">
+    <GridItem
+      :i="layout[3].i"
+      :x="layout[3].x"
+      :y="layout[3].y"
+      :w="layout[3].w"
+      :h="layout[3].h"
+      dragAllowFrom=".widget-header"
+    >
       <MainChartBox :EpisodeData="Math.max(...meta.episodes)" :SankeyData="FPs" />
     </GridItem>
     <GridItem :i="layout[5].i" :x="layout[5].x" :y="layout[5].y" :w="layout[5].w" :h="layout[5].h">
