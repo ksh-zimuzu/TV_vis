@@ -1,13 +1,11 @@
 <template>
     <div class="plotw-meta">
-        <v-app>
-            <h1>
-                {{msg}}
-            </h1>
-            <div class="text-center" id="plot">
-                {{actorplots.content}}
-            </div>
-        </v-app>
+        <h1>
+            {{msg}}
+        </h1>
+        <div class="text-center" id="plot">
+            {{actorplots.content}}
+        </div>
     </div>
 </template>
 
@@ -47,10 +45,10 @@ export default {
     
 }
 
-String.prototype.Trim = function()
+/*String.prototype.Trim = function()
 {//去空格
     return this.replace(/\s/gi,"")
-}
+}*/
 
 function checkflag(flag,searchtext){
     if(flag==1)
