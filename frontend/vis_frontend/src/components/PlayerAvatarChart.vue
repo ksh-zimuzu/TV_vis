@@ -69,7 +69,13 @@ export default {
       this.updateOption();
       this.updateImg();
     });
-    //this.chart.on("click", function(params) {});
+    this.chart.on("mouseover", params => {
+      console.log(params);
+      this.$EventBus.$emit("actor-focus", {
+        name: this.players[params.dataIndex].name,
+        character: this.players[params.dataIndex].character
+      });
+    });
   },
   computed: {},
   watch: {
@@ -134,9 +140,9 @@ export default {
     },
     reloadPlayerInfo() {
       this.player_infos = [];
-      var promises = this.players.map(item => {
+      var promises = this.players.map((item, index) => {
         return PeopleService.fetch_people_info(item.id).then(res => {
-          this.player_infos.push({
+          this.$set(this.player_infos, index, {
             name: res.data.name,
             popularity: res.data.popularity,
             image: res.data.profile_path

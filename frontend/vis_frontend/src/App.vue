@@ -7,6 +7,10 @@
       <router-link to="/index">主页</router-link>
       <router-link to="/test">地图测试</router-link>
     </p>
+    <v-snackbar v-model="snackbar">
+      {{ snackbar_text }}
+      <v-btn color="pink" text @click="snackbar = false">关闭</v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -15,7 +19,16 @@ export default {
   name: "App",
   components: {},
   data: function() {
-    return {};
+    return {
+      snackbar: false,
+      snackbar_text: "没事啊"
+    };
+  },
+  created() {
+    this.$EventBus.$on("snackbar", msg => {
+      this.snackbar_text = msg;
+      this.snackbar = true;
+    });
   }
 };
 </script>

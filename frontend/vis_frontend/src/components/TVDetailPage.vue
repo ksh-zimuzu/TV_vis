@@ -1,7 +1,7 @@
 <template>
   <GridLayout :layout="layout" :col-num="12">
     <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
-      <smart-widget title="占位"></smart-widget>
+      <ActorPlot :actorplots="plot" :actorname="heighlightActors" />
     </GridItem>
     <GridItem :i="layout[0].i" :x="layout[0].x" :y="layout[0].y" :w="layout[0].w" :h="layout[0].h">
       <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
@@ -24,9 +24,8 @@
 <script>
 import VueGridLayout from "vue-grid-layout";
 import _ from "lodash";
-/*
+
 import ActorPlot from "./ActorPlot"; //剧情
-*/
 import SeasonMeta from "./SeasonMeta"; //剧集元信息
 import PlayerAvatarBox from "./PlayerAvatarBox"; //气泡
 import WorldCloudBox from "./WorldCloudBox"; //词云
@@ -46,11 +45,7 @@ export default {
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,
-    /*
     ActorPlot,
-    
-    MainChartBox,
-    */
     MainChartBox,
     WorldCloudBox,
     PlayerAvatarBox,
@@ -76,7 +71,8 @@ export default {
       { x: 0, y: 3, w: 2, h: 2, i: "柱状图" }
     ],
     actors: [],
-    plot: undefined
+    plot: undefined,
+    heighlightAt: -1
   }),
   mounted: function() {
     var load_data = TV_loader.fetch_all(this.tv_name);
@@ -110,12 +106,23 @@ export default {
   computed: {
     slicedActors: function() {
       return _.slice(this.actors, 0, 5);
+    },
+    heighlightActors: function() {
+      return this.actors.map(actor => ({
+        name: actor.name,
+        content: actor.character,
+        show: actor.character == this.heighlightAt
+      }));
     }
   },
   methods: {
     focus: function(msg) {
       console.log("focus on Page");
       this.plot = this.plots[msg.focusIndex + 1];
+      this.$EventBus.$emit("snackbar", `你选择了第${msg.focusIndex + 1}集`);
+    },
+    hover: function(msg) {
+      this.heighlightAt = msg.character;
     }
   }
 };

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     change(msg) {
-      msg = msg ? msg : -1;
+      msg = msg >= 0 ? msg : -1;
       this.$EventBus.$emit("episode-focus", {
         focusIndex: msg
       });
