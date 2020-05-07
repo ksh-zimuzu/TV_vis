@@ -79,7 +79,7 @@ export default {
     ],
     actors: [],
     plot: undefined,
-    heighlightAt: -1
+    heighlightAt: ""
   }),
   mounted: function() {
     var load_data = TV_loader.fetch_all(this.tv_name);

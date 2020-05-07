@@ -1,5 +1,5 @@
 <template>
-  <v-list-group v-model="active">
+  <v-list-group v-model="is_active">
     <template v-slot:activator>
       <v-list-item-content>
         <v-list-item-title>第{{episode}}集</v-list-item-title>
@@ -72,7 +72,8 @@ export default {
     air_date: undefined,
     image: undefined,
     IMG_BASE_URL: "https://image.tmdb.org/t/p/w780",
-    LASY_IMG_BASE_URL: "https://image.tmdb.org/t/p/w300"
+    LASY_IMG_BASE_URL: "https://image.tmdb.org/t/p/w300",
+    is_active: false
   }),
   props: {
     tv_id: {
@@ -134,6 +135,9 @@ export default {
     },
     tv_id: function() {
       this.refresh_metadata();
+    },
+    active: function() {
+      this.is_active = this.active;
     }
   }
 };

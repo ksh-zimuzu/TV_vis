@@ -11,6 +11,11 @@
       {{ snackbar_text }}
       <v-btn color="pink" text @click="snackbar = false">关闭</v-btn>
     </v-snackbar>
+    <v-footer>
+      <v-btn color="white" text rounded link to="/">首页</v-btn>
+      <v-spacer></v-spacer>
+      <div>&copy; 2020</div>
+    </v-footer>
   </v-app>
 </template>
 
