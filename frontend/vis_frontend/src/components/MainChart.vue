@@ -4,6 +4,8 @@
 
 <script>
 import echarts from "echarts";
+import _ from "lodash";
+
 export default {
   name: "MainChart",
   props: {
@@ -211,7 +213,10 @@ export default {
                   circular: {
                     rotateLabel: true
                   },
-                  data: Nodes[i],
+                  data: _.filter(Nodes[i], t => t.value > 0).sort(
+                    (a, b) =>
+                      +(a.category > b.category) || +(a.value < b.value) - 1
+                  ),
                   links: Links[i],
                   categories: categories,
                   roam: true,

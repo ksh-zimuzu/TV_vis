@@ -52,9 +52,7 @@ export default {
     resizeEvent: function() {
       this.resizeFunc();
     },
-    focus: function() {
-      console.log("focus!");
-    }
+    focus: function() {}
   },
   mounted: function() {
     this.resizeFunc = _.debounce(this.$refs.main_chart.chart.resize, 500);
