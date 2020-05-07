@@ -75,7 +75,7 @@ export default {
         character: this.players[params.dataIndex].character
       });
     });
-    this.chart.on("mouseout", params => {
+    this.chart.on("mouseout", () => {
       this.$EventBus.$emit("actor-focus", { character: "", name: "" });
     });
   },
