@@ -36,10 +36,12 @@ export default {
   }
 };
 
+/*
 String.prototype.Trim = function() {
   //去空格
   return this.replace(/\s/gi, "");
 };
+*/
 
 function checkflag(flag, searchtext) {
   if (flag == 1) {
