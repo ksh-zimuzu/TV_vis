@@ -18,6 +18,11 @@ export default {
       type: String,
       required: false,
       default: ""
+    },
+    highlightColor: {
+      type: String,
+      required: false,
+      default: "#cf312c"
     }
   },
   computed: {
@@ -26,7 +31,7 @@ export default {
         var re = new RegExp(this.highlightRole, "g");
         return this.plot.replace(
           re,
-          `<span class="font-weight-black" style="color:red">${this.highlightRole}</span>`
+          `<span class="font-weight-black" style="color:${this.highlightColor}">${this.highlightRole}</span>`
         );
       } else {
         return this.plot;
