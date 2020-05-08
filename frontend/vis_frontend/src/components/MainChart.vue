@@ -219,10 +219,7 @@ export default {
                   circular: {
                     rotateLabel: true
                   },
-                  data: Nodes[i].sort(
-                    (a, b) =>
-                      +(a.category > b.category) || +(a.value < b.value) - 1
-                  ),
+                  data: Nodes[i].sort(cmp),
                   links: Links[i],
                   categories: categories,
                   roam: true,
@@ -234,7 +231,8 @@ export default {
                     color: "target",
                     //width:3,
                     curveness: 0.3
-                  }
+                  },
+                  focusNodeAdjacency: true
                 }
               ]
             });
@@ -258,4 +256,12 @@ export default {
     }
   }
 };
+
+function cmp(a, b) {
+  if (a.category != b.category) {
+    return a.category - b.category;
+  } else {
+    return -(a.value - b.value);
+  }
+}
 </script>
