@@ -1,1 +1,37 @@
-[{"id": "9048", "name": "Clark Gregg", "character": "Phil Coulson / Sarge"}, {"id": "21702", "name": "Ming-Na Wen", "character": "Melinda May / The Cavalry"}, {"id": "1181303", "name": "Chloe Bennet", "character": "Daisy \"Skye\" Johnson / Quake"}, {"id": "956764", "name": "Iain De Caestecker", "character": "Leopold  Fitz, Leo Fitz"}, {"id": "1223886", "name": "Elizabeth Henstridge", "character": "Jemma Simmons"}, {"id": "17304", "name": "Adrian Pasdar", "character": "Colonel Glenn Talbot, Glenn Talbot / Graviton, Glenn Talbot"}, {"id": "67913", "name": "Henry Simmons", "character": "Alphonso \u201cMack\u201d Mackenzie"}, {"id": "1693947", "name": "Natalia C\u00f3rdova-Buckley", "character": "Elena \u201cYo-Yo\u201d Rodriguez / Slingshot"}, {"id": "1181302", "name": "Brett Dalton", "character": "Grant Ward, Grant Ward / Hive"}]
+[{
+	"id": "9048",
+	"name": "Clark Gregg",
+	"character": "科尔森"
+}, {
+	"id": "21702",
+	"name": "Ming-Na Wen",
+	"character": "梅"
+}, {
+	"id": "1181303",
+	"name": "Chloe Bennet",
+	"character": "黛西"
+}, {
+	"id": "956764",
+	"name": "Iain De Caestecker",
+	"character": "菲兹"
+}, {
+	"id": "1223886",
+	"name": "Elizabeth Henstridge",
+	"character": "西蒙斯"
+}, {
+	"id": "17304",
+	"name": "Adrian Pasdar",
+	"character": "Colonel Glenn Talbot, Glenn Talbot / Graviton, Glenn Talbot"
+}, {
+	"id": "67913",
+	"name": "Henry Simmons",
+	"character": "Alphonso \u201cMack\u201d Mackenzie"
+}, {
+	"id": "1693947",
+	"name": "Natalia C\u00f3rdova-Buckley",
+	"character": "Elena \u201cYo-Yo\u201d Rodriguez / Slingshot"
+}, {
+	"id": "1181302",
+	"name": "Brett Dalton",
+	"character": "Grant Ward, Grant Ward / Hive"
+}]

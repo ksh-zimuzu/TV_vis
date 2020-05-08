@@ -1,1 +1,37 @@
-[{"id": "126881", "name": "Gong Hyo-jin", "character": "Dongbaek"}, {"id": "1257899", "name": "Kang Ha-neul", "character": "Hwang Yong-sik"}, {"id": "118977", "name": "Kim Ji-seok", "character": "Kang Jong-ryeol"}, {"id": "2068707", "name": "Ji E-su", "character": "Jessica"}, {"id": "998412", "name": "Oh Jung-se", "character": "No Gyu-tae"}, {"id": "2084416", "name": "Yum Hye-ran", "character": "Hong Ja-young"}, {"id": "1354108", "name": "Son Dam-bi", "character": "Hyang-mi"}, {"id": "2399088", "name": "Kim Kang-hoon", "character": "Pil-gu"}, {"id": "936000", "name": "Goh Doo-shim", "character": "Kwak Deok-soon"}]
+[{
+	"id": "126881",
+	"name": "Gong Hyo-jin",
+	"character": "山茶"
+}, {
+	"id": "1257899",
+	"name": "Kang Ha-neul",
+	"character": "黄龙植"
+}, {
+	"id": "118977",
+	"name": "Kim Ji-seok",
+	"character": "姜仲烈"
+}, {
+	"id": "2068707",
+	"name": "Ji E-su",
+	"character": "杰西卡"
+}, {
+	"id": "998412",
+	"name": "Oh Jung-se",
+	"character": "卢老板"
+}, {
+	"id": "2084416",
+	"name": "Yum Hye-ran",
+	"character": "Hong Ja-young"
+}, {
+	"id": "1354108",
+	"name": "Son Dam-bi",
+	"character": "Hyang-mi"
+}, {
+	"id": "2399088",
+	"name": "Kim Kang-hoon",
+	"character": "Pil-gu"
+}, {
+	"id": "936000",
+	"name": "Goh Doo-shim",
+	"character": "Kwak Deok-soon"
+}]

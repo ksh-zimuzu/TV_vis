@@ -1,1 +1,17 @@
-[{"id": "2080306", "name": "Asami Shibuya", "character": "Aki"}, {"id": "1681939", "name": "Tomo Kasajima", "character": "Nodoka"}, {"id": "1385839", "name": "Tomomitsu Adachi", "character": "Naoto"}, {"id": "2229457", "name": "Ryu Kenta", "character": "Police"}]
+[{
+	"id": "2080306",
+	"name": "Asami Shibuya",
+	"character": "Aki"
+}, {
+	"id": "1681939",
+	"name": "Tomo Kasajima",
+	"character": "Nodoka"
+}, {
+	"id": "1385839",
+	"name": "Tomomitsu Adachi",
+	"character": "Naoto"
+}, {
+	"id": "2229457",
+	"name": "Ryu Kenta",
+	"character": "Police"
+}]

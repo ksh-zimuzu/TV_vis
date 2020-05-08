@@ -1,1 +1,37 @@
-[{"id": "12670", "name": "Takuya Kimura", "character": "Natsuki Obana"}, {"id": "82898", "name": "Kyoka Suzuki", "character": "Rinko Hayami"}, {"id": "1360026", "name": "Yuta Tamamori", "character": "Shohei Hirako"}, {"id": "1893976", "name": "Kanichiro", "character": "Koichi Serita"}, {"id": "225038", "name": "Ayako Yoshitani", "character": "Moe Matsui"}, {"id": "550565", "name": "Mitsuhiro Oikawa", "character": "Kamehito Aizawa"}, {"id": "1744548", "name": "Anne Nakamura", "character": "Kanna Kuzumi"}, {"id": "70124", "name": "Ikki Sawamura", "character": "Rikutaro Kyono"}, {"id": "2464871", "name": "Toru Tezuka", "character": "Fumio Eto"}]
+[{
+	"id": "12670",
+	"name": "Takuya Kimura",
+	"character": "尾花夏树"
+}, {
+	"id": "82898",
+	"name": "Kyoka Suzuki",
+	"character": "早见伦子"
+}, {
+	"id": "1360026",
+	"name": "Yuta Tamamori",
+	"character": "祥平"
+}, {
+	"id": "1893976",
+	"name": "Kanichiro",
+	"character": "芹田"
+}, {
+	"id": "225038",
+	"name": "Ayako Yoshitani",
+	"character": "萌绘"
+}, {
+	"id": "550565",
+	"name": "Mitsuhiro Oikawa",
+	"character": "Kamehito Aizawa"
+}, {
+	"id": "1744548",
+	"name": "Anne Nakamura",
+	"character": "Kanna Kuzumi"
+}, {
+	"id": "70124",
+	"name": "Ikki Sawamura",
+	"character": "Rikutaro Kyono"
+}, {
+	"id": "2464871",
+	"name": "Toru Tezuka",
+	"character": "Fumio Eto"
+}]
