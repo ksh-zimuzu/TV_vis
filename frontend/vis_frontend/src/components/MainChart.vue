@@ -25,9 +25,27 @@ export default {
     //this.dataFormat();
     //this.create_chart();
     this.chart.on("timelinechanged", params => {
-      console.log(params);
+      //console.log(params);
       this.$EventBus.$emit("episode-focus", {
         focusIndex: params.currentIndex
+      });
+    });
+    this.chart.on("focusnodeadjacency", params => {
+      if (params.dataIndex != undefined) {
+        //如果鼠标悬浮到角色结点
+        var option = this.chart.getOption();
+        var node = option.series[0].data[params.dataIndex];
+        if (node.category == 0) {
+          //如果是单人的
+          this.$EventBus.$emit("actor-focus", {
+            character: node.name
+          });
+        }
+      }
+    });
+    this.chart.on("unfocusnodeadjacency", () => {
+      this.$EventBus.$emit("actor-focus", {
+        character: ""
       });
     });
     this.$EventBus.$on("episode-focus", this.focus);
