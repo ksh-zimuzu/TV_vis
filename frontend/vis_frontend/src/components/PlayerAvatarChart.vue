@@ -73,12 +73,19 @@ export default {
     this.chart.on("mouseover", params => {
       this.$EventBus.$emit("actor-focus", {
         name: this.players[params.dataIndex].name,
-        character: this.players[params.dataIndex].character
+        character: this.players[params.dataIndex].character,
+        source: this
       });
     });
     this.chart.on("mouseout", () => {
-      this.$EventBus.$emit("actor-focus", { character: "", name: "" });
+      this.$EventBus.$emit("actor-focus", {
+        character: "",
+        name: "",
+        source: this
+      });
     });
+    this.$EventBus.$on("actor-focus", this.focusActor);
+    //this.$EventBus.on("actor-focus")
   },
   computed: {
     maxP: function() {
@@ -162,6 +169,28 @@ export default {
         20 + (25 * (n - this.minP)) / (this.maxP - this.minP),
         1.43
       );
+    },
+    focusActor(msg) {
+      if (msg.source != this) {
+        var character = msg.character;
+        if (typeof character != "string") {
+          //对于多选情况，暂时不理睬
+          return;
+        }
+        var index = this.players.findIndex(t => t.character == msg.character);
+        if (index != -1) {
+          this.chart.dispatchAction({
+            type: "highlight",
+            seriesIndex: 0,
+            dataIndex: index
+          });
+        } else {
+          this.chart.dispatchAction({
+            type: "downplay",
+            seriesIndex: 0
+          });
+        }
+      }
     }
   }
 };

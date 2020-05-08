@@ -65,29 +65,29 @@
         :is-resizable="true"
         :min-w="4"
       >
-        <WorldCloudBox />
+        <WordCloudBox />
       </GridItem>
       <GridItem
-              :i="layout[6].i"
-              :x="layout[6].x"
-              :y="layout[6].y"
-              :w="layout[6].w"
-              :h="layout[6].h"
-              :is-resizable="true"
-              :min-w="4"
+        :i="layout[6].i"
+        :x="layout[6].x"
+        :y="layout[6].y"
+        :w="layout[6].w"
+        :h="layout[6].h"
+        :is-resizable="true"
+        :min-w="4"
       >
         <worldMap />
       </GridItem>
       <GridItem
-              :i="layout[7].i"
-              :x="layout[7].x"
-              :y="layout[7].y"
-              :w="layout[7].w"
-              :h="layout[7].h"
-              :is-resizable="true"
-              :min-w="4"
+        :i="layout[7].i"
+        :x="layout[7].x"
+        :y="layout[7].y"
+        :w="layout[7].w"
+        :h="layout[7].h"
+        :is-resizable="true"
+        :min-w="4"
       >
-        <Liner> </Liner>
+        <Liner></Liner>
       </GridItem>
     </GridLayout>
   </v-app>
@@ -100,9 +100,9 @@ import ActorPlot from "./ActorPlot";
 import PlayerAvatarBox from "./PlayerAvatarBox";
 import SeasonMeta from "./SeasonMeta";
 import MainChartBox from "./MainChartBox";
-import WorldCloudBox from "./WorldCloudBox";
+import WordCloudBox from "./WordCloudBox";
 import worldMap from "./worldMap";
-import Liner from "./Liner"
+import Liner from "./Liner";
 
 export default {
   name: "MainInterface",
@@ -114,7 +114,7 @@ export default {
     GridItem: VueGridLayout.GridItem,
     SeasonMeta,
     MainChartBox,
-    WorldCloudBox,
+    WordCloudBox,
     worldMap,
     Liner
   },
@@ -128,7 +128,7 @@ export default {
         { x: 6, y: 4, w: 8, h: 6, i: "4" },
         { x: 0, y: 6, w: 4, h: 2, i: "5" },
         { x: 0, y: 10, w: 4, h: 2, i: "6" },
-        { x: 0, y: 14, w: 4, h: 2, i: "7"}
+        { x: 0, y: 14, w: 4, h: 2, i: "7" }
       ],
       plot: [
         {

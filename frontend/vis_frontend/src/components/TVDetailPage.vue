@@ -10,7 +10,7 @@
       <PlayerAvatarBox :players="slicedActors" />
     </GridItem>
     <GridItem :i="layout[2].i" :x="layout[2].x" :y="layout[2].y" :w="layout[2].w" :h="layout[2].h">
-      <WorldCloudBox :plot="plot" />
+      <WordCloudBox :plot="plot" />
     </GridItem>
     <GridItem
       :i="layout[3].i"
@@ -35,7 +35,7 @@ import _ from "lodash";
 import ActorPlot from "./ActorPlot"; //剧情
 import SeasonMeta from "./SeasonMeta"; //剧集元信息
 import PlayerAvatarBox from "./PlayerAvatarBox"; //气泡
-import WorldCloudBox from "./WorldCloudBox"; //词云
+import WordCloudBox from "./WordCloudBox"; //词云
 import MainChartBox from "./MainChartBox"; //主视图
 import SimilarTVBox from "./SimilarTVBox"; //柱状图
 
@@ -54,7 +54,7 @@ export default {
     GridItem: VueGridLayout.GridItem,
     ActorPlot,
     MainChartBox,
-    WorldCloudBox,
+    WordCloudBox,
     PlayerAvatarBox,
     SimilarTVBox,
     SeasonMeta
@@ -66,7 +66,7 @@ export default {
       id: 0
     },
     plots: {},
-    CPs: undefined,
+    CPs: {},
     FPs: {},
     word_freq: undefined,
     layout: [
@@ -78,6 +78,7 @@ export default {
       { x: 0, y: 3, w: 2, h: 2, i: "柱状图" }
     ],
     actors: [],
+    roles: undefined,
     plot: undefined,
     heighlightAt: ""
   }),
@@ -86,25 +87,33 @@ export default {
     load_data.meta.then(res => {
       this.meta = res.data;
     });
-    load_data.FPs.then(fps =>
+    load_data.plots.then(plots =>
       Promise.all(
-        fps.map(t =>
+        plots.map(t =>
           t.p.then(res => {
-            this.$set(this.FPs, t.episode, res.data);
+            this.$set(this.plots, t.episode, res.data);
           })
         )
       ).then(() => {
         this.plot = this.plots[1];
       })
     );
-    load_data.plots.then(plots =>
-      plots.map(t =>
-        t.p.then(res => this.$set(this.plots, t.episode, res.data))
-      )
+    load_data.FPs.then(fps =>
+      fps.map(t => t.p.then(res => this.$set(this.FPs, t.episode, res.data)))
     );
+    /*
+    load_data.CPs.then(cps =>
+      cps.map(t => t.p.then(res => this.$set(this.CPs, t.episode, res.data)))
+    );
+    
     load_data.word_freq.then(res => {
       this.word_freq = res.data;
     });
+    */
+    load_data.roles.then(res => {
+      this.roles = res.data;
+    });
+
     load_data.actors.then(res => {
       this.actors = res.data;
     });

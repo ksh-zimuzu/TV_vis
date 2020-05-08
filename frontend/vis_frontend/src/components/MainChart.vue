@@ -38,17 +38,20 @@ export default {
         if (node.category == 0) {
           //如果是单人的
           this.$EventBus.$emit("actor-focus", {
-            character: node.name
+            character: node.name,
+            source: this
+          });
+        } else {
+          this.$EventBus.$emit("actor-focus", {
+            character: node.name.split("-"),
+            source: this
           });
         }
       }
     });
-    this.chart.on("unfocusnodeadjacency", () => {
-      this.$EventBus.$emit("actor-focus", {
-        character: ""
-      });
-    });
+    this.chart.on("unfocusnodeadjacency", this.unFocusNode);
     this.$EventBus.$on("episode-focus", this.focus);
+    this.$EventBus.$on("actor-focus", this.focusRole);
   },
   methods: {
     dataFormat() {
@@ -148,9 +151,40 @@ export default {
       }
       //console.log(msg, this.chart.getOption());
     },
+    focusRole: function(msg) {
+      if (msg.source != this) {
+        var index = this.chart
+          .getOption()
+          .series[0].data.findIndex(t => t.name == msg.character);
+        if (index != -1) {
+          this.chart.dispatchAction({
+            type: "focusNodeAdjacency",
+            seriesIndex: 0,
+            dataIndex: index
+          });
+        } else {
+          /*此处暂时屏蔽unfocusNodeAdjacency的回调，因为该事件是响应外部事件的
+        如果此处不屏蔽事件响应，会导致触发unfocus事件，导致在演员图中存在，但是
+        在主视图中不存在的点，在演员图中无法高亮
+        */
+          this.chart.off("unfocusNodeAdjacency", this.unFocusNode);
+          this.chart.dispatchAction({
+            type: "unfocusNodeAdjacency",
+            seriesIndex: 0
+          });
+          this.chart.on("unfocusNodeAdjacency", this.unFocusNode);
+        }
+      }
+    },
     calSymbolSize(n, min, max) {
       //return 2 * n;
       return Math.pow(2 + (19 * (n - min)) / (max - min), 1.43);
+    },
+    unFocusNode() {
+      this.$EventBus.$emit("actor-focus", {
+        character: "",
+        source: this
+      });
     }
   },
 

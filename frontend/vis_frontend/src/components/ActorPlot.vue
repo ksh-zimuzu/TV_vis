@@ -15,7 +15,7 @@ export default {
       required: true
     },
     highlightRole: {
-      type: String,
+      type: [String, Array],
       required: false,
       default: ""
     },
@@ -27,14 +27,19 @@ export default {
   },
   computed: {
     raw_html: function() {
-      if (this.highlightRole.length > 0) {
-        var re = new RegExp(this.highlightRole, "g");
+      if (this.highlightRole == "") {
+        return this.plot;
+      } else {
+        var highlightRole = this.highlightRole;
+        if (typeof highlightRole == "string") {
+          highlightRole = [highlightRole];
+        }
+        var re = new RegExp(highlightRole.join("|"), "g");
         return this.plot.replace(
           re,
-          `<span class="font-weight-black" style="color:${this.highlightColor}">${this.highlightRole}</span>`
+          match =>
+            `<span class="font-weight-black" style="color:${this.highlightColor}">${match}</span>`
         );
-      } else {
-        return this.plot;
       }
     }
   },

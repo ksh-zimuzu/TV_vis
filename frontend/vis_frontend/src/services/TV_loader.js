@@ -9,11 +9,12 @@ export default {
         var plots = meta.then(res => (this.fetch_plots(tv_name, res.data)));
 
         var FPs = meta.then(res => (this.fetch_fps(tv_name, res.data)));
-
-        var word_freq = this.fetch_word_freq(tv_name);
+        //var CPs = meta.then(res => (this.fetch_cps(tv_name, res.data)))
+        var roles = this.fetch_roles(tv_name);
+        //var word_freq = this.fetch_word_freq(tv_name);
         var actors = this.fetch_actors(tv_name);
         return {
-            meta, FPs, word_freq, actors, plots
+            meta, FPs, roles, actors, plots
         };
     },
     fetch_meta(tv_name) {
@@ -34,6 +35,18 @@ export default {
         var episode_str = String(episode).padStart(2, "0");
         return axios.get(`${baseURL}TVs/${tv_name}/FP_S${season_str}E${episode_str}.json`);
     },
+    fetch_cps(tv_name, meta) {
+        var res = meta.episodes.map((ep) => ({
+            episode: ep,
+            p: this.fetch_cp(tv_name, meta.season, ep)
+        }));
+        return res;
+    },
+    fetch_cp(tv_name, season, episode) {
+        var season_str = String(season).padStart(2, "0");
+        var episode_str = String(episode).padStart(2, "0");
+        return axios.get(`${baseURL}TVs/${tv_name}/CP_S${season_str}E${episode_str}.json`);
+    },
     fetch_actors(tv_name) {
         return axios.get(`${baseURL}TVs/${tv_name}/actor_list.json`);
     },
@@ -48,5 +61,8 @@ export default {
             p: this.fetch_plot(tv_name, meta.season, ep)
         }));
         return res;
+    },
+    fetch_roles(tv_name) {
+        return axios.get(`${baseURL}TVs/${tv_name}/roles.json`);
     }
 }

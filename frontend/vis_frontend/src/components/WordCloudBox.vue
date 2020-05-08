@@ -1,14 +1,14 @@
 <template>
   <smart-widget title="词云">
     <v-skeleton-loader v-if="loading" type="image" height="100%"></v-skeleton-loader>
-    <WorldCloud v-else :word_freq="word_freq" ref="worldcloud" />
+    <WordCloud v-else :word_freq="word_freq" ref="wordcloud" />
   </smart-widget>
 </template>
 
 <script>
 /* eslint-disable */
 import _ from "lodash";
-import WorldCloud from "./WorldCloud";
+import WordCloud from "./WordCloud";
 
 import "../utils/require-jieba-js";
 
@@ -16,7 +16,7 @@ import stopwords from "raw-loader!../assets/edited_baidu_stopwords.txt";
 
 export default {
   components: {
-    WorldCloud
+    WordCloud
   },
   props: {
     plot: {
@@ -38,11 +38,12 @@ export default {
   methods: {
     resizeEvent: function() {
       this.resizeFunc();
+      console.log("resize!");
     }
   },
   mounted: function() {
     //防抖动，降低重绘开销，500ms
-    this.resizeFunc = _.debounce(this.$refs.worldcloud.chart.resize, 500);
+    this.resizeFunc = _.debounce(this.$refs.wordcloud.chart.resize, 500);
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
     this.$parent.$on("container-resized", this.resizeEvent);

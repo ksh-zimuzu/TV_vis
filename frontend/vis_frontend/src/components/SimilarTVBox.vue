@@ -1,5 +1,5 @@
 <template>
-  <smart-widget title="类似剧集">
+  <smart-widget title="类似剧集热度对比">
     <SimilarTVBar ref="tvbar" :current_tv="current_tv" :similar_tvs="similar_tvs" />
   </smart-widget>
 </template>
@@ -45,6 +45,11 @@ export default {
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
     this.$parent.$on("container-resized", this.resizeEvent);
+  },
+  methods: {
+    resizeEvent: function() {
+      this.resizeFunc();
+    }
   }
 };
 </script>
