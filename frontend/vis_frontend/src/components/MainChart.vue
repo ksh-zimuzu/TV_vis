@@ -247,7 +247,7 @@ export default {
                   },
                   lineStyle: {
                     color: "target",
-                    //width:3,
+                    //width: 0,
                     curveness: 0.3
                   },
                   focusNodeAdjacency: true
