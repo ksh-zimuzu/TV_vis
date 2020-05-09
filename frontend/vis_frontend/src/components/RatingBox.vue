@@ -1,5 +1,5 @@
 <template>
-  <smart-widget simple>
+  <smart-widget :simple="simple" title="各方评价">
     <RatingBar :ratings="ratings" ref="ratingbar" />
   </smart-widget>
 </template>
@@ -16,6 +16,9 @@ export default {
     ratings: {
       type: Object,
       required: true
+    },
+    simple: {
+      default: true
     }
   },
   mounted: function() {

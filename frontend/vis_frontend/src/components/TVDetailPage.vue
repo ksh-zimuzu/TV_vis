@@ -31,7 +31,7 @@
       <SimilarTVBox :current_tv_id="meta.tv_id" />
     </GridItem>
     <GridItem :i="layout[6].i" :x="layout[6].x" :y="layout[6].y" :w="layout[6].w" :h="layout[6].h">
-      <RatingBox :ratings="ratings" />
+      <RatingBox :ratings="ratings" :simple="layout[6].h<2" />
     </GridItem>
     <GridItem
       :i="layout[7].i"
