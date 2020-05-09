@@ -7,14 +7,16 @@ export default {
     fetch_all(tv_name) {
         var meta = this.fetch_meta(tv_name);
         var plots = meta.then(res => (this.fetch_plots(tv_name, res.data)));
-
         var FPs = meta.then(res => (this.fetch_fps(tv_name, res.data)));
+        //var imdbId = meta.then(res => (tv_meta.fetch_external_id(res.data.tv_id)));
         //var CPs = meta.then(res => (this.fetch_cps(tv_name, res.data)))
         var roles = this.fetch_roles(tv_name);
         //var word_freq = this.fetch_word_freq(tv_name);
         var actors = this.fetch_actors(tv_name);
+        var ratings = this.fetch_rating(tv_name);
+
         return {
-            meta, FPs, roles, actors, plots
+            meta, FPs, roles, actors, plots, ratings
         };
     },
     fetch_meta(tv_name) {
@@ -64,5 +66,8 @@ export default {
     },
     fetch_roles(tv_name) {
         return axios.get(`${baseURL}TVs/${tv_name}/roles.json`);
+    },
+    fetch_rating(tv_name) {
+        return axios.get(`${baseURL}TVs/${tv_name}/ratings.json`);
     }
 }

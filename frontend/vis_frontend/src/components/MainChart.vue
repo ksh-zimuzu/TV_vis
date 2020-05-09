@@ -30,25 +30,7 @@ export default {
         focusIndex: params.currentIndex
       });
     });
-    this.chart.on("focusnodeadjacency", params => {
-      if (params.dataIndex != undefined) {
-        //如果鼠标悬浮到角色结点
-        var option = this.chart.getOption();
-        var node = option.series[0].data[params.dataIndex];
-        if (node.category == 0) {
-          //如果是单人的
-          this.$EventBus.$emit("actor-focus", {
-            character: node.name,
-            source: this
-          });
-        } else {
-          this.$EventBus.$emit("actor-focus", {
-            character: node.name.split("-"),
-            source: this
-          });
-        }
-      }
-    });
+    this.chart.on("focusnodeadjacency", this.focusNode);
     this.chart.on("unfocusnodeadjacency", this.unFocusNode);
     this.$EventBus.$on("episode-focus", this.focus);
     this.$EventBus.$on("actor-focus", this.focusRole);
@@ -156,6 +138,12 @@ export default {
     },
     focusRole: function(msg) {
       if (msg.source != this) {
+        /*此处暂时屏蔽unfocusNodeAdjacency的回调，因为该事件是响应外部事件的
+        如果此处不屏蔽事件响应，会导致触发unfocus事件，导致在演员图中存在，但是
+        在主视图中不存在的点，在演员图中无法高亮
+        */
+        this.chart.off("unfocusNodeAdjacency", this.unFocusNode);
+        this.chart.off("focusNodeAdjacency", this.focusNode);
         var index = this.chart
           .getOption()
           .series[0].data.findIndex(t => t.name == msg.character);
@@ -166,17 +154,13 @@ export default {
             dataIndex: index
           });
         } else {
-          /*此处暂时屏蔽unfocusNodeAdjacency的回调，因为该事件是响应外部事件的
-        如果此处不屏蔽事件响应，会导致触发unfocus事件，导致在演员图中存在，但是
-        在主视图中不存在的点，在演员图中无法高亮
-        */
-          this.chart.off("unfocusNodeAdjacency", this.unFocusNode);
           this.chart.dispatchAction({
             type: "unfocusNodeAdjacency",
             seriesIndex: 0
           });
-          this.chart.on("unfocusNodeAdjacency", this.unFocusNode);
         }
+        this.chart.on("unfocusNodeAdjacency", this.unFocusNode);
+        this.chart.on("focusNodeAdjacency", this.focusNode);
       }
     },
     calSymbolSize(n, min, max) {
@@ -188,6 +172,25 @@ export default {
         character: "",
         source: this
       });
+    },
+    focusNode: function(params) {
+      if (params.dataIndex != undefined) {
+        //如果鼠标悬浮到角色结点
+        var option = this.chart.getOption();
+        var node = option.series[0].data[params.dataIndex];
+        if (node.category == 0) {
+          //如果是单人的
+          this.$EventBus.$emit("actor-focus", {
+            character: node.name,
+            source: this
+          });
+        } else {
+          this.$EventBus.$emit("actor-focus", {
+            character: node.name.split("-"),
+            source: this
+          });
+        }
+      }
     }
   },
 

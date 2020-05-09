@@ -1,7 +1,6 @@
 <template>
-  <smart-widget title="词云">
-    <v-skeleton-loader v-if="loading" type="image" height="100%"></v-skeleton-loader>
-    <WordCloud v-else :word_freq="word_freq" ref="wordcloud" />
+  <smart-widget title="词云" :loading="loading">
+    <WordCloud :word_freq="word_freq" ref="wordcloud" />
   </smart-widget>
 </template>
 
