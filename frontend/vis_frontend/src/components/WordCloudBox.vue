@@ -21,6 +21,9 @@ export default {
   props: {
     plot: {
       type: String
+    },
+    userDict: {
+      type: Array
     }
   },
 
@@ -39,19 +42,13 @@ export default {
     resizeEvent: function() {
       this.resizeFunc();
       console.log("resize!");
-    }
-  },
-  mounted: function() {
-    //防抖动，降低重绘开销，500ms
-    this.resizeFunc = _.debounce(this.$refs.wordcloud.chart.resize, 500);
-    this.resizeFunc(); //绘制完成后修改一下尺寸
-    this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
-    this.$parent.$on("container-resized", this.resizeEvent);
-  },
-  watch: {
-    plot: function() {
+    },
+    refreshWordFreq: function() {
+      if (this.plot == undefined) {
+        return;
+      }
       this.loading = true;
-      call_jieba_cut(this.plot, res => {
+      call_jieba_cut(this.plot, this.userDict, res => {
         res = _.filter(
           res,
           word =>
@@ -63,6 +60,21 @@ export default {
         this.word_freq = count;
         this.loading = false;
       });
+    }
+  },
+  mounted: function() {
+    //防抖动，降低重绘开销，500ms
+    this.resizeFunc = _.debounce(this.$refs.wordcloud.chart.resize, 500);
+    this.resizeFunc(); //绘制完成后修改一下尺寸
+    this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+    this.$parent.$on("container-resized", this.resizeEvent);
+  },
+  watch: {
+    plot: function() {
+      this.refreshWordFreq();
+    },
+    userDict: function() {
+      this.refreshWordFreq();
     }
   }
 };

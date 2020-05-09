@@ -10,7 +10,7 @@
       <PlayerAvatarBox :players="slicedActors" />
     </GridItem>
     <GridItem :i="layout[2].i" :x="layout[2].x" :y="layout[2].y" :w="layout[2].w" :h="layout[2].h">
-      <WordCloudBox :plot="plot" />
+      <WordCloudBox :plot="plot" :userDict="userDict" />
     </GridItem>
     <GridItem
       :i="layout[3].i"
@@ -130,6 +130,14 @@ export default {
         content: actor.character,
         show: actor.character == this.heighlightAt
       }));
+    },
+    roleNames: function() {
+      return _.keys(this.roles)
+        .map(t => t.trim())
+        .concat(_.flatten(_.values(this.roles)).map(t => t.trim()));
+    },
+    userDict: function() {
+      return this.roleNames.map(t => [t, 999999, "nr"]);
     }
   },
   methods: {
