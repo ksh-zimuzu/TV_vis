@@ -114,7 +114,10 @@ export default {
                   target: String(
                     reverseNodes[ndata[j][k][0].join().replace(regularexp, "-")]
                   ),
-                  value: ndata[j][k][1]
+                  value: ndata[j][k][1],
+                  lineStyle: {
+                    width: ndata[j][k][1]
+                  }
                 });
               }
             }
@@ -178,7 +181,7 @@ export default {
     },
     calSymbolSize(n, min, max) {
       //return 2 * n;
-      return Math.pow(2 + (19 * (n - min)) / (max - min), 1.43);
+      return Math.pow(4.12 + (501 * (n - min)) / (max - min), 0.71);
     },
     unFocusNode() {
       this.$EventBus.$emit("actor-focus", {

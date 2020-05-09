@@ -166,8 +166,8 @@ export default {
     },
     calSymbolSize(n) {
       return Math.pow(
-        20 + (25 * (n - this.minP)) / (this.maxP - this.minP),
-        1.43
+        402 + (1635 * (n - this.minP)) / (this.maxP - this.minP),
+        0.71
       );
     },
     focusActor(msg) {
