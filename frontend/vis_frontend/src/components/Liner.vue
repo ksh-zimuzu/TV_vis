@@ -7,16 +7,13 @@
 <script>
 import echarts from 'echarts' // 引入组件
 import '../../node_modules/echarts/lib/chart/line'
+import $ from 'jquery'
 export default {
   name: 'Liner',
   data () {
     return {
       chart: null,
-      nameofmovie: ['春夜', '庆余年'],
-      rating: [
-        [40, 20, 35, 60, 55, 10, 20, 48, 13, 34, 45, 56],
-        [20, 25, 35, 60, 70, 50, 69, 59, 47, 32, 35, 46]
-      ]
+      place: 'China'
     }
   },
   props: {
@@ -28,24 +25,31 @@ export default {
   },
   
   methods: {
-    initChart(){
+  initChart(){
     this.chart = echarts.init(this.$refs.myEchart)
     window.onresize = echarts.init(this.$refs.myEchart).resize
     var se = []
-    this.nameofmovie.forEach((item, index) => {
-      var seri = {
-        name: '',
-        type: 'line',
-        data: []}
-      seri.name = item
-      seri.data = this.rating[index]
-      se[index] = seri
-    })
+    var nameo = []
+    $.ajax('../data/'+this.place+'.json').then((res) =>{
+      alert(res.nameofmovie)
+      console.log(res)
+      res.nameofmovie.forEach((item, index) => {
+        nameo[index] = res.nameofmovie
+        var seri = {
+          name: '',
+          type: 'line',
+          data: []}
+        seri.name = item
+        seri.data = res.rating[index]
+        se[index] = seri
+      })
+      })
+    // this.chart.showLoading()
     // 绘制图表
     var option = {
       // 标题
       title: {
-        text: '电视剧收视率折线图'
+        text: 'tmdb部分电视剧收视率折线图'
       },
       tooltip: {
         trigger: 'axis',
@@ -94,24 +98,32 @@ export default {
       },
       // 图例-每一条数据的名字
       legend: {
-        data: this.nameofmovie
+        data: nameo
       },
       // x轴
       xAxis: {
-        data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+        type: 'time',
+        name: '时间',
+        minInterval: 1,
+        min: (new Date('2019-11-20')),
+        max: (new Date('2020-04-26'))
       },
       // y轴没有显式设置，根据值自动生成y轴
-      yAxis: {},
+      yAxis: {
+        name: '收视率'
+      },
       // 数据-data是最终要显示的数据
       series: se
     }
+    this.chart.hideLoading()
     this.chart.setOption(option)
     this.chart.on('click', (param) => {
       var name = param.seriesName
       window.location.href = '/HelloWorld'+name
     })
+    
   }
-}
+  }
 }
 </script>
 
