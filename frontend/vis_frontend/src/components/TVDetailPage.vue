@@ -4,6 +4,8 @@
     :col-num="12"
     @layout-updated="saveLayout"
     style="margin-bottom:50px"
+    :is-draggable="!dragLock"
+    :is-resizable="!dragLock"
   >
     <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
       <ActorPlot :plot="plot" :highlightRole="heighlightAt" />
@@ -37,19 +39,23 @@
     <GridItem :i="layout[6].i" :x="layout[6].x" :y="layout[6].y" :w="layout[6].w" :h="layout[6].h">
       <RatingBox :ratings="ratings" :simple="layout[6].h<2" />
     </GridItem>
-    <GridItem
-      :i="layout[7].i"
-      :x="layout[7].x"
-      :y="layout[7].y"
-      :w="layout[7].w"
-      :h="layout[7].h"
-      :is-resizable="false"
-    >
+    <GridItem :i="layout[7].i" :x="layout[7].x" :y="layout[7].y" :w="layout[7].w" :h="layout[7].h">
       <smart-widget simple>
-        <v-btn fab color="error" x-large @click="resetLayout">
-          <v-icon>{{mdiRefresh}}</v-icon>
-        </v-btn>
-        <div class="subtitle-1 text-center pt-3">重置布局</div>
+        <div class="d-flex justify-center">
+          <div class="mx-2">
+            <v-btn fab color="error" x-large @click="resetLayout">
+              <v-icon>{{mdiRefresh}}</v-icon>
+            </v-btn>
+            <div class="subtitle-1 text-center pt-3">重置布局</div>
+          </div>
+          <div class="mx-2">
+            <v-btn fab color="primary" x-large @click="dragLock=!dragLock">
+              <v-icon v-if="dragLock">{{mdiLock}}</v-icon>
+              <v-icon v-else>{{mdiLockOpen}}</v-icon>
+            </v-btn>
+            <div class="subtitle-1 text-center pt-3">锁定布局</div>
+          </div>
+        </div>
       </smart-widget>
     </GridItem>
   </GridLayout>
@@ -69,7 +75,7 @@ import RatingBox from "./RatingBox";
 
 import TV_loader from "../services/TV_loader";
 
-import { mdiRefresh } from "@mdi/js";
+import { mdiRefresh, mdiLock, mdiLockOpen } from "@mdi/js";
 
 export default {
   name: "TVDetailPage",
@@ -114,10 +120,13 @@ export default {
       { x: 9, y: 3, w: 3, h: 2, i: "演员高亮" },
       { x: 0, y: 3, w: 2, h: 2, i: "柱状图" },
       { x: 0, y: 5, w: 2, h: 1, i: "评价玉珏图" },
-      { x: 3, y: 5, w: 1, h: 1, i: "重置按钮" }
+      { x: 3, y: 5, w: 2, h: 1, i: "重置按钮" }
     ],
     mdiRefresh,
-    mainChartLoading: true
+    mdiLock,
+    mdiLockOpen,
+    mainChartLoading: true,
+    dragLock: false
   }),
   created: function() {
     var layout = localStorage.getItem("layout");
