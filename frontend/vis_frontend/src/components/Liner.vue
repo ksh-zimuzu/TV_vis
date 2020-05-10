@@ -24,7 +24,7 @@ export default {
       se: [],
       nameo: [],
       da: [],
-      country: 'Korea'
+      country: 'China'
     }
   },
   mounted () {
