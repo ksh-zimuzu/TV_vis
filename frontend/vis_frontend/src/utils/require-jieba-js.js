@@ -138,7 +138,7 @@ get_host = function () {
     }
 
     if (_host === undefined) {
-        _host = "//pulipulichen.github.io/jieba-js/";
+        _host = "//ksh-zimuzu.github.io/jieba-js/";
     }
     else {
         _host = _host.substr(0, _host.lastIndexOf("require-jieba-js.js"));
