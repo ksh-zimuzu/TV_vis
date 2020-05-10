@@ -1,6 +1,6 @@
 <template>
     <div class="echarts">
-    <span>{{countryName}}</span>
+    //<span>{{countryName}}</span>
     <div :style="{height:height,width:width}" ref="myEchart"></div>
   </div>
 </template>
@@ -229,7 +229,7 @@ export default {
       this.chart.setOption(option)
         this.chart.on('click', (params) => {
             console.log(params)
-            window.location.href = '/#/tv/' + params.seriesName
+            this.$router.push('/tv/' + params.seriesName)
         })
     }
   }
