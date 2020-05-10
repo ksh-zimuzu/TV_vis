@@ -2,12 +2,13 @@ import axios from "axios";
 
 var API_KEY = process.env.VUE_APP_TMDBKEY;
 
+var ENABLE_CLOUDFLARE = true;
 
 export default {
     buildRequests() {
         var requests = axios.create({
             //预先配置API端点
-            baseURL: "https://api.themoviedb.org/3/",
+            baseURL: ENABLE_CLOUDFLARE ? "https://tmdbapi.kxxh.workers.dev/3/" : "https://api.themoviedb.org/3/",
         });
         requests.interceptors.request.use(
             function (config) {
