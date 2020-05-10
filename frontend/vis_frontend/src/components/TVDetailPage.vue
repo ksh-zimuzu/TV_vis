@@ -68,7 +68,8 @@
               <v-icon v-if="dragLock">{{mdiLock}}</v-icon>
               <v-icon v-else>{{mdiLockOpenVariant}}</v-icon>
             </v-btn>
-            <div class="subtitle-1 text-center pt-3">锁定布局</div>
+            <div v-if="!dragLock" class="subtitle-1 text-center pt-3">锁定布局</div>
+            <div v-else class="subtitle-1 text-center pt-3">解锁布局</div>
           </div>
         </div>
       </smart-widget>
