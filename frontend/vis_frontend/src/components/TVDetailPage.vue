@@ -74,6 +74,16 @@
         </div>
       </smart-widget>
     </GridItem>
+    <GridItem
+      :i="layout[8].i"
+      :x="layout[8].x"
+      :y="layout[8].y"
+      :w="layout[8].w"
+      :h="layout[8].h"
+      :minW="2"
+    >
+      <PopularityBox :loading="popularityLoading" :popularity="popularity" :simple="layout[8].h<2" />
+    </GridItem>
   </GridLayout>
 </template>
 
@@ -88,6 +98,7 @@ import WordCloudBox from "./WordCloudBox"; //词云
 import MainChartBox from "./MainChartBox"; //主视图
 import SimilarTVBox from "./SimilarTVBox"; //柱状图
 import RatingBox from "./RatingBox";
+import PopularityBox from "./PopularityBox";
 
 import TV_loader from "../services/TV_loader";
 
@@ -110,7 +121,8 @@ export default {
     PlayerAvatarBox,
     SimilarTVBox,
     SeasonMeta,
-    RatingBox
+    RatingBox,
+    PopularityBox
   },
   data: () => ({
     meta: {
@@ -136,13 +148,16 @@ export default {
       { x: 9, y: 3, w: 3, h: 2, i: "演员高亮" },
       { x: 0, y: 3, w: 2, h: 2, i: "柱状图" },
       { x: 0, y: 5, w: 2, h: 1, i: "评价玉珏图" },
-      { x: 3, y: 5, w: 2, h: 1, i: "重置按钮" }
+      { x: 2, y: 5, w: 2, h: 1, i: "重置按钮" },
+      { x: 4, y: 5, w: 3, h: 1, i: "热度变化曲线" }
     ],
     mdiRefresh,
     mdiLock,
     mdiLockOpenVariant,
     mainChartLoading: true,
-    dragLock: false
+    dragLock: false,
+    popularity: [],
+    popularityLoading: true
   }),
   created: function() {
     var layout = localStorage.getItem("layout");
@@ -215,6 +230,9 @@ export default {
       );
     });
 
+    load_data.popularity
+      .then(res => (this.popularity = res.data))
+      .then(() => (this.popularityLoading = false));
     this.$EventBus.$on("episode-focus", this.focus);
     this.$EventBus.$on("actor-focus", this.hover);
   },

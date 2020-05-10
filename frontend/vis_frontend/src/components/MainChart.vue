@@ -24,10 +24,7 @@ export default {
   },
   mounted: function() {
     this.chart = echarts.init(this.$el);
-    //this.dataFormat();
-    //this.create_chart();
     this.chart.on("timelinechanged", params => {
-      //console.log(params);
       this.$EventBus.$emit("episode-focus", {
         focusIndex: params.currentIndex
       });
@@ -119,6 +116,7 @@ export default {
       }
       this.Links = Links;
       this.Nodes = Nodes;
+      this.$EventBus.$emit("nodes-ready", this.Nodes);
       this.ready = true;
     },
 

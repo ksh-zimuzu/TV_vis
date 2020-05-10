@@ -43,7 +43,6 @@ export default {
   methods: {
     resizeEvent: function() {
       this.resizeFunc();
-      console.log("resize!");
     },
     refreshWordFreq: function() {
       if (this.plot == undefined) {
@@ -67,7 +66,6 @@ export default {
   mounted: function() {
     //防抖动，降低重绘开销，500ms
     this.resizeFunc = _.debounce(this.$refs.wordcloud.chart.resize, 500);
-    //this.resizeFunc = this.$refs.wordcloud.chart.resize;
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resized", this.resizeEvent); //接收外层resize事件
     this.$parent.$on("container-resized", this.resizeEvent);

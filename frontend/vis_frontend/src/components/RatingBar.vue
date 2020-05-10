@@ -42,6 +42,7 @@ export default {
         },
         angleAxis: {
           max: 100,
+          min: -0.01,
           axisTick: {
             show: false
           },
