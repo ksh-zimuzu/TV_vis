@@ -1,6 +1,6 @@
 <template>
-  <smart-widget title="剧情人物关系变化图">
-    <MainChart v-bind:sdata="SankeyData" :edata="EpisodeData" ref="main_chart" />
+  <smart-widget title="剧情人物关系变化图" :loading="loading">
+    <MainChart v-bind:sdata="SankeyData" :edata="EpisodeData" ref="main_chart" :loading="loading" />
     <!--<Sankey ref="sankey"/>-->
   </smart-widget>
 </template>
@@ -18,6 +18,9 @@ export default {
     SankeyData: {
       type: Object,
       required: true
+    },
+    loading: {
+      default: true
     }
   },
   data: function() {
@@ -61,9 +64,11 @@ export default {
   },
   watch: {
     SankeyData: function() {
-      this.resizeFunc();
-      this.$refs.main_chart.dataFormat();
-      this.$refs.main_chart.create_chart();
+      if (!this.loading) {
+        this.resizeFunc();
+        this.$refs.main_chart.dataFormat();
+        this.$refs.main_chart.create_chart();
+      }
     }
   }
 };

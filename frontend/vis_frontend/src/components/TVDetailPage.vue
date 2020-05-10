@@ -25,7 +25,11 @@
       :h="layout[3].h"
       dragAllowFrom=".widget-header"
     >
-      <MainChartBox :EpisodeData="Math.max(...meta.episodes)" :SankeyData="FPs" />
+      <MainChartBox
+        :EpisodeData="Math.max(...meta.episodes)"
+        :SankeyData="FPs"
+        :loading="mainChartLoading"
+      />
     </GridItem>
     <GridItem :i="layout[5].i" :x="layout[5].x" :y="layout[5].y" :w="layout[5].w" :h="layout[5].h">
       <SimilarTVBox :current_tv_id="meta.tv_id" />
@@ -90,7 +94,7 @@ export default {
     meta: {
       season: 1,
       episodes: [0],
-      id: 0
+      tv_id: 0
     },
     plots: {},
     CPs: {},
@@ -99,7 +103,7 @@ export default {
     layout: undefined,
     actors: [],
     roles: undefined,
-    plot: undefined,
+    plot: "",
     heighlightAt: "",
     ratings: {},
     defaultLayout: [
@@ -112,7 +116,8 @@ export default {
       { x: 0, y: 5, w: 2, h: 1, i: "评价玉珏图" },
       { x: 3, y: 5, w: 1, h: 1, i: "重置按钮" }
     ],
-    mdiRefresh
+    mdiRefresh,
+    mainChartLoading: true
   }),
   created: function() {
     var layout = localStorage.getItem("layout");
@@ -146,7 +151,9 @@ export default {
     );
     load_data.FPs.then(fps =>
       fps.map(t => t.p.then(res => this.$set(this.FPs, t.episode, res.data)))
-    );
+    ).then(ps => {
+      Promise.all(ps).then(() => (this.mainChartLoading = false));
+    });
     /*
     load_data.CPs.then(cps =>
       cps.map(t => t.p.then(res => this.$set(this.CPs, t.episode, res.data)))
