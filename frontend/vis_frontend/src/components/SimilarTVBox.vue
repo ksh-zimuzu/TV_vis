@@ -1,5 +1,5 @@
 <template>
-  <smart-widget title="类似剧集热度对比" :loading="loading">
+  <smart-widget title="类似剧集热度对比" :loading="loading" :simple="simple">
     <SimilarTVBar ref="tvbar" :current_tv="current_tv" :similar_tvs="similar_tvs" />
   </smart-widget>
 </template>
@@ -24,6 +24,9 @@ export default {
   props: {
     current_tv_id: {
       required: true
+    },
+    simple: {
+      type: Boolean
     }
   },
   watch: {
@@ -48,7 +51,7 @@ export default {
     //防抖动，降低重绘开销，500ms
     this.resizeFunc = _.debounce(this.$refs.tvbar.chart.resize, 500);
     this.resizeFunc(); //绘制完成后修改一下尺寸
-    this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+    this.$parent.$on("resized", this.resizeEvent); //接收外层resize事件
     this.$parent.$on("container-resized", this.resizeEvent);
   },
   methods: {

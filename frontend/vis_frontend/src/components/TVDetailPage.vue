@@ -13,11 +13,19 @@
     <GridItem :i="layout[0].i" :x="layout[0].x" :y="layout[0].y" :w="layout[0].w" :h="layout[0].h">
       <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
     </GridItem>
-    <GridItem :i="layout[1].i" :x="layout[1].x" :y="layout[1].y" :w="layout[1].w" :h="layout[1].h">
+    <GridItem
+      :i="layout[1].i"
+      :x="layout[1].x"
+      :y="layout[1].y"
+      :w="layout[1].w"
+      :h="layout[1].h"
+      :minW="5"
+      :minH="2"
+    >
       <PlayerAvatarBox :players="slicedActors" />
     </GridItem>
     <GridItem :i="layout[2].i" :x="layout[2].x" :y="layout[2].y" :w="layout[2].w" :h="layout[2].h">
-      <WordCloudBox :plot="plot" :userDict="userDict" />
+      <WordCloudBox :plot="plot" :userDict="userDict" :simple="layout[2].h<2" />
     </GridItem>
     <GridItem
       :i="layout[3].i"
@@ -34,12 +42,19 @@
       />
     </GridItem>
     <GridItem :i="layout[5].i" :x="layout[5].x" :y="layout[5].y" :w="layout[5].w" :h="layout[5].h">
-      <SimilarTVBox :current_tv_id="meta.tv_id" />
+      <SimilarTVBox :current_tv_id="meta.tv_id" :simple="layout[5].h<2" />
     </GridItem>
     <GridItem :i="layout[6].i" :x="layout[6].x" :y="layout[6].y" :w="layout[6].w" :h="layout[6].h">
       <RatingBox :ratings="ratings" :simple="layout[6].h<2" />
     </GridItem>
-    <GridItem :i="layout[7].i" :x="layout[7].x" :y="layout[7].y" :w="layout[7].w" :h="layout[7].h">
+    <GridItem
+      :i="layout[7].i"
+      :x="layout[7].x"
+      :y="layout[7].y"
+      :w="layout[7].w"
+      :h="layout[7].h"
+      :minW="2"
+    >
       <smart-widget simple>
         <div class="d-flex justify-center">
           <div class="mx-2">
@@ -51,7 +66,7 @@
           <div class="mx-2">
             <v-btn fab color="primary" x-large @click="dragLock=!dragLock">
               <v-icon v-if="dragLock">{{mdiLock}}</v-icon>
-              <v-icon v-else>{{mdiLockOpen}}</v-icon>
+              <v-icon v-else>{{mdiLockOpenVariant}}</v-icon>
             </v-btn>
             <div class="subtitle-1 text-center pt-3">锁定布局</div>
           </div>
@@ -75,7 +90,7 @@ import RatingBox from "./RatingBox";
 
 import TV_loader from "../services/TV_loader";
 
-import { mdiRefresh, mdiLock, mdiLockOpen } from "@mdi/js";
+import { mdiRefresh, mdiLock, mdiLockOpenVariant } from "@mdi/js";
 
 export default {
   name: "TVDetailPage",
@@ -124,7 +139,7 @@ export default {
     ],
     mdiRefresh,
     mdiLock,
-    mdiLockOpen,
+    mdiLockOpenVariant,
     mainChartLoading: true,
     dragLock: false
   }),

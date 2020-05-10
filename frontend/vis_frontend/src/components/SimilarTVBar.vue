@@ -54,7 +54,8 @@ export default {
         ],
         tooltip: {
           show: true,
-          position: "inside"
+          position: "inside",
+          trigger: "axis"
         },
         grid: {
           left: "5%",

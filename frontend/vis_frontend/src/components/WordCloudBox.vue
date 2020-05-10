@@ -1,5 +1,5 @@
 <template>
-  <smart-widget title="词云" :loading="loading">
+  <smart-widget title="词云" :loading="loading" :simple="simple">
     <WordCloud :word_freq="word_freq" ref="wordcloud" />
   </smart-widget>
 </template>
@@ -23,6 +23,9 @@ export default {
     },
     userDict: {
       type: Array
+    },
+    simple: {
+      type: Boolean
     }
   },
 
@@ -64,8 +67,9 @@ export default {
   mounted: function() {
     //防抖动，降低重绘开销，500ms
     this.resizeFunc = _.debounce(this.$refs.wordcloud.chart.resize, 500);
+    //this.resizeFunc = this.$refs.wordcloud.chart.resize;
     this.resizeFunc(); //绘制完成后修改一下尺寸
-    this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+    this.$parent.$on("resized", this.resizeEvent); //接收外层resize事件
     this.$parent.$on("container-resized", this.resizeEvent);
   },
   watch: {
