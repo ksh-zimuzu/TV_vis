@@ -1,5 +1,6 @@
 <template>
     <div class="echarts">
+    <span>{{countryName}}</span>
     <div :style="{height:height,width:width}" ref="myEchart"></div>
   </div>
 </template>
@@ -16,7 +17,11 @@ export default {
   name: 'Liner',
   props: {
     width: { type: String, default: '1000px' },
-    height: {type: String, default: '500px'}
+    height: {type: String, default: '500px'},
+    countryName: {
+        type: String,
+        default: 'China'
+    }
   },
   data () {
     return {
@@ -24,20 +29,26 @@ export default {
       se: [],
       nameo: [],
       da: [],
-      country: 'China'
+      currentCountry: this.countryName,
     }
   },
   mounted () {
     this.initChart()
-    this.change(this.country)
+    this.change(this.countryName)
   },
   watch: {
-    country: {
-      handler (newVal) {
-        console.log(newVal)
-        this.change(this.country)
-      }
+    countryName(val){
+      console.log(val + '1')
+      this.currentCountry = val
+      this.change(this.currentCountry)
     }
+    /*,
+    other: {
+        handler (newVal) {
+          console.log(newVal + '2')
+          this.change(this.countryName)
+      }
+    }*/
   },
   methods: {
     initChart () {
@@ -47,7 +58,7 @@ export default {
       var option = {
       // 标题
         title: {
-          text: 'tmdb部分电视剧收视率折线图'
+          text: 'tmdb部分电视剧热度折线图'
         },
         tooltip: {
           trigger: 'axis',
@@ -114,12 +125,15 @@ export default {
       this.chart.setOption(option)
     },
     change (country) {
-      var coun = {}
+      this.nameo = []
+      this.se = []
+      this.da = []
+      var coun
       if (country === 'China') {
         coun = China
-      } else if (country === 'America') {
+      } else if (country === 'United States') {
         coun = America
-      } else if (country === 'English') {
+      } else if (country === 'United Kingdom') {
         coun = English
       } else if (country === 'Japan') {
         coun = Japan
@@ -127,7 +141,6 @@ export default {
         coun = Korea
       }
       var beginDt = new Date('2019-11-20')
-      console.log(coun)
       var na = coun.nameofmovie
       var rat = coun.rating
       na.forEach((item, index) => {
@@ -148,7 +161,7 @@ export default {
       var option = {
       // 标题
         title: {
-          text: 'tmdb部分电视剧收视率折线图'
+          text: 'tmdb部分电视剧热度折线图'
         },
         tooltip: {
           trigger: 'axis',
@@ -198,7 +211,7 @@ export default {
         // 图例-每一条数据的名字
         legend: {
           show: false,
-          data: this.nameofmovie
+          data: this.nameo
         },
         // x轴
         xAxis: {
@@ -207,17 +220,17 @@ export default {
         },
         // y轴没有显式设置，根据值自动生成y轴
         yAxis: {
-          name: '收视率'
+          name: '热度'
         },
         // 数据-data是最终要显示的数据
-        series: this.se
+        series: this.se,
       }
+      this.chart.clear()
       this.chart.setOption(option)
-      this.chart.on('click', (param) => {
-        console.log(param)
-      // var name = param.name
-        window.location.href = '/HelloWorld'
-      })
+        this.chart.on('click', (params) => {
+            console.log(params)
+            window.location.href = '/#/tv/' + params.seriesName
+        })
     }
   }
 

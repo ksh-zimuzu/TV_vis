@@ -7,7 +7,6 @@
 <script>
     import echarts from "echarts" //引入组件
     import '../../node_modules/echarts/map/js/world.js'    //引入组件
-
     export default {
       name: "worldMap",
       props: {
@@ -153,20 +152,20 @@
         };
       },
       mounted() {
-        this.initChart();
+        this.initChart()
+        this.getCountry()
       },
       methods: {
         initChart() {
           this.chart = echarts.init(this.$refs.myEchart);
           window.onresize = echarts.init(this.$refs.myEchart).resize;
           // 把配置和数据放这里
-          this.chart.setOption({
+          var option = {
             //b8dfe6
             backgroundColor: "#B8DFE6",
             title: {    //地图显示标题
               text: 'TMDB：全球剧集数量',
               subtext: 'Number of global TV series',
-              //sublink: 'http://www.baidu.com',
               top: "30px",
               left: 'center',
               textStyle: {color: '#fff'}
@@ -199,7 +198,6 @@
               realtime: false,
               calculable : true,
               color: ['#0C4E00', '#5C8100', '#A0B700', '#D2CF00', '#E6E4A6', '#E5E2E0']
-              //color: ['orangered','yellow','lightskyblue']
             },
             tooltip: {  //提示框组件
               trigger: 'item',
@@ -422,11 +420,36 @@
                 }
               }
             }],
+          }
+          this.chart.setOption(option);
+        },
+        getCountry(){
+          this.chart.on('click', (params) => {
+            console.log(params.name);
+            switch (params.name) {
+              case '中国':
+                this.$emit('getCountry', 'China')
+                break;
+              case '美国':
+                this.$emit('getCountry', 'United States')
+                break;
+              case '英国':
+                this.$emit('getCountry', 'United Kingdom')
+                break;
+              case '日本':
+                this.$emit('getCountry', 'Japan')
+                break;
+              case '韩国':
+                this.$emit('getCountry', 'Korea')
+                break;
+            }
           });
         }
       }
     }
 </script>
+
+
 
 <style scoped>
 

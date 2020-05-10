@@ -1,113 +1,68 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
-  </div>
+  <v-app id="app">
+    <GridLayout :layout="layout" :col-num="12">
+      <GridItem
+              :i="layout[0].i"
+              :x="layout[0].x"
+              :y="layout[0].y"
+              :w="layout[0].w"
+              :h="layout[0].h"
+              :is-resizable="true"
+              :min-w="4"
+      >
+        <world-map v-on:getCountry="getCountryName" />
+      </GridItem>
+      <GridItem
+              :i="layout[1].i"
+              :x="layout[1].x"
+              :y="layout[1].y"
+              :w="layout[1].w"
+              :h="layout[1].h"
+              :is-resizable="true"
+              :min-w="4"
+      >
+        <liner :countryName="countryName" />
+      </GridItem>
+    </GridLayout>
+  </v-app>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+  import VueGridLayout from "vue-grid-layout";
+  import worldMap from "./worldMap";
+  import Liner from "./Liner";
+
+  export default {
+    name: "MainInterface",
+    components: {
+      GridLayout: VueGridLayout.GridLayout,
+      GridItem: VueGridLayout.GridItem,
+      worldMap,
+      Liner
+    },
+    data: function() {
+      return {
+        layout: [
+          { x: 0, y: 0, w: 6, h: 4, i: "0" },
+          { x: 6, y: 0, w: 2, h: 4, i: "1" },
+        ],
+        countryName: 'China'
+      };
+    },
+    methods: {
+      getCountryName: function (childValue) {
+        this.countryName = childValue
+        console.log(childValue + '0')
+      }
     }
-  }
-}
+  };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+<style>
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+  }
 </style>
