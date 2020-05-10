@@ -10,14 +10,16 @@ export default {
   name: "MainChart",
   props: {
     sdata: Object,
-    edata: Number
+    edata: Number,
+    loading: Boolean
   },
   data: function() {
     return {
       chart: undefined,
       Nodes: Array,
       Links: Array,
-      relationNumber: Number //最大关系
+      relationNumber: Number, //最大关系
+      ready: false
     };
   },
   mounted: function() {
@@ -37,6 +39,10 @@ export default {
   },
   methods: {
     dataFormat() {
+      this.ready = false;
+      if (this.loading) {
+        return;
+      }
       function unique(arr) {
         //去重数组
         return Array.from(new Set(arr));
@@ -113,6 +119,7 @@ export default {
       }
       this.Links = Links;
       this.Nodes = Nodes;
+      this.ready = true;
     },
 
     create_chart() {
@@ -121,6 +128,10 @@ export default {
       this.chart.setOption(options);
     },
     focus(msg) {
+      //加载期间不响应事件
+      if (this.loading && !this.ready) {
+        return;
+      }
       if (
         msg.focusIndex != this.chart.getOption().timeline[0].currentIndex &&
         msg.focusIndex >= 0
@@ -137,6 +148,10 @@ export default {
       //console.log(msg, this.chart.getOption());
     },
     focusRole: function(msg) {
+      //加载期间不响应事件
+      if (this.loading && !this.ready) {
+        return;
+      }
       if (msg.source != this) {
         /*此处暂时屏蔽unfocusNodeAdjacency的回调，因为该事件是响应外部事件的
         如果此处不屏蔽事件响应，会导致触发unfocus事件，导致在演员图中存在，但是
@@ -168,12 +183,20 @@ export default {
       return Math.pow(4.12 + (501 * (n - min)) / (max - min), 0.71);
     },
     unFocusNode() {
+      //加载期间不响应事件
+      if (this.loading && !this.ready) {
+        return;
+      }
       this.$EventBus.$emit("actor-focus", {
         character: "",
         source: this
       });
     },
     focusNode: function(params) {
+      //加载期间不响应事件
+      if (this.loading && !this.ready) {
+        return;
+      }
       if (params.dataIndex != undefined) {
         //如果鼠标悬浮到角色结点
         var option = this.chart.getOption();
@@ -302,15 +325,24 @@ export default {
     }
   },
   watch: {
+    /*
     sdata() {
       this.dataFormat();
       this.create_chart();
     },
+    */
+
     edata() {
       /*
       this.dataFormat();
       this.create_chart();
       */
+    },
+    loading() {
+      if (!this.loading) {
+        this.dataFormat();
+        this.create_chart();
+      }
     }
   }
 };

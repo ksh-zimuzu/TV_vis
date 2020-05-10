@@ -4,6 +4,8 @@
     :col-num="12"
     @layout-updated="saveLayout"
     style="margin-bottom:50px"
+    :is-draggable="!dragLock"
+    :is-resizable="!dragLock"
   >
     <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
       <ActorPlot :plot="plot" :highlightRole="heighlightAt" />
@@ -11,11 +13,19 @@
     <GridItem :i="layout[0].i" :x="layout[0].x" :y="layout[0].y" :w="layout[0].w" :h="layout[0].h">
       <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
     </GridItem>
-    <GridItem :i="layout[1].i" :x="layout[1].x" :y="layout[1].y" :w="layout[1].w" :h="layout[1].h">
+    <GridItem
+      :i="layout[1].i"
+      :x="layout[1].x"
+      :y="layout[1].y"
+      :w="layout[1].w"
+      :h="layout[1].h"
+      :minW="5"
+      :minH="2"
+    >
       <PlayerAvatarBox :players="slicedActors" />
     </GridItem>
     <GridItem :i="layout[2].i" :x="layout[2].x" :y="layout[2].y" :w="layout[2].w" :h="layout[2].h">
-      <WordCloudBox :plot="plot" :userDict="userDict" />
+      <WordCloudBox :plot="plot" :userDict="userDict" :simple="layout[2].h<2" />
     </GridItem>
     <GridItem
       :i="layout[3].i"
@@ -25,10 +35,14 @@
       :h="layout[3].h"
       dragAllowFrom=".widget-header"
     >
-      <MainChartBox :EpisodeData="Math.max(...meta.episodes)" :SankeyData="FPs" />
+      <MainChartBox
+        :EpisodeData="Math.max(...meta.episodes)"
+        :SankeyData="FPs"
+        :loading="mainChartLoading"
+      />
     </GridItem>
     <GridItem :i="layout[5].i" :x="layout[5].x" :y="layout[5].y" :w="layout[5].w" :h="layout[5].h">
-      <SimilarTVBox :current_tv_id="meta.tv_id" />
+      <SimilarTVBox :current_tv_id="meta.tv_id" :simple="layout[5].h<2" />
     </GridItem>
     <GridItem :i="layout[6].i" :x="layout[6].x" :y="layout[6].y" :w="layout[6].w" :h="layout[6].h">
       <RatingBox :ratings="ratings" :simple="layout[6].h<2" />
@@ -39,13 +53,24 @@
       :y="layout[7].y"
       :w="layout[7].w"
       :h="layout[7].h"
-      :is-resizable="false"
+      :minW="2"
     >
       <smart-widget simple>
-        <v-btn fab color="error" x-large @click="resetLayout">
-          <v-icon>{{mdiRefresh}}</v-icon>
-        </v-btn>
-        <div class="subtitle-1 text-center pt-3">重置布局</div>
+        <div class="d-flex justify-center">
+          <div class="mx-2">
+            <v-btn fab color="error" x-large @click="resetLayout">
+              <v-icon>{{mdiRefresh}}</v-icon>
+            </v-btn>
+            <div class="subtitle-1 text-center pt-3">重置布局</div>
+          </div>
+          <div class="mx-2">
+            <v-btn fab color="primary" x-large @click="dragLock=!dragLock">
+              <v-icon v-if="dragLock">{{mdiLock}}</v-icon>
+              <v-icon v-else>{{mdiLockOpenVariant}}</v-icon>
+            </v-btn>
+            <div class="subtitle-1 text-center pt-3">锁定布局</div>
+          </div>
+        </div>
       </smart-widget>
     </GridItem>
   </GridLayout>
@@ -65,7 +90,7 @@ import RatingBox from "./RatingBox";
 
 import TV_loader from "../services/TV_loader";
 
-import { mdiRefresh } from "@mdi/js";
+import { mdiRefresh, mdiLock, mdiLockOpenVariant } from "@mdi/js";
 
 export default {
   name: "TVDetailPage",
@@ -90,7 +115,7 @@ export default {
     meta: {
       season: 1,
       episodes: [0],
-      id: 0
+      tv_id: 0
     },
     plots: {},
     CPs: {},
@@ -99,7 +124,7 @@ export default {
     layout: undefined,
     actors: [],
     roles: undefined,
-    plot: undefined,
+    plot: "",
     heighlightAt: "",
     ratings: {},
     defaultLayout: [
@@ -110,9 +135,13 @@ export default {
       { x: 9, y: 3, w: 3, h: 2, i: "演员高亮" },
       { x: 0, y: 3, w: 2, h: 2, i: "柱状图" },
       { x: 0, y: 5, w: 2, h: 1, i: "评价玉珏图" },
-      { x: 3, y: 5, w: 1, h: 1, i: "重置按钮" }
+      { x: 3, y: 5, w: 2, h: 1, i: "重置按钮" }
     ],
-    mdiRefresh
+    mdiRefresh,
+    mdiLock,
+    mdiLockOpenVariant,
+    mainChartLoading: true,
+    dragLock: false
   }),
   created: function() {
     var layout = localStorage.getItem("layout");
@@ -146,7 +175,9 @@ export default {
     );
     load_data.FPs.then(fps =>
       fps.map(t => t.p.then(res => this.$set(this.FPs, t.episode, res.data)))
-    );
+    ).then(ps => {
+      Promise.all(ps).then(() => (this.mainChartLoading = false));
+    });
     /*
     load_data.CPs.then(cps =>
       cps.map(t => t.p.then(res => this.$set(this.CPs, t.episode, res.data)))

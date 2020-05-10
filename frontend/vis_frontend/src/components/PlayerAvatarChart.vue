@@ -97,8 +97,9 @@ export default {
   },
   watch: {
     players: function() {
+      this.$emit("loading");
       this.reloadPlayerInfo().then(() => {
-        this.updateOption();
+        //this.updateOption();
         this.updateImg();
       });
     }
@@ -132,21 +133,12 @@ export default {
             name: item.name,
             symbolSize: this.calSymbolSize(item.popularity)
           });
-          /*
-          this.options.series[0].data.push({
-            value: [item.name],
-            //symbol: "image://" + src,
-            label: {
-              show: true
-            },
-            name: item.name,
-            symbolSize: item.popularity * 10
-          });
-          */
         }
       });
       //上述操作全部完成后，更新option
-      Promise.all(promises).then(this.updateOption);
+      Promise.all(promises)
+        .then(this.updateOption)
+        .then(this.loadComplete);
     },
     updateOption() {
       this.chart.setOption(this.options);
@@ -191,6 +183,9 @@ export default {
           });
         }
       }
+    },
+    loadComplete: function() {
+      this.$emit("loaded");
     }
   }
 };

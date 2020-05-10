@@ -24,7 +24,7 @@ export default {
   mounted: function() {
     this.resizeFunc = _.debounce(this.$refs.ratingbar.chart.resize, 500);
     this.resizeFunc();
-    this.$parent.$on("resize", this.resizeEvent);
+    this.$parent.$on("resized", this.resizeEvent);
   },
   methods: {
     resizeEvent: function() {

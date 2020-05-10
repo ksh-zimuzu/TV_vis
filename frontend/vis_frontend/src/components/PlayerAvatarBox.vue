@@ -1,6 +1,11 @@
 <template>
-  <smart-widget title="演员">
-    <PlayerAvatarChart :players="players" ref="avatarChart" />
+  <smart-widget title="演员" :loading="loading">
+    <PlayerAvatarChart
+      :players="players"
+      ref="avatarChart"
+      @loading="loading=true"
+      @loaded="loading=false"
+    />
   </smart-widget>
 </template>
 
@@ -19,7 +24,9 @@ export default {
     }
   },
   data: function() {
-    return {};
+    return {
+      loading: true
+    };
   },
   methods: {
     resizeEvent: function() {
@@ -29,7 +36,7 @@ export default {
   mounted: function() {
     this.resizeFunc = _.debounce(this.$refs.avatarChart.chart.resize, 500);
     this.resizeFunc();
-    this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+    this.$parent.$on("resized", this.resizeEvent); //接收外层resize事件
   }
 };
 </script>
