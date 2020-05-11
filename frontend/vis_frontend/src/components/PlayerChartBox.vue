@@ -10,7 +10,9 @@ import _ from "lodash";
 
 export default {
   name: "PlayerChartBox",
-  props: {},
+  props: {
+    actorid:String
+  },
   data: function() {
     return {
       chartData: {
