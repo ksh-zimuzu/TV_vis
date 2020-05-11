@@ -176,9 +176,37 @@ export default {
         this.chart.on("focusNodeAdjacency", this.focusNode);
       }
     },
-    calSymbolSize(n, min, max) {
+    calSymbolSize(n, min, max, threshold) {
       //return 2 * n;
-      return Math.pow(4.12 + (501 * (n - min)) / (max - min), 0.71);
+      //return Math.pow((300 * (n - min + 1)) / (max - min), 0.71);
+      //var t = n < mean ? 0 : n -Math.ceil(mean);
+      if (n < threshold) {
+        return 2.73;
+      } else {
+        return Math.pow(36 + (450 * (n - threshold)) / max - threshold, 0.71);
+      }
+      //return Math.pow(4.12 + (501 * t) / (max - min), 0.71);
+    },
+    calFoldThreshold(nodes, threshold, minV, maxV) {
+      var res = nodes.map(node => ({
+        symbolSize: this.calSymbolSize(node.value, minV, maxV, threshold),
+        label: {
+          normal: {
+            show: this.calSymbolSize(node.value, minV, maxV, threshold) > 3
+          }
+        },
+        category: node.category,
+        id: node.id,
+        name: node.name,
+        value: node.value
+      }));
+      var totalR = _.sumBy(
+        _.toPairs(_.countBy(res, t => t.symbolSize)),
+        t => t[0] * t[1]
+      );
+      return totalR > 900
+        ? this.calFoldThreshold(nodes, threshold + 1, minV, maxV)
+        : res;
     },
     unFocusNode() {
       //加载期间不响应事件
@@ -221,17 +249,22 @@ export default {
       var Nodes = this.Nodes.map(item => _.filter(item, t => t.value > 0));
       var Links = this.Links;
       for (var c = 0; c < Nodes.length; c++) {
-        var minV = _.min(Nodes[c].map(t => t.value));
-        var maxV = _.max(Nodes[c].map(t => t.value));
+        var values = Nodes[c].map(t => t.value);
+        var minV = _.min(values);
+        var maxV = _.max(values);
+        var NodeRes = this.calFoldThreshold(Nodes[c], 2, minV, maxV);
+        /*
         Nodes[c].forEach(node => {
           node.itemStyle = null;
-          node.symbolSize = this.calSymbolSize(node.value, minV, maxV);
+          node.symbolSize = this.calSymbolSize(node.value, minV, maxV, meanV);
           node.label = {
             normal: {
               show: node.symbolSize > 4
             }
           };
         });
+        */
+        Nodes[c] = NodeRes;
       }
       var categories = [];
       //var colors=["#f2da57","#f6b656","#e25a42","#dcbdcf","#b396ad",

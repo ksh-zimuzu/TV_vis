@@ -6046,6 +6046,11 @@ number-is-nan@^1.0.0:
   resolved "https://registry.npm.taobao.org/number-is-nan/download/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
+numbers@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.npm.taobao.org/numbers/download/numbers-0.7.0.tgz#05f3f239a2a22d0064e2a313ab3a4236298bb1d1"
+  integrity sha1-BfPyOaKiLQBk4qMTqzpCNimLsdE=
+
 oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.npm.taobao.org/oauth-sign/download/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"

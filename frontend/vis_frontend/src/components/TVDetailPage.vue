@@ -84,6 +84,16 @@
     >
       <PopularityBox :loading="popularityLoading" :popularity="popularity" :simple="layout[8].h<2" />
     </GridItem>
+    <GridItem
+      :i="layout[9].i"
+      :x="layout[9].x"
+      :y="layout[9].y"
+      :w="layout[9].w"
+      :h="layout[9].h"
+      :minW="2"
+    >
+      <RoleParallelBox />
+    </GridItem>
   </GridLayout>
 </template>
 
@@ -99,6 +109,7 @@ import MainChartBox from "./MainChartBox"; //主视图
 import SimilarTVBox from "./SimilarTVBox"; //柱状图
 import RatingBox from "./RatingBox";
 import PopularityBox from "./PopularityBox";
+import RoleParallelBox from "./RoleParallelBox";
 
 import TV_loader from "../services/TV_loader";
 
@@ -122,7 +133,8 @@ export default {
     SimilarTVBox,
     SeasonMeta,
     RatingBox,
-    PopularityBox
+    PopularityBox,
+    RoleParallelBox
   },
   data: () => ({
     meta: {
@@ -149,7 +161,8 @@ export default {
       { x: 0, y: 3, w: 2, h: 2, i: "柱状图" },
       { x: 0, y: 5, w: 2, h: 1, i: "评价玉珏图" },
       { x: 2, y: 5, w: 2, h: 1, i: "重置按钮" },
-      { x: 4, y: 5, w: 3, h: 1, i: "热度变化曲线" }
+      { x: 4, y: 5, w: 3, h: 1, i: "热度变化曲线" },
+      { x: 7, y: 5, w: 5, h: 1, i: "角色平行坐标" }
     ],
     mdiRefresh,
     mdiLock,
