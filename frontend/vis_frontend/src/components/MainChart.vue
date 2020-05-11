@@ -181,7 +181,7 @@ export default {
       //return Math.pow((300 * (n - min + 1)) / (max - min), 0.71);
       //var t = n < mean ? 0 : n -Math.ceil(mean);
       if (n < threshold) {
-        return 2.73;
+        return 2.73 * Math.pow(n, 0.71);
       } else {
         return Math.pow(36 + (450 * (n - threshold)) / max - threshold, 0.71);
       }
@@ -192,7 +192,7 @@ export default {
         symbolSize: this.calSymbolSize(node.value, minV, maxV, threshold),
         label: {
           normal: {
-            show: this.calSymbolSize(node.value, minV, maxV, threshold) > 3
+            show: node.value >= threshold
           }
         },
         category: node.category,
