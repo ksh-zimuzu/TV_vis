@@ -97,29 +97,10 @@ export default {
   watch: {
     option: function() {
       chart.setOption(this.option);
-    },
-    loaclOption: function() {
-      //chart.setOption(this.loaclOption, false, true);
     }
   },
   methods: {
     onFocus: function(msg) {
-      var index = msg.index;
-      if (index != undefined) {
-        var series = this.option.series[index];
-        this.loaclOption = {
-          color: ["#e7e6e6"],
-          series: [
-            {
-              name: series.name,
-              lineStyle: {
-                color: this.colors[index % this.colors.length],
-                width: 2
-              }
-            }
-          ]
-        };
-      }
       var character = msg.character;
       if (_.isArray(character)) {
         character = character.join("-");

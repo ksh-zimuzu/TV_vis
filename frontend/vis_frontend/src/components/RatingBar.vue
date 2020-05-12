@@ -17,7 +17,7 @@ export default {
     },
     color: {
       type: Array,
-      default: () => ["#27ae60", "#424242", "#f93209", "#f5c518"]
+      default: () => ["#f5c518", "#424242", "#f93209", "#27ae60"]
     }
   },
   computed: {
@@ -58,13 +58,15 @@ export default {
           // startAngle:85
         },
         polar: {},
-        series: _.keys(this.ratings).map(key => ({
-          name: key,
-          type: "bar",
-          data: [this.ratings[key]],
-          coordinateSystem: "polar",
-          roundCap: true
-        })),
+        series: _.keys(this.ratings)
+          .sort()
+          .map(key => ({
+            name: key,
+            type: "bar",
+            data: [this.ratings[key]],
+            coordinateSystem: "polar",
+            roundCap: true
+          })),
         legend: {
           show: false,
           data: _.keys(this.ratings)

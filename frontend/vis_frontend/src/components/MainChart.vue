@@ -150,7 +150,7 @@ export default {
       if (this.loading && !this.ready) {
         return;
       }
-      if (msg.source != this) {
+      if (msg.source != "MainChart") {
         /*此处暂时屏蔽unfocusNodeAdjacency的回调，因为该事件是响应外部事件的
         如果此处不屏蔽事件响应，会导致触发unfocus事件，导致在演员图中存在，但是
         在主视图中不存在的点，在演员图中无法高亮
@@ -215,7 +215,7 @@ export default {
       }
       this.$EventBus.$emit("actor-focus", {
         character: "",
-        source: this
+        source: "MainChart"
       });
     },
     focusNode: function(params) {
@@ -231,13 +231,13 @@ export default {
           //如果是单人的
           this.$EventBus.$emit("actor-focus", {
             character: node.name,
-            source: this,
+            source: "MainChart",
             index: params.dataIndex
           });
         } else {
           this.$EventBus.$emit("actor-focus", {
             character: node.name.split("-"),
-            source: this,
+            source: "MainChart",
             index: params.dataIndex
           });
         }
@@ -312,7 +312,7 @@ export default {
             })(times),
             axisType: "category",
             autoPlay: false,
-            playInterval: 1000
+            playInterval: 3000
           }
         },
         options: (function() {

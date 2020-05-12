@@ -85,14 +85,14 @@ export default {
       this.$EventBus.$emit("actor-focus", {
         name: this.players[params.dataIndex].name,
         character: this.players[params.dataIndex].character,
-        source: this
+        source: "PlayerAvatarChart"
       });
     });
     this.chart.on("mouseout", () => {
       this.$EventBus.$emit("actor-focus", {
         character: "",
         name: "",
-        source: this
+        source: "PlayerAvatarChart"
       });
     });
     this.$EventBus.$on("actor-focus", this.focusActor);
@@ -182,7 +182,7 @@ export default {
       );
     },
     focusActor(msg) {
-      if (msg.source != this) {
+      if (msg.source != "PlayerAvatarChart") {
         var character = msg.character;
         if (typeof character != "string") {
           //对于多选情况，暂时不理睬
