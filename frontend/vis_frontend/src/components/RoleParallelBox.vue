@@ -1,5 +1,5 @@
 <template>
-  <smart-widget simple>
+  <smart-widget :simple="simple" :loading="loading" title="角色出现频率">
     <RoleParallel :chartData="chartData" :parallelAxis="parallelAxis" ref="roleparallel" />
   </smart-widget>
 </template>
@@ -14,6 +14,12 @@ export default {
   components: {
     RoleParallel
   },
+  props: {
+    simple: {
+      type: Boolean,
+      default: true
+    }
+  },
   data: () => ({
     nodes: undefined,
     highlightGroup: -1,
@@ -27,10 +33,12 @@ export default {
       "#6b99a1",
       "#42a5b3",
       "#0f8c79"
-    ]
+    ],
+    loading: true
   }),
   created: function() {
     this.$EventBus.$on("nodes-ready", msg => (this.nodes = msg));
+    this.loading = false;
   },
   computed: {
     chartData: function() {
@@ -69,15 +77,28 @@ export default {
               data: y.map(z => z.value),
               type: "line",
               category: `${index ? index + 1 : "单"}人关系`,
-              lineStyle: {
+              itemStyle: {
                 color: highlight
                   ? this.colors[index % this.colors.length]
                   : "#e7e6e6",
+                opacity: 0
+              },
+              lineStyle: {
+                /*
+                color: highlight
+                  ? this.colors[index % this.colors.length]
+                  : "#e7e6e6",
+                  */
                 width: highlight && this.highlightName.length ? 2 : 0.5
               },
-              symbol: "none",
+              symbol: "circle",
+              //showSymbol: false,
+              symbolSize: 10,
               smooth: true,
-              z: highlight ? 9999 : index
+              z: highlight ? 9999 : index,
+              tooltio: {
+                show: true
+              }
             };
           });
         })
@@ -115,11 +136,29 @@ export default {
       this.resizeFunc();
     },
     onFocus: function(msg) {
+      //var index = msg.index;
+      /*
+      if (index != undefined) {
+          
+        this.$refs.roleparallel.chart.dispatchAction({
+          type: "highlight",
+          seriesIndex: index
+        });
+      }
+      */
+      /*
+      if (msg.character) {
+        this.highlightName = msg.character;
+      }
+*/
       var character = msg.character;
       if (_.isArray(character)) {
         character = character.join("-");
       }
+
+      /*
       this.highlightName = character;
+      */
       /*
       for (var i = 0; i < this.chartData.length; i++) {
         var value = this.chartData[i];
@@ -134,7 +173,7 @@ export default {
     }
   },
   mounted: function() {
-    this.resizeFunc = _.debounce(this.$refs.roleparallel.chart.resize, 500);
+    this.resizeFunc = _.debounce(this.$refs.roleparallel.resize, 500);
     this.resizeFunc();
     this.$parent.$on("resized", this.resizeEvent);
     this.$EventBus.$on("actor-focus", this.onFocus);

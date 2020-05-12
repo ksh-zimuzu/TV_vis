@@ -58,7 +58,7 @@ export default {
     focus: function() {}
   },
   mounted: function() {
-    this.resizeFunc = _.debounce(this.$refs.main_chart.chart.resize, 500);
+    this.resizeFunc = _.debounce(this.$refs.main_chart.resize, 500);
     this.resizeFunc();
     this.$parent.$on("resized", this.resizeEvent);
   },

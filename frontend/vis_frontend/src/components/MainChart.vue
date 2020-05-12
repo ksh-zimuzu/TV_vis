@@ -5,7 +5,7 @@
 <script>
 import echarts from "echarts";
 import _ from "lodash";
-
+var chart = null;
 export default {
   name: "MainChart",
   props: {
@@ -23,14 +23,14 @@ export default {
     };
   },
   mounted: function() {
-    this.chart = echarts.init(this.$el);
-    this.chart.on("timelinechanged", params => {
+    chart = echarts.init(this.$el);
+    chart.on("timelinechanged", params => {
       this.$EventBus.$emit("episode-focus", {
         focusIndex: params.currentIndex
       });
     });
-    this.chart.on("focusnodeadjacency", this.focusNode);
-    this.chart.on("unfocusnodeadjacency", this.unFocusNode);
+    chart.on("focusnodeadjacency", this.focusNode);
+    chart.on("unfocusnodeadjacency", this.unFocusNode);
     this.$EventBus.$on("episode-focus", this.focus);
     this.$EventBus.$on("actor-focus", this.focusRole);
   },
@@ -123,7 +123,7 @@ export default {
     create_chart() {
       var options = this.animate_option;
       console.log(options);
-      this.chart.setOption(options);
+      chart.setOption(options);
     },
     focus(msg) {
       //加载期间不响应事件
@@ -131,7 +131,7 @@ export default {
         return;
       }
       if (
-        msg.focusIndex != this.chart.getOption().timeline[0].currentIndex &&
+        msg.focusIndex != chart.getOption().timeline[0].currentIndex &&
         msg.focusIndex >= 0
       ) {
         var option = {
@@ -141,9 +141,9 @@ export default {
             }
           ]
         };
-        this.chart.setOption(option);
+        chart.setOption(option);
       }
-      //console.log(msg, this.chart.getOption());
+      //console.log(msg, chart.getOption());
     },
     focusRole: function(msg) {
       //加载期间不响应事件
@@ -155,25 +155,25 @@ export default {
         如果此处不屏蔽事件响应，会导致触发unfocus事件，导致在演员图中存在，但是
         在主视图中不存在的点，在演员图中无法高亮
         */
-        this.chart.off("unfocusNodeAdjacency", this.unFocusNode);
-        this.chart.off("focusNodeAdjacency", this.focusNode);
-        var index = this.chart
+        chart.off("unfocusNodeAdjacency", this.unFocusNode);
+        chart.off("focusNodeAdjacency", this.focusNode);
+        var index = chart
           .getOption()
           .series[0].data.findIndex(t => t.name == msg.character);
         if (index != -1) {
-          this.chart.dispatchAction({
+          chart.dispatchAction({
             type: "focusNodeAdjacency",
             seriesIndex: 0,
             dataIndex: index
           });
         } else {
-          this.chart.dispatchAction({
+          chart.dispatchAction({
             type: "unfocusNodeAdjacency",
             seriesIndex: 0
           });
         }
-        this.chart.on("unfocusNodeAdjacency", this.unFocusNode);
-        this.chart.on("focusNodeAdjacency", this.focusNode);
+        chart.on("unfocusNodeAdjacency", this.unFocusNode);
+        chart.on("focusNodeAdjacency", this.focusNode);
       }
     },
     calSymbolSize(n, min, max, threshold) {
@@ -225,21 +225,26 @@ export default {
       }
       if (params.dataIndex != undefined) {
         //如果鼠标悬浮到角色结点
-        var option = this.chart.getOption();
+        var option = chart.getOption();
         var node = option.series[0].data[params.dataIndex];
         if (node.category == 0) {
           //如果是单人的
           this.$EventBus.$emit("actor-focus", {
             character: node.name,
-            source: this
+            source: this,
+            index: params.dataIndex
           });
         } else {
           this.$EventBus.$emit("actor-focus", {
             character: node.name.split("-"),
-            source: this
+            source: this,
+            index: params.dataIndex
           });
         }
       }
+    },
+    resize: function() {
+      chart.resize();
     }
   },
 

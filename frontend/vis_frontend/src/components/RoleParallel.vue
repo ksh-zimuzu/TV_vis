@@ -5,15 +5,16 @@
 <script>
 import echarts from "echarts";
 import _ from "lodash";
-
+var chart = null;
 export default {
   name: "RoleParallel",
   mounted: function() {
-    this.chart = echarts.init(this.$el);
+    chart = echarts.init(this.$el, null);
     this.$EventBus.$on("actor-focus", this.onFocus);
   },
   data: () => ({
-    chart: undefined
+    //chart: undefined,
+    loaclOption: {}
   }),
   props: {
     chartData: {
@@ -64,8 +65,26 @@ export default {
         yAxis: {
           type: "value"
         },
+        grid: {
+          left: "5%",
+          right: "5%",
+          top: "10%",
+          bottom: "10%"
+        },
         tooltip: {
           show: true
+        },
+        emphasis: {
+          itemStyle: {
+            // 高亮时点的颜色。
+            //color: "blue"
+            opacity: 1
+          },
+          label: {
+            show: true
+            // 高亮时标签的文字。
+            //formatter: "This is a emphasis label."
+          }
         }
         /*
         legend: {
@@ -77,26 +96,47 @@ export default {
   },
   watch: {
     option: function() {
-      this.chart.setOption(this.option);
+      chart.setOption(this.option);
+    },
+    loaclOption: function() {
+      //chart.setOption(this.loaclOption, false, true);
     }
   },
   methods: {
     onFocus: function(msg) {
+      var index = msg.index;
+      if (index != undefined) {
+        var series = this.option.series[index];
+        this.loaclOption = {
+          color: ["#e7e6e6"],
+          series: [
+            {
+              name: series.name,
+              lineStyle: {
+                color: this.colors[index % this.colors.length],
+                width: 2
+              }
+            }
+          ]
+        };
+      }
       var character = msg.character;
       if (_.isArray(character)) {
         character = character.join("-");
       }
-      for (var value of this.chartData) {
-        var roleIndex = value.data.findIndex(item => item.name == character);
-        if (roleIndex != -1) {
-          this.chart.dispatchAction({
-            type: "highlight",
-            seriesName: value.name,
-            dataIndex: roleIndex
-          });
-          break;
-        }
+      if (character.length > 0) {
+        chart.dispatchAction({
+          type: "highlight",
+          seriesName: character
+        });
+      } else {
+        chart.dispatchAction({
+          type: "downplay"
+        });
       }
+    },
+    resize: function() {
+      chart.resize();
     }
   }
 };

@@ -40,7 +40,8 @@ export default {
             formatter: (value, index) => {
               console.log(value, index);
               var character = this.players[index].character;
-              return `{player|${value}}\n{character|${character}}`;
+              return `${value}\n${character}`;
+              //return `{player|${value}}\n{character|${character}}`;
             },
             rich: {
               player: {
@@ -49,7 +50,9 @@ export default {
               character: {
                 fontWeight: "lighter"
               }
-            }
+            },
+            fontWeight: "lighter",
+            fontSize: 14
           }
         },
         series: [
@@ -64,8 +67,16 @@ export default {
       player_infos: []
     };
   },
+  created: function() {
+    this.$EventBus.$on("before-route-enter", () => {
+      this.reloadPlayerInfo().then(() => {
+        this.updateOption();
+        this.updateImg();
+      });
+    });
+  },
   mounted: function() {
-    this.chart = echarts.init(this.$el);
+    this.chart = echarts.init(this.$el, null, { renderer: "svg" });
     this.reloadPlayerInfo().then(() => {
       this.updateOption();
       this.updateImg();
@@ -87,7 +98,10 @@ export default {
     this.$EventBus.$on("actor-focus", this.focusActor);
     //this.$EventBus.on("actor-focus")
     this.chart.on("click", params => {
-      this.$router.push({path: '/actor/' + this.players[params.dataIndex].name, query: {id: this.players[params.dataIndex].id}})
+      this.$router.push({
+        path: "/actor/" + this.players[params.dataIndex].name,
+        query: { id: this.players[params.dataIndex].id }
+      });
     });
   },
   computed: {
@@ -120,6 +134,7 @@ export default {
                 value: [item.name],
                 symbol: "image://" + src,
                 name: item.name,
+                symbolKeepAspect: true,
                 symbolSize: this.calSymbolSize(item.popularity)
               });
             })
@@ -134,6 +149,7 @@ export default {
               show: true
             },
             name: item.name,
+            symbolKeepAspect: true,
             symbolSize: this.calSymbolSize(item.popularity)
           });
         }

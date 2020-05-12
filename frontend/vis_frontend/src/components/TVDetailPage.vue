@@ -92,7 +92,7 @@
       :h="layout[9].h"
       :minW="2"
     >
-      <RoleParallelBox />
+      <RoleParallelBox :simple="layout[9].h<2" />
     </GridItem>
   </GridLayout>
 </template>
@@ -287,6 +287,11 @@ export default {
       localStorage.removeItem("layout");
     }
   },
-  watch: {}
+  watch: {},
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.$EventBus.$emit("before-route-enter");
+    });
+  }
 };
 </script>
