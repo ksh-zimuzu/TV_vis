@@ -11,7 +11,7 @@
       name: "worldMap",
       props: {
         width: {type: String, default: "1000px" },
-        height: {type: String, default: "600px"}
+        height: {type: String, default: "450px"}
       },
       data() {
         return {
@@ -164,10 +164,10 @@
             //b8dfe6
             backgroundColor: "#B8DFE6",
             title: {    //地图显示标题
-              text: 'TMDB：全球剧集数量',
-              subtext: 'Number of global TV series',
-              top: "30px",
-              left: 'center',
+              text: 'TMDB全球剧集数量',
+              //subtext: 'Number of global TV series',
+              top: 10,
+              left: 15,
               textStyle: {color: '#fff'}
             },
             visualMap: {   //图列显示柱
@@ -192,8 +192,8 @@
               ],
               min: 0,
               max: 17606,
-              left: 30,
-              bottom: 100,
+              left: 75,
+              bottom: 10,
               text:['高','低'],
               realtime: false,
               calculable : true,

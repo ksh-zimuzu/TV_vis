@@ -43,8 +43,8 @@
     data: function() {
       return {
         layout: [
-          { x: 0, y: 0, w: 6, h: 4, i: "0" },
-          { x: 6, y: 0, w: 2, h: 4, i: "1" },
+          { x: 2, y: 0, w: 6, h: 3, i: "世界剧集热度地图" },
+          { x: 2, y: 1, w: 6, h: 2, i: "部分剧集热度折线图" },
         ],
         countryName: 'China'
       };

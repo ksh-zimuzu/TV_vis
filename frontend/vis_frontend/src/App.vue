@@ -8,8 +8,7 @@
     </v-snackbar>
     <v-footer absolute>
       <router-link to="/" class="footer-link">首页</router-link>|
-      <router-link to="/index" class="footer-link">主页</router-link>|
-      <router-link to="/test" class="footer-link">地图</router-link>
+      <router-link to="/map" class="footer-link">地图</router-link>
       <v-spacer></v-spacer>可视化字幕组
       <div style="margin-left:5px">&copy; 2020</div>
     </v-footer>
