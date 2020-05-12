@@ -11,6 +11,14 @@
 	"name": "Fiona Shaw",
 	"character": "卡罗琳"
 }, {
+	"id": "365333",
+	"name": "Owen McDonnell",
+	"character": "尼科"
+}, {
+	"id": "1731315",
+	"name": "Edward Bluemel",
+	"character": "Hugo"
+},{
 	"id": "3398",
 	"name": "Kim Bodnia",
 	"character": "Konstantin"
@@ -18,11 +26,7 @@
 	"id": "2021417",
 	"name": "Sean Delaney",
 	"character": "Kenny Stowton"
-}, {
-	"id": "365333",
-	"name": "Owen McDonnell",
-	"character": "Niko Polastri"
-}, {
+},  {
 	"id": "7063",
 	"name": "Nina Sosanya",
 	"character": "Jess"
@@ -30,8 +34,4 @@
 	"id": "1532312",
 	"name": "Kirby Howell-Baptiste",
 	"character": "Elena Felton"
-}, {
-	"id": "1731315",
-	"name": "Edward Bluemel",
-	"character": "Hugo"
 }]
