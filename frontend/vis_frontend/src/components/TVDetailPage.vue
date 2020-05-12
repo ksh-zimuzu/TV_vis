@@ -194,67 +194,7 @@ export default {
     }
   },
   mounted: function() {
-    var load_data = TV_loader.fetch_all(this.tv_name);
-    load_data.meta.then(res => {
-      this.meta = res.data;
-    });
-    load_data.plots.then(plots =>
-      Promise.all(
-        plots.map(t =>
-          t.p.then(res => {
-            this.$set(this.plots, t.episode, res.data);
-          })
-        )
-      ).then(() => {
-        this.plot = this.plots[1];
-      })
-    );
-    load_data.FPs.then(fps =>
-      fps.map(t => t.p.then(res => this.$set(this.FPs, t.episode, res.data)))
-    ).then(ps => {
-      Promise.all(ps).then(() => (this.mainChartLoading = false));
-    });
-    /*
-    load_data.CPs.then(cps =>
-      cps.map(t => t.p.then(res => this.$set(this.CPs, t.episode, res.data)))
-    );
-    
-    load_data.word_freq.then(res => {
-      this.word_freq = res.data;
-    });
-    */
-    load_data.roles.then(res => {
-      this.roles = res.data;
-    });
-
-    load_data.actors.then(res => {
-      this.actors = res.data;
-    });
-
-    load_data.ratings.then(res => {
-      this.$set(this.ratings, "imDb", res.data.imDb ? res.data.imDb * 10 : 0);
-      this.$set(
-        this.ratings,
-        "metacritic",
-        res.data.metacritic ? res.data.metacritic : 0
-      );
-      this.$set(
-        this.ratings,
-        "theMovieDb",
-        res.data.theMovieDb ? res.data.theMovieDb * 10 : 0
-      );
-      this.$set(
-        this.ratings,
-        "rottenTomatoes",
-        res.data.rottenTomatoes ? res.data.rottenTomatoes : 0
-      );
-    });
-
-    load_data.popularity
-      .then(res => (this.popularity = res.data))
-      .then(() => (this.popularityLoading = false));
-    this.$EventBus.$on("episode-focus", this.focus);
-    this.$EventBus.$on("actor-focus", this.hover);
+    this.refreshData();
   },
   computed: {
     slicedActors: function() {
@@ -292,13 +232,75 @@ export default {
     resetLayout: function() {
       this.layout = this.defaultLayout;
       localStorage.removeItem("layout");
+    },
+    refreshData: function() {
+      var load_data = TV_loader.fetch_all(this.tv_name);
+      load_data.meta.then(res => {
+        this.meta = res.data;
+      });
+      load_data.plots.then(plots =>
+        Promise.all(
+          plots.map(t =>
+            t.p.then(res => {
+              this.$set(this.plots, t.episode, res.data);
+            })
+          )
+        ).then(() => {
+          this.plot = this.plots[1];
+        })
+      );
+      load_data.FPs.then(fps =>
+        fps.map(t => t.p.then(res => this.$set(this.FPs, t.episode, res.data)))
+      ).then(ps => {
+        Promise.all(ps).then(() => (this.mainChartLoading = false));
+      });
+      /*
+    load_data.CPs.then(cps =>
+      cps.map(t => t.p.then(res => this.$set(this.CPs, t.episode, res.data)))
+    );
+    
+    load_data.word_freq.then(res => {
+      this.word_freq = res.data;
+    });
+    */
+      load_data.roles.then(res => {
+        this.roles = res.data;
+      });
+
+      load_data.actors.then(res => {
+        this.actors = res.data;
+      });
+
+      load_data.ratings.then(res => {
+        this.$set(this.ratings, "imDb", res.data.imDb ? res.data.imDb * 10 : 0);
+        this.$set(
+          this.ratings,
+          "metacritic",
+          res.data.metacritic ? res.data.metacritic : 0
+        );
+        this.$set(
+          this.ratings,
+          "theMovieDb",
+          res.data.theMovieDb ? res.data.theMovieDb * 10 : 0
+        );
+        this.$set(
+          this.ratings,
+          "rottenTomatoes",
+          res.data.rottenTomatoes ? res.data.rottenTomatoes : 0
+        );
+      });
+
+      load_data.popularity
+        .then(res => (this.popularity = res.data))
+        .then(() => (this.popularityLoading = false));
+      this.$EventBus.$on("episode-focus", this.focus);
+      this.$EventBus.$on("actor-focus", this.hover);
     }
   },
-  watch: {},
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.$EventBus.$emit("before-route-enter");
-    });
+  watch: {
+    tv_name: function() {
+      this.refreshData();
+    }
   }
 };
 </script>

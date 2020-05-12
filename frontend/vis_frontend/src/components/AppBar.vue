@@ -17,7 +17,7 @@
       label="搜索剧集"
       solo-inverted
     ></v-autocomplete>
-    <v-btn icon>
+    <v-btn icon :disabled="select==null" @click="jumpTo">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
   </v-toolbar>
@@ -53,6 +53,9 @@ export default {
         this.items = hits.hits.map(t => t.name);
         this.loading = false;
       });
+    },
+    jumpTo() {
+      this.$router.push(`/tv/${this.select}`);
     }
   },
   props: {
