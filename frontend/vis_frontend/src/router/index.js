@@ -21,11 +21,13 @@ export default new Router({
     },
     {
       path: '/tv/:tv_name',
+      name: "剧集详情",
       component: TVDetailPage,
       props: true
     },
     {
       path: '/actor/:actor_name',
+      name: "演员详情",
       component: SingleActorPage,
       props: true
     }

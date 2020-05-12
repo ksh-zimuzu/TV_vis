@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <AppBar />
     <router-view />
     <v-snackbar v-model="snackbar">
       {{ snackbar_text }}
@@ -16,9 +17,12 @@
 </template>
 
 <script>
+import AppBar from "./components/AppBar";
 export default {
   name: "App",
-  components: {},
+  components: {
+    AppBar
+  },
   data: function() {
     return {
       snackbar: false,

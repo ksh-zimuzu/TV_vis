@@ -57,6 +57,15 @@ export default {
     return {
       msg: "剧情"
     };
+  },
+  watch: {
+    raw_html() {
+      this.$nextTick(() => {
+        this.$vuetify.goTo("span.font-weight-black", {
+          container: this.$el
+        });
+      });
+    }
   }
 };
 

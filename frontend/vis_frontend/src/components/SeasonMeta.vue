@@ -59,10 +59,13 @@ export default {
         }
 
         this.model = msg.focusIndex;
-        this.active[this.model] = true;
-        goTo(this.$refs.epList.$children[this.model], {
-          container: this.$refs.epList
-        });
+        //用一秒的延迟来保证dom事件完成更新，保证滚动定位准确
+        setTimeout(() => {
+          goTo(`#i${msg.focusIndex}`, {
+            container: this.$el
+          });
+        }, 1000);
+        //this.active[this.model] = true;
         console.log(this.$refs.epList.$children[this.model]);
       }
     }

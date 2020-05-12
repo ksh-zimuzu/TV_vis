@@ -10,7 +10,14 @@
     <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
       <ActorPlot :plot="plot" :highlightRole="heighlightAt" />
     </GridItem>
-    <GridItem :i="layout[0].i" :x="layout[0].x" :y="layout[0].y" :w="layout[0].w" :h="layout[0].h">
+    <GridItem
+      :i="layout[0].i"
+      :x="layout[0].x"
+      :y="layout[0].y"
+      :w="layout[0].w"
+      :h="layout[0].h"
+      id="season-meta"
+    >
       <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
     </GridItem>
     <GridItem
