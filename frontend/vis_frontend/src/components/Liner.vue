@@ -1,6 +1,5 @@
 <template>
     <div class="echarts">
-    //<span>{{countryName}}</span>
     <div :style="{height:height,width:width}" ref="myEchart"></div>
   </div>
 </template>
@@ -17,7 +16,7 @@ export default {
   name: 'Liner',
   props: {
     width: { type: String, default: '1000px' },
-    height: {type: String, default: '500px'},
+    height: {type: String, default: '280px'},
     countryName: {
         type: String,
         default: 'China'
@@ -58,7 +57,10 @@ export default {
       var option = {
       // 标题
         title: {
-          text: 'tmdb部分电视剧热度折线图'
+          text: 'TMDB部分剧集热度'
+        },
+        grid: {
+          left: '5%'
         },
         tooltip: {
           trigger: 'axis',
@@ -161,7 +163,8 @@ export default {
       var option = {
       // 标题
         title: {
-          text: 'tmdb部分电视剧热度折线图'
+          text: 'TMDB部分剧集热度',
+          left: 15,
         },
         tooltip: {
           trigger: 'axis',
@@ -171,6 +174,9 @@ export default {
           },
           triggerOn: 'mousemove',
           enterable: true
+        },
+        grid: {
+            left: '5%'
         },
         dataZoom: [// 控制缩放
           {
