@@ -28,6 +28,8 @@ jobs:
         cd frontend/vis_frontend
         export NODE_ENV=gh-pages
         export VUE_APP_TMDBKEY=${{ secrets.TMDB_KEY }}
+        export VUE_APP_ALGOLIA_ID=${{secrets.ALGOLIA_ID}}
+        export VUE_APP_ALGOLIA_KEY=${{secrets.ALGOLIA_KEY}}
         yarn install
         yarn build
         REPOSITORY_NAME="${GITHUB_REPOSITORY}"
