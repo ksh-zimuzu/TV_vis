@@ -16,9 +16,7 @@ export default {
       Nodes: Array,
       Links: Array,
       Graph: {}, //邻接表
-      aid: String, //演员id
-      parent: {},
-      relationNumber: Number //最大关系
+      parents: {},
     };
   },
   mounted() {
@@ -31,107 +29,37 @@ export default {
       var queue = [];
       var seen = new Set();
       var p = {};
-      var sid = this.aid;
+      var sid = this.acid;
       queue.push(sid);
       seen.add(sid);
       p[sid] = "NONE";
-      while (queue.length > 0) {
+      var count=0;
+      while (queue.length > 0 && count<6) {
+        //使用BFS时，只考虑6层联系内的演员
         var vertex = queue.shift();
-        var nodes = graph[String(vertex)];
-        for (let w = 0; w < nodes.length; w++) {
-          if (!seen.has(nodes[w])) {
+        var vertexnodes = graph[String(vertex)];
+        for (let w = 0; w < vertexnodes.length; w++) {
+          if (!seen.has(vertexnodes[w])) {
             // set不能用in!!
-            queue.push(nodes[w]);
-            seen.add(nodes[w]);
-            p[nodes[w]] = vertex;
+            queue.push(vertexnodes[w]);
+            seen.add(vertexnodes[w]);
+            p[vertexnodes[w]] = vertex;
           }
         }
+        console.log(count);
+        count++;
       }
       for (var key in p) {
-        this.parent[key] = p[key];
+        this.parents[key] = p[key];
       }
-      console.log(this.parent);
+      console.log(this.parents);
     },
     getData() {
       //获取邻接表
-      this.aid = "37940";
-      this.ndata = [
-        //{"actor1": {"id": "37940", "name": "Im Soo-jung", "character": "Bae Ta-Mi"}, "actor2": {"id": "1181895", "name": "Oh Ah-yeon", "character": "Jo A-Ra"}, "tv": "Search: WWW"},
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: {
-            id: "1747746",
-            name: "Woo Ji-hyeon",
-            character: "Choi Bong-Ki"
-          },
-          tv: "Search: WWW"
-        },
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: {
-            id: "1747746",
-            name: "Woo Ji-hyeon",
-            character: "Choi Bong-Ki"
-          },
-          tv: "hello"
-        },
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: {
-            id: "554945",
-            name: "Kwon Hae-hyo",
-            character: "Min Hong-ju"
-          },
-          tv: "Search: WWW"
-        },
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: {
-            id: "1762692",
-            name: "Ji Seung-hyun",
-            character: "Oh Jin-Woo"
-          },
-          tv: "Search: WWW"
-        },
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: {
-            id: "1879169",
-            name: "Lee Jae-wook",
-            character: "Seol Ji-Hwan"
-          },
-          tv: "Search: WWW"
-        },
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: {
-            id: "1655398",
-            name: "Jang Ki-yong",
-            character: "Park Mo-Gun"
-          },
-          tv: "Search: WWW"
-        },
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: {
-            id: "150126",
-            name: "Jeon Hye-jin",
-            character: "Song Ka-Kyung"
-          },
-          tv: "Search: WWW"
-        },
-        {
-          actor1: { id: "37940", name: "Im Soo-jung", character: "Bae Ta-Mi" },
-          actor2: { id: "123807", name: "Lee Da-hee", character: "Cha Hyun" },
-          tv: "Search: WWW"
-        },
-        {
-          actor1: { id: "123807", name: "Lee Da-hee", character: "Cha Hyun" },
-          actor2: { id: "1181895", name: "Oh Ah-yeon", character: "Jo A-Ra" },
-          tv: "Search: WWW"
-        }
-      ];
-      //TODO: 传参目前失败，采用简易的已有数据赋值
+      //this.aid = "37940";
+      console.log("-------NetworkChart--------")
+      console.log(this.acid);
+      console.log(this.ndata);
       var actorList = new Set();
       var id_name_dic = {}; //id-name字典
       var id_value_dic = {}; //id-值字典
@@ -176,11 +104,12 @@ export default {
       }
       this.Links = links;
       this.BFS(graph);
-      for (let actor of actorList) {
+      for (let actor in this.parents) {
+        //只考虑parents数组中的演员
         var len = 0;
         var vid = actor;
         while (vid != "NONE") {
-          vid = this.parent[vid];
+          vid = this.parents[vid];
           len++;
         }
         var nodetmp = {};
@@ -213,7 +142,7 @@ export default {
         var Links=this.Links;
         Nodes.forEach(function (node) {
             node.itemStyle = null;
-            node.symbolSize = node.value*5;
+            node.symbolSize = 5;//如果映射nodes.values的话，效果较差
             node.x = node.y = null;//random
             node.draggable = true;
         });
