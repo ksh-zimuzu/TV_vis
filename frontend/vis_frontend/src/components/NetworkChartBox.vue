@@ -1,6 +1,6 @@
 <template>
     <smart-widget title="演员合作网络">
-        <NetworkChart v-bind:acid="actorName" :ndata="networkData" ref="network_chart"/>
+        <NetworkChart v-bind:acid="actorid" :ndata="networkdata" ref="network_chart"/>
     </smart-widget>
 </template>
 
@@ -10,16 +10,14 @@ import _ from "lodash";
 export default {
     name:"NetworkChartBox",
     props:{
-        actorName: {
+        actorid: {
             type: String,
             required: true
         },
-        networkData: {
+        networkdata: {
             type: Array,
             required: true
         }
-        //actorName:String,
-        //networkData:Array,
     },
     data:function(){
         return{};
@@ -32,13 +30,12 @@ export default {
             this.resizeFunc();
         },
         showData: function(){
-            console.log("showdata");
-            console.log(this.NetworkData);
-            console.log(this.actorName);
+            console.log("--------NetworkChartBox---------------");
+            console.log(this.networkdata);
+            console.log(this.actorid);
         }
     },
     mounted: function() {
-        console.log("sankeychartbox");
         this.showData();
         this.resizeFunc = _.debounce(this.$refs.network_chart.chart.resize, 500);
         this.resizeFunc();
