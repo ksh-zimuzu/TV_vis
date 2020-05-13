@@ -7,7 +7,7 @@
               :y="layout[0].y"
               :w="layout[0].w"
               :h="layout[0].h"
-              :is-resizable="true"
+              :is-resizable="false"
               :min-w="4"
       >
         <world-map v-on:getCountry="getCountryName" />
@@ -18,7 +18,7 @@
               :y="layout[1].y"
               :w="layout[1].w"
               :h="layout[1].h"
-              :is-resizable="true"
+              :is-resizable="false"
               :min-w="4"
       >
         <liner :countryName="countryName" />
