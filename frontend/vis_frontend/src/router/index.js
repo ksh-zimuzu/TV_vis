@@ -11,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/map',
-      name: 'HelloWorld',
+      name: '全球趋势',
       component: HelloWorld
     },
     {

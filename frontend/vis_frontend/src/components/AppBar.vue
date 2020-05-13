@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar dark color="teal">
+  <v-app-bar dark color="teal">
     <v-btn icon v-if="show_back">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
@@ -20,7 +20,7 @@
     <v-btn icon :disabled="select==null" @click="jumpTo">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
-  </v-toolbar>
+  </v-app-bar>
 </template>
 
 <script>

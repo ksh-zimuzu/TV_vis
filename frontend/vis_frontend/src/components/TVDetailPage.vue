@@ -52,7 +52,7 @@
       <SimilarTVBox :current_tv_id="meta.tv_id" :simple="layout[5].h<2" />
     </GridItem>
     <GridItem :i="layout[6].i" :x="layout[6].x" :y="layout[6].y" :w="layout[6].w" :h="layout[6].h">
-      <RatingBox :ratings="ratings" :simple="layout[6].h<2" />
+      <RatingBox :ratings="ratings" :simple="layout[6].h<2" :loading="ratingLoading" />
     </GridItem>
     <GridItem
       :i="layout[7].i"
@@ -177,7 +177,8 @@ export default {
     mainChartLoading: true,
     dragLock: false,
     popularity: [],
-    popularityLoading: true
+    popularityLoading: true,
+    ratingLoading: true
   }),
   created: function() {
     var layout = localStorage.getItem("layout");
@@ -235,6 +236,11 @@ export default {
     },
     refreshData: function() {
       var load_data = TV_loader.fetch_all(this.tv_name);
+      this.plots = [];
+      this.plot = undefined;
+      this.mainChartLoading = true;
+      this.popularityLoading = true;
+      this.ratingLoading = true;
       load_data.meta.then(res => {
         this.meta = res.data;
       });
@@ -288,6 +294,7 @@ export default {
           "rottenTomatoes",
           res.data.rottenTomatoes ? res.data.rottenTomatoes : 0
         );
+        this.ratingLoading = false;
       });
 
       load_data.popularity

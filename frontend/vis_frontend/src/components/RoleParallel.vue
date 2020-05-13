@@ -96,7 +96,7 @@ export default {
   },
   watch: {
     option: function() {
-      chart.setOption(this.option);
+      chart.setOption(this.option, true);
     }
   },
   methods: {

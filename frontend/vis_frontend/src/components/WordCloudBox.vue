@@ -46,6 +46,8 @@ export default {
     },
     refreshWordFreq: function() {
       if (this.plot == undefined) {
+        this.loading = true;
+        word_freq = {};
         return;
       }
       this.loading = true;
