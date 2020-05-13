@@ -9,7 +9,7 @@
         :is-resizable="true"
         :min-w="4"
       >
-        <NetworkChartBox v-bind:actorid="actor_id" :networkdata="network_data"/>
+        <NetworkChartBox v-bind:actorName="actor_name" :networkData="network_data"/>
       </GridItem>
       <GridItem
         :i="layout[1].i"
@@ -39,23 +39,29 @@ export default {
   data: function() {
     return {
         network_data:[],
-        actor_id: "",
+        actor_id: String,
         layout: [
-            { x: 5, y: 0, w: 7, h: 4, i: "演员合作网络" },
-            { x: 0, y: 0, w: 5, h: 4, i: "演员个人生涯" },
+            { x: 5, y: 0, w: 7, h: 4, i: "网络图" },
+            { x: 0, y: 0, w: 5, h: 4, i: "演员生涯图" },
         ],
+        actor_name: String
     };
   },
-  created:function(){
-    console.log("-----------singleActorPage------------");
-    var routerid = this.$route.query.id
-    this.actor_id = routerid
+  prop: {
+
+  },
+  mounted:function(){
+    console.log("singleactorpage");
+    var routerid = this.$route.query.id;
+    this.actor_id = routerid;
+    console.log(this.actor_name);
+    console.log(this.actor_id);
     var load_data=single_actor.fetch_actor_network_data();
     load_data.then(value=> {
         this.network_data=value.data;
     });
-    console.log(this.actor_id);
-    console.log(this.network_data);
+    console.log(this.actor_name);
+    //console.log(this.network_data);
   },
 };
 </script>

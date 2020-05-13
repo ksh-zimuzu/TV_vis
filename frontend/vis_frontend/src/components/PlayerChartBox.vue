@@ -8,7 +8,7 @@
 import PlayerChart from "./PlayerChart";
 import _ from "lodash";
 import se from "../services/searchtv"
-import test from "../../public/data _id/2084790.json"
+//import test from "../../public/data _id/2084790.json"
 
 export default {
   name: "PlayerChartBox",
@@ -60,7 +60,8 @@ export default {
             豆瓣: 6
           }
         }
-      }
+      },
+      da:{}
     };
   },
   components: {
@@ -69,6 +70,14 @@ export default {
   methods: {
     resizeEvent: function() {
       this.resizeFunc();
+    },
+    getdata: function(actor_id){
+      var load_data = se.fetch(actor_id);
+      load_data.then((res) => {
+      console.log("result:");
+      console.log(res.data);
+      this.da = res.data;
+      })
     },
     cha: async function(da){
       for (var b in da){
@@ -82,15 +91,22 @@ export default {
       console.log(this.chartData);
     }
   },
-  mounted: function() {
+  mounted: async function() {
     //防抖动，降低重绘开销，500ms
-    //var da = se.fetch(this.actorid);
-    var da = test;
-    for(var a in da){
-      delete da[a].time;
+    await this.getdata(this.actorid);
+    var load_data = se.fetch(this.actorid);
+      await load_data.then((res) => {
+      console.log("result:");
+      console.log(res.data);
+      this.da = res.data;
+      })
+    console.log("da")
+    console.log(this.da)
+    for(var a in this.da){
+      delete this.da[a].time;
     }
-    console.log(da);
-    this.cha(da);
+    console.log(this.da);
+    await this.cha(this.da);
     
 
     this.resizeFunc = _.debounce(this.$refs.player_chart.chart.resize, 500);
