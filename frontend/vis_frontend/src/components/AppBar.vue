@@ -1,6 +1,6 @@
 <template>
   <v-app-bar dark color="teal">
-    <v-btn icon v-if="show_back">
+    <v-btn icon v-if="show_back" @click="$router.go(-1)">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
     <v-toolbar-title>{{title}}</v-toolbar-title>
@@ -58,16 +58,15 @@ export default {
       this.$router.push(`/tv/${this.select}`);
     }
   },
-  props: {
-    show_back: {
-      default: true
-    }
-  },
+  props: {},
   computed: {
     title: function() {
       var title = this.$route.name;
       var sub = this.$route.path.split("/")[2];
       return sub ? `${title} | ${sub}` : title;
+    },
+    show_back: function() {
+      return this.$route.path.split("/").length > 2;
     }
   }
 };
