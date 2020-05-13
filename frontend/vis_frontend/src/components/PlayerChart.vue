@@ -133,6 +133,14 @@ export default {
       };
       return res;
     }
+  },
+  watch: {
+    chartData:{
+      handler: function(val){
+        console.log(val);
+        this.refresh_chart();
+      }
+    }
   }
 };
 </script>

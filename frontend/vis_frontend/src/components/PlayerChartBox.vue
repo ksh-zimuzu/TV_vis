@@ -7,6 +7,8 @@
 <script>
 import PlayerChart from "./PlayerChart";
 import _ from "lodash";
+import se from "../services/searchtv"
+import test from "../../public/data _id/2084790.json"
 
 export default {
   name: "PlayerChartBox",
@@ -67,14 +69,47 @@ export default {
   methods: {
     resizeEvent: function() {
       this.resizeFunc();
+    },
+    cha: async function(da){
+      for (var b in da){
+        var p = await se.pop(b);
+        da[b].rating = {
+          豆瓣: p
+        };
+      }
+      this.chartData = da;
+      console.log("chartData")
+      console.log(this.chartData);
     }
   },
   mounted: function() {
     //防抖动，降低重绘开销，500ms
+    //var da = se.fetch(this.actorid);
+    var da = test;
+    for(var a in da){
+      delete da[a].time;
+    }
+    console.log(da);
+    this.cha(da);
+    
+
     this.resizeFunc = _.debounce(this.$refs.player_chart.chart.resize, 500);
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
     this.$parent.$on("container-resized", this.resizeEvent);
+  },
+  watch:{
+    chartData:{
+      handler: function(val){
+      console.log(val)
+      this.resizeFunc = _.debounce(this.$refs.player_chart.chart.resize, 500);
+      console.log("重绘");
+      this.resizeFunc(); //绘制完成后修改一下尺寸
+      this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+      this.$parent.$on("container-resized", this.resizeEvent);
+    },
+    deep: true
+    }
   }
 };
 </script>

@@ -9,7 +9,7 @@
         :is-resizable="true"
         :min-w="4"
       >
-        <NetworkChartBox v-bind:actorName="actor_name" :networkData="network_data"/>
+        <NetworkChartBox v-bind:actorName="actor_id" :networkData="network_data"/>
       </GridItem>
       <GridItem
         :i="layout[1].i"
@@ -47,21 +47,19 @@ export default {
     };
   },
   prop: {
-    actor_name: {
-      required: true,
-      type: String
-    },
+
   },
   mounted:function(){
     console.log("singleactorpage");
-    var routerid = this.$route.query.id
-    this.actor_id = routerid
+    var routerid = this.$route.query.id;
+    this.actor_id = routerid;
+    console.log(this.actor_id);
     var load_data=single_actor.fetch_actor_network_data();
     load_data.then(value=> {
         this.network_data=value.data;
     });
-    console.log(this.actor_name);
-    console.log(this.network_data);
+
+    //console.log(this.network_data);
   },
 };
 </script>
