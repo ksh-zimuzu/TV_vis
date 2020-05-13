@@ -1,6 +1,9 @@
 <template>
-  <smart-widget title="演员生涯分析">
+  <smart-widget v-if="non === 0" title="演员生涯分析">
     <PlayerChart :chartData="chartData" ref="player_chart" />
+  </smart-widget>
+  <smart-widget v-else title="演员生涯分析">
+    <img class = "img" src = "../../public/error.jpg"/>
   </smart-widget>
 </template>
 
@@ -60,7 +63,8 @@ export default {
           }
         }
       },
-      da:{}
+      da:{},
+      non: 1
     };
   },
   components: {
@@ -106,6 +110,7 @@ export default {
       console.log(res.data);
       this.da = res.data;
       }).catch((err) =>{
+        this.non = 1;
         console.log(err);
         alert("该演员生涯分析缺失，制作组正在征集数据噢awa")
       });
