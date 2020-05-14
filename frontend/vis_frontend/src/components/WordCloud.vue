@@ -6,7 +6,7 @@
 import echarts from "echarts";
 import "echarts-wordcloud";
 import _ from "lodash";
-
+var chart = null;
 export default {
   name: "WorldCloud",
   data: () => ({
@@ -46,12 +46,20 @@ export default {
     }
   },
   mounted: function() {
-    this.chart = echarts.init(this.$el);
-    this.chart.setOption(this.options);
+    chart = echarts.init(this.$el);
+    chart.setOption(this.options);
   },
   watch: {
     options: function() {
-      this.chart.setOption(this.options, true);
+      chart.setOption(this.options, true);
+    }
+  },
+  beforeDestroy() {
+    chart.isDisposed() || chart.dispose();
+  },
+  methods: {
+    resize() {
+      chart.resize();
     }
   }
 };

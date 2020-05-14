@@ -26,7 +26,7 @@ export default new Router({
       props: true
     },
     {
-      path: '/actor/:actor_name',
+      path: '/actor/:actor_id',
       name: "演员详情",
       component: SingleActorPage,
       props: true

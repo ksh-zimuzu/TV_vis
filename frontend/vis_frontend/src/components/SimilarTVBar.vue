@@ -5,7 +5,7 @@
 <script>
 import echarts from "echarts";
 import _ from "lodash";
-
+var chart = null;
 export default {
   name: "SimilarBar",
   data: () => ({
@@ -71,12 +71,20 @@ export default {
   },
   watch: {
     options: function() {
-      this.chart.setOption(this.options);
+      chart.setOption(this.options);
     }
   },
   mounted: function() {
-    this.chart = echarts.init(this.$el);
-    this.chart.setOption(this.options);
+    chart = echarts.init(this.$el);
+    chart.setOption(this.options);
+  },
+  beforeDestroy() {
+    chart.isDisposed() || chart.dispose();
+  },
+  methods: {
+    resize() {
+      chart.resize();
+    }
   }
 };
 </script>

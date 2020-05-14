@@ -4,7 +4,7 @@
 
 <script>
 import echarts from "echarts";
-
+var chart = undefined;
 export default {
   props: {
     popularity: {
@@ -97,14 +97,22 @@ export default {
     }
   },
   mounted: function() {
-    this.chart = echarts.init(this.$el);
-    this.chart.setOption(this.option);
+    chart = echarts.init(this.$el);
+    chart.setOption(this.option);
   },
   watch: {
     option: function() {
-      this.chart.setOption(this.option);
+      chart.setOption(this.option);
     }
   },
-  name: "PopularityLine"
+  name: "PopularityLine",
+  beforeDestroy() {
+    chart.isDisposed() || chart.dispose();
+  },
+  methods: {
+    resize() {
+      chart.resize();
+    }
+  }
 };
 </script>

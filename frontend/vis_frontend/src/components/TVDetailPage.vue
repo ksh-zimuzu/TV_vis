@@ -1,109 +1,139 @@
 <template>
-  <GridLayout
-    :layout.sync="layout"
-    :col-num="12"
-    @layout-updated="saveLayout"
-    style="margin-bottom:50px"
-    :is-draggable="!dragLock"
-    :is-resizable="!dragLock"
-    responsive
-    vertical-compact
-  >
-    <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
-      <ActorPlot :plot="plot" :highlightRole="heighlightAt" :roles="roles" />
-    </GridItem>
-    <GridItem
-      :i="layout[0].i"
-      :x="layout[0].x"
-      :y="layout[0].y"
-      :w="layout[0].w"
-      :h="layout[0].h"
-      id="season-meta"
+  <keep-alive>
+    <GridLayout
+      :layout.sync="layout"
+      :col-num="12"
+      @layout-updated="saveLayout"
+      style="margin-bottom:50px"
+      :is-draggable="!dragLock"
+      :is-resizable="!dragLock"
+      responsive
+      vertical-compact
     >
-      <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
-    </GridItem>
-    <GridItem
-      :i="layout[1].i"
-      :x="layout[1].x"
-      :y="layout[1].y"
-      :w="layout[1].w"
-      :h="layout[1].h"
-      :minW="5"
-      :minH="2"
-    >
-      <PlayerAvatarBox :players="slicedActors" />
-    </GridItem>
-    <GridItem :i="layout[2].i" :x="layout[2].x" :y="layout[2].y" :w="layout[2].w" :h="layout[2].h">
-      <WordCloudBox :plot="plot" :userDict="userDict" :simple="layout[2].h<2" />
-    </GridItem>
-    <GridItem
-      :i="layout[3].i"
-      :x="layout[3].x"
-      :y="layout[3].y"
-      :w="layout[3].w"
-      :h="layout[3].h"
-      dragAllowFrom=".widget-header"
-    >
-      <MainChartBox
-        :EpisodeData="Math.max(...meta.episodes)"
-        :SankeyData="FPs"
-        :loading="mainChartLoading"
-      />
-    </GridItem>
-    <GridItem :i="layout[5].i" :x="layout[5].x" :y="layout[5].y" :w="layout[5].w" :h="layout[5].h">
-      <SimilarTVBox :current_tv_id="meta.tv_id" :simple="layout[5].h<2" />
-    </GridItem>
-    <GridItem :i="layout[6].i" :x="layout[6].x" :y="layout[6].y" :w="layout[6].w" :h="layout[6].h">
-      <RatingBox :ratings="ratings" :simple="layout[6].h<2" :loading="ratingLoading" />
-    </GridItem>
-    <GridItem
-      :i="layout[7].i"
-      :x="layout[7].x"
-      :y="layout[7].y"
-      :w="layout[7].w"
-      :h="layout[7].h"
-      :minW="2"
-    >
-      <smart-widget simple>
-        <div class="d-flex justify-center">
-          <div class="mx-2">
-            <v-btn fab color="error" x-large @click="resetLayout">
-              <v-icon>{{mdiRefresh}}</v-icon>
-            </v-btn>
-            <div class="subtitle-1 text-center pt-3">重置布局</div>
+      <GridItem
+        :i="layout[4].i"
+        :x="layout[4].x"
+        :y="layout[4].y"
+        :w="layout[4].w"
+        :h="layout[4].h"
+      >
+        <ActorPlot :plot="plot" :highlightRole="heighlightAt" :roles="roles" />
+      </GridItem>
+      <GridItem
+        :i="layout[0].i"
+        :x="layout[0].x"
+        :y="layout[0].y"
+        :w="layout[0].w"
+        :h="layout[0].h"
+        id="season-meta"
+      >
+        <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
+      </GridItem>
+      <GridItem
+        :i="layout[1].i"
+        :x="layout[1].x"
+        :y="layout[1].y"
+        :w="layout[1].w"
+        :h="layout[1].h"
+        :minW="5"
+        :minH="2"
+      >
+        <PlayerAvatarBox :players="slicedActors" />
+      </GridItem>
+      <GridItem
+        :i="layout[2].i"
+        :x="layout[2].x"
+        :y="layout[2].y"
+        :w="layout[2].w"
+        :h="layout[2].h"
+      >
+        <WordCloudBox :plot="plot" :userDict="userDict" :simple="layout[2].h<2" />
+      </GridItem>
+      <GridItem
+        :i="layout[3].i"
+        :x="layout[3].x"
+        :y="layout[3].y"
+        :w="layout[3].w"
+        :h="layout[3].h"
+        dragAllowFrom=".widget-header"
+      >
+        <MainChartBox
+          :EpisodeData="Math.max(...meta.episodes)"
+          :SankeyData="FPs"
+          :loading="mainChartLoading"
+        />
+      </GridItem>
+      <GridItem
+        :i="layout[5].i"
+        :x="layout[5].x"
+        :y="layout[5].y"
+        :w="layout[5].w"
+        :h="layout[5].h"
+      >
+        <SimilarTVBox :current_tv_id="meta.tv_id" :simple="layout[5].h<2" />
+      </GridItem>
+      <GridItem
+        :i="layout[6].i"
+        :x="layout[6].x"
+        :y="layout[6].y"
+        :w="layout[6].w"
+        :h="layout[6].h"
+      >
+        <RatingBox :ratings="ratings" :simple="layout[6].h<2" :loading="ratingLoading" />
+      </GridItem>
+      <GridItem
+        :i="layout[7].i"
+        :x="layout[7].x"
+        :y="layout[7].y"
+        :w="layout[7].w"
+        :h="layout[7].h"
+        :minW="2"
+      >
+        <smart-widget simple>
+          <div class="d-flex justify-center">
+            <div class="mx-2">
+              <v-btn fab color="error" x-large @click="resetLayout">
+                <v-icon>{{mdiRefresh}}</v-icon>
+              </v-btn>
+              <div class="subtitle-1 text-center pt-3">重置布局</div>
+            </div>
+            <div class="mx-2">
+              <v-btn fab color="primary" x-large @click="dragLock=!dragLock">
+                <v-icon v-if="dragLock">{{mdiLock}}</v-icon>
+                <v-icon v-else>{{mdiLockOpenVariant}}</v-icon>
+              </v-btn>
+              <div v-if="!dragLock" class="subtitle-1 text-center pt-3">锁定布局</div>
+              <div v-else class="subtitle-1 text-center pt-3">解锁布局</div>
+            </div>
           </div>
-          <div class="mx-2">
-            <v-btn fab color="primary" x-large @click="dragLock=!dragLock">
-              <v-icon v-if="dragLock">{{mdiLock}}</v-icon>
-              <v-icon v-else>{{mdiLockOpenVariant}}</v-icon>
-            </v-btn>
-            <div v-if="!dragLock" class="subtitle-1 text-center pt-3">锁定布局</div>
-            <div v-else class="subtitle-1 text-center pt-3">解锁布局</div>
-          </div>
-        </div>
-      </smart-widget>
-    </GridItem>
-    <GridItem
-      :i="layout[8].i"
-      :x="layout[8].x"
-      :y="layout[8].y"
-      :w="layout[8].w"
-      :h="layout[8].h"
-      :minW="2"
-    >
-      <PopularityBox :loading="popularityLoading" :popularity="popularity" :simple="layout[8].h<2" />
-    </GridItem>
-    <GridItem
-      :i="layout[9].i"
-      :x="layout[9].x"
-      :y="layout[9].y"
-      :w="layout[9].w"
-      :h="layout[9].h"
-      :minW="2"
-    >
-      <RoleParallelBox :simple="layout[9].h<2" />
-    </GridItem>
-  </GridLayout>
+        </smart-widget>
+      </GridItem>
+      <GridItem
+        :i="layout[8].i"
+        :x="layout[8].x"
+        :y="layout[8].y"
+        :w="layout[8].w"
+        :h="layout[8].h"
+        :minW="2"
+      >
+        <PopularityBox
+          :loading="popularityLoading"
+          :popularity="popularity"
+          :simple="layout[8].h<2"
+        />
+      </GridItem>
+      <GridItem
+        :i="layout[9].i"
+        :x="layout[9].x"
+        :y="layout[9].y"
+        :w="layout[9].w"
+        :h="layout[9].h"
+        :minW="2"
+      >
+        <RoleParallelBox :simple="layout[9].h<2" />
+      </GridItem>
+    </GridLayout>
+  </keep-alive>
 </template>
 
 <script>
@@ -314,7 +344,7 @@ export default {
       this.refreshData();
     }
   },
-  beforeRouteLeave(to, from, next) {
+  beforeDestroy(to, from, next) {
     this.$EventBus.$off("episode-focus");
     this.$EventBus.$off("actor-focus");
     this.$EventBus.$off("loading");

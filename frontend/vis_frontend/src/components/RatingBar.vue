@@ -5,6 +5,9 @@
 <script>
 import echarts from "echarts";
 import _ from "lodash";
+
+var chart = null;
+
 export default {
   name: "RatingBar",
   data: () => ({
@@ -76,12 +79,20 @@ export default {
   },
   watch: {
     option: function() {
-      this.chart.setOption(this.option);
+      chart.setOption(this.option);
     }
   },
   mounted: function() {
-    this.chart = echarts.init(this.$el);
-    this.chart.setOption(this.option);
+    chart = echarts.init(this.$el);
+    chart.setOption(this.option);
+  },
+  beforeDestroy() {
+    chart.isDisposed() || chart.dispose();
+  },
+  methods: {
+    resize() {
+      chart.resize();
+    }
   }
 };
 </script>

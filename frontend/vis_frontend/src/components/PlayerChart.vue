@@ -6,6 +6,8 @@
 import echarts from "echarts";
 import _ from "lodash";
 
+var chart = undefined;
+
 export default {
   name: "PlayerChart",
   props: {
@@ -32,7 +34,7 @@ export default {
     };
   },
   mounted() {
-    this.chart = echarts.init(this.$el);
+    chart = echarts.init(this.$el);
     this.refresh_chart();
   },
   methods: {
@@ -40,7 +42,7 @@ export default {
       /*使用option刷新chart
        */
       var options = this.options;
-      this.chart.setOption(options);
+      chart.setOption(options);
     },
     color_picker: function() {
       var i = 1;
@@ -48,6 +50,9 @@ export default {
         return this.colors[i++ % this.colors.length];
       };
       return pick_color;
+    },
+    resize() {
+      chart.resize();
     }
   },
   computed: {
@@ -151,6 +156,9 @@ export default {
         this.refresh_chart();
       }
     }
+  },
+  beforeDestroy() {
+    chart.isDisposed() || chart.dispose();
   }
 };
 </script>

@@ -40,12 +40,28 @@ export default {
     NetworkChartBox,
     PlayerChartBox
   },
-
+  methods: {
+    refresh_data: function() {
+      //console.log("---singleActorPage---");
+      //var routerid = this.$route.query.id;
+      //this.actor_id = routerid;
+      var load_data = single_actor.fetch_actor_network_data();
+      this.network_loading = true;
+      load_data
+        .then(value => {
+          this.network_data = value.data;
+        })
+        .then(() => {
+          this.network_loading = false;
+          //console.log(this.network_loading);
+        });
+    }
+  },
   data: function() {
     return {
       network_loading: true,
       network_data: [],
-      actor_id: "",
+      //actor_id: "",
       layout: [
         { x: 5, y: 0, w: 7, h: 4, i: "演员合作网络" },
         { x: 0, y: 0, w: 5, h: 4, i: "演员个人生涯" }
@@ -53,19 +69,16 @@ export default {
     };
   },
   created: function() {
-    //console.log("---singleActorPage---");
-    var routerid = this.$route.query.id;
-    this.actor_id = routerid;
-    var load_data = single_actor.fetch_actor_network_data();
-    this.network_loading = true;
-    load_data
-      .then(value => {
-        this.network_data = value.data;
-      })
-      .then(() => {
-        this.network_loading = false;
-        //console.log(this.network_loading);
-      });
+    this.refresh_data();
+  },
+  activated: function() {
+    this.refresh_data();
+  },
+  props: {
+    actor_id: {
+      type: String,
+      required: true
+    }
   }
 };
 </script>

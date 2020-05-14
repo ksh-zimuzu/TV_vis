@@ -9,7 +9,7 @@ export default {
   props: {
     acid: String,
     ndata: Array,
-    loading:Boolean,
+    loading: Boolean
   },
   data: function() {
     return {
@@ -35,8 +35,8 @@ export default {
       queue.push(sid);
       seen.add(sid);
       p[sid] = "NONE";
-      var count=0;
-      while (queue.length > 0 && count<6) {
+      var count = 0;
+      while (queue.length > 0 && count < 6) {
         //使用BFS时，只考虑6层联系内的演员
         var vertex = queue.shift();
         var vertexnodes = graph[String(vertex)];
@@ -64,7 +64,7 @@ export default {
       }
       //获取邻接表
       //this.aid = "37940";
-      console.log("-------NetworkChart--------")
+      console.log("-------NetworkChart--------");
       console.log(this.acid);
       console.log(this.ndata);
       var actorList = new Set();
@@ -74,23 +74,27 @@ export default {
       for (let i = 0; i < this.ndata.length; i++) {
         actorList.add(this.ndata[i]["actor1"]["id"]);
         actorList.add(this.ndata[i]["actor2"]["id"]);
-        id_name_dic[this.ndata[i]["actor1"]["id"]] = this.ndata[i]["actor1"]["name"];
-        id_name_dic[this.ndata[i]["actor2"]["id"]] = this.ndata[i]["actor2"]["name"];
+        id_name_dic[this.ndata[i]["actor1"]["id"]] = this.ndata[i]["actor1"][
+          "name"
+        ];
+        id_name_dic[this.ndata[i]["actor2"]["id"]] = this.ndata[i]["actor2"][
+          "name"
+        ];
       }
       var graph = {};
       var links = [];
       for (let i = 0; i < this.ndata.length; i++) {
-          var key1=this.ndata[i]["actor1"]["id"];
-          var key2=this.ndata[i]["actor2"]["id"]
-        if(key1 in id_value_dic){
-            id_value_dic[key1]++;
-        }else{
-            id_value_dic[key1]=0;
+        var key1 = this.ndata[i]["actor1"]["id"];
+        var key2 = this.ndata[i]["actor2"]["id"];
+        if (key1 in id_value_dic) {
+          id_value_dic[key1]++;
+        } else {
+          id_value_dic[key1] = 0;
         }
-        if(key2 in id_value_dic){
-            id_value_dic[key2]++;
-        }else{
-            id_value_dic[key2]=0;
+        if (key2 in id_value_dic) {
+          id_value_dic[key2]++;
+        } else {
+          id_value_dic[key2] = 0;
         }
         if (key2 in graph) {
           graph[key2].push(key1);
@@ -122,8 +126,8 @@ export default {
         var nodetmp = {};
         nodetmp["id"] = actor;
         nodetmp["name"] = id_name_dic[actor];
-        nodetmp["category"] = len-1;
-        nodetmp["value"]= id_value_dic[actor];
+        nodetmp["category"] = len - 1;
+        nodetmp["value"] = id_value_dic[actor];
         nodes.push(nodetmp);
       }
       this.Nodes = nodes; //结点
@@ -135,63 +139,73 @@ export default {
     }
   },
   computed: {
-    chart_option(){
-        var colors=["#bd2d28","#e58429","#e3ba22","#0f8c79","#42a5b3","#8e6c8a"];
-        var categories = [];
-        for (var i = 0; i <6; i++) {
-            categories[i] = {
-                name: '第' + String(i+1)+'层',
-                itemStyle:{
-                    color:colors[i],
-                }
-            };
-        }
-        var Nodes=this.Nodes;
-        var Links=this.Links;
-        Nodes.forEach(function (node) {
-            node.itemStyle = null;
-            node.symbolSize = 5;//如果映射nodes.values的话，效果较差
-            node.x = node.y = null;//random
-            node.draggable = true;
-        });
-        var op={
-            tooltip: {},
-            legend: [{
-                data: categories.map(function (a) {
-                    return a.name;
-                })
-            }],
-            animation: false,
-            series : [
-                {
-                    type: 'graph',
-                    layout: 'force',
-                    data: Nodes,
-                    links: Links,
-                    categories: categories,
-                    roam: true,
-                    label: {
-                        position: 'right'
-                    },
-                    force: {
-                        repulsion: 100
-                    }
-                }
-            ]
-        }
-        return op;
-    },
-
+    chart_option() {
+      var colors = [
+        "#bd2d28",
+        "#e58429",
+        "#e3ba22",
+        "#0f8c79",
+        "#42a5b3",
+        "#8e6c8a"
+      ];
+      var categories = [];
+      for (var i = 0; i < 6; i++) {
+        categories[i] = {
+          name: "第" + String(i + 1) + "层",
+          itemStyle: {
+            color: colors[i]
+          }
+        };
+      }
+      var Nodes = this.Nodes;
+      var Links = this.Links;
+      Nodes.forEach(function(node) {
+        node.itemStyle = null;
+        node.symbolSize = 5; //如果映射nodes.values的话，效果较差
+        node.x = node.y = null; //random
+        node.draggable = true;
+      });
+      var op = {
+        tooltip: {},
+        legend: [
+          {
+            data: categories.map(function(a) {
+              return a.name;
+            })
+          }
+        ],
+        animation: false,
+        series: [
+          {
+            type: "graph",
+            layout: "force",
+            data: Nodes,
+            links: Links,
+            categories: categories,
+            roam: true,
+            label: {
+              position: "right"
+            },
+            force: {
+              repulsion: 100
+            }
+          }
+        ]
+      };
+      return op;
+    }
   },
   watch: {
-      ndata() {
-      },
+    ndata() {},
     loading() {
       if (!this.loading) {
         this.getData();
         this.create_chart();
       }
     }
+  },
+  beforeDestroy() {
+    this.chart.isDisposed() || this.chart.dispose();
   }
 };
 </script>

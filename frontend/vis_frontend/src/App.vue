@@ -1,7 +1,11 @@
 <template>
   <v-app id="app">
     <AppBar />
-    <router-view />
+    <v-content>
+      <keep-alive>
+        <router-view />
+      </keep-alive>
+    </v-content>
     <v-snackbar v-model="snackbar">
       {{ snackbar_text }}
       <v-btn color="pink" text @click="snackbar = false">关闭</v-btn>

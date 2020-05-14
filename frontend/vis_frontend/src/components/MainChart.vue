@@ -429,6 +429,9 @@ export default {
         this.$EventBus.$emit("loading", { source: "MainChart" });
       }
     }
+  },
+  beforeDestroy() {
+    chart.isDisposed() || chart.dispose();
   }
 };
 

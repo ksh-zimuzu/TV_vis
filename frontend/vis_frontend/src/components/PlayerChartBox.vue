@@ -3,19 +3,19 @@
     <PlayerChart :chartData="chartData" ref="player_chart" />
   </smart-widget>
   <smart-widget v-else-if="non === 1" title="演员生涯分析">
-    <img class = "img" src = "../../public/error.jpg"/>
+    <img class="img" src="../../public/error.jpg" />
   </smart-widget>
 </template>
 
 <script>
 import PlayerChart from "./PlayerChart";
 import _ from "lodash";
-import se from "../services/searchtv"
+import se from "../services/searchtv";
 
 export default {
   name: "PlayerChartBox",
   props: {
-    actorid:String
+    actorid: String
   },
   data: function() {
     return {
@@ -63,7 +63,7 @@ export default {
           }
         }
       },
-      da:{},
+      da: {},
       non: 0
     };
   },
@@ -74,72 +74,78 @@ export default {
     resizeEvent: function() {
       this.resizeFunc();
     },
-    getdata: function(actor_id){
+    getdata: function(actor_id) {
       var load_data = se.fetch(actor_id);
-      load_data.then((res) => {
-      console.log("result:");
-      console.log(res.data);
-      this.da = res.data;
-      })
+      load_data.then(res => {
+        console.log("result:");
+        console.log(res.data);
+        this.da = res.data;
+      });
     },
-    cha: async function(da){
-      for (var b in da){
+    cha: async function(da) {
+      for (var b in da) {
         var p = await se.pop(b);
-        if (p == undefined){
+        if (p == undefined) {
           da[b].rating = {
-          豆瓣: 0
-        };
-        } else{
+            豆瓣: 0
+          };
+        } else {
           da[b].rating = {
-          豆瓣: p
-        };
+            豆瓣: p
+          };
         }
-        
       }
       this.chartData = da;
-      console.log("chartData")
+      console.log("chartData");
       console.log(this.chartData);
+    },
+    refresh_data: async function() {
+      //防抖动，降低重绘开销，500ms
+      this.non = 0;
+      await this.getdata(this.actorid);
+      var load_data = se.fetch(this.actorid);
+      await load_data
+        .then(res => {
+          console.log("result:");
+          console.log(res.data);
+          this.da = res.data;
+        })
+        .catch(err => {
+          this.non = 1;
+          console.log(err);
+          alert("该演员生涯分析缺失，制作组正在征集数据噢awa");
+        });
+      console.log("da");
+      console.log(this.da);
+      for (var a in this.da) {
+        delete this.da[a].time;
+      }
+      console.log("da2:");
+      console.log(this.da);
+      await this.cha(this.da);
     }
   },
   mounted: async function() {
-    //防抖动，降低重绘开销，500ms
-    await this.getdata(this.actorid);
-    var load_data = se.fetch(this.actorid);
-      await load_data.then((res) => {
-      console.log("result:");
-      console.log(res.data);
-      this.da = res.data;
-      }).catch((err) =>{
-        this.non = 1;
-        console.log(err);
-        alert("该演员生涯分析缺失，制作组正在征集数据噢awa")
-      });
-    console.log("da")
-    console.log(this.da)
-    for(var a in this.da){
-      delete this.da[a].time;
-    }
-    console.log("da2:")
-    console.log(this.da);
-    await this.cha(this.da);
-    
-
-    this.resizeFunc = _.debounce(this.$refs.player_chart.chart.resize, 500);
+    this.resizeFunc = _.debounce(this.$refs.player_chart.resize, 500);
     this.resizeFunc(); //绘制完成后修改一下尺寸
     this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
     this.$parent.$on("container-resized", this.resizeEvent);
+    await this.refresh_data();
   },
-  watch:{
-    chartData:{
-      handler: function(val){
-      console.log(val)
-      this.resizeFunc = _.debounce(this.$refs.player_chart.chart.resize, 500);
-      console.log("重绘");
-      this.resizeFunc(); //绘制完成后修改一下尺寸
-      this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
-      this.$parent.$on("container-resized", this.resizeEvent);
+  watch: {
+    chartData: {
+      handler: function(val) {
+        console.log(val);
+        this.resizeFunc = _.debounce(this.$refs.player_chart.resize, 500);
+        console.log("重绘");
+        this.resizeFunc(); //绘制完成后修改一下尺寸
+        this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+        this.$parent.$on("container-resized", this.resizeEvent);
+      },
+      deep: true
     },
-    deep: true
+    actorid: async function() {
+      await this.refresh_data();
     }
   }
 };

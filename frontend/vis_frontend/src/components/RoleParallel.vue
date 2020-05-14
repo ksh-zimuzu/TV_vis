@@ -100,6 +100,9 @@ export default {
     resize: function() {
       chart.resize();
     }
+  },
+  beforeDestroy() {
+    chart.isDisposed() || chart.dispose();
   }
 };
 </script>
