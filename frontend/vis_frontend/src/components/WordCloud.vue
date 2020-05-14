@@ -51,7 +51,7 @@ export default {
   },
   watch: {
     options: function() {
-      this.chart.setOption(this.options);
+      this.chart.setOption(this.options, true);
     }
   }
 };

@@ -313,6 +313,12 @@ export default {
     tv_name: function() {
       this.refreshData();
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$EventBus.$off("episode-focus");
+    this.$EventBus.$off("actor-focus");
+    this.$EventBus.$off("loading");
+    next();
   }
 };
 </script>
