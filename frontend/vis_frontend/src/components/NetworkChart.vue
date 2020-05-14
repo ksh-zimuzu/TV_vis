@@ -8,7 +8,8 @@ export default {
   name: "NetworkChart",
   props: {
     acid: String,
-    ndata: Array
+    ndata: Array,
+    loading:Boolean,
   },
   data: function() {
     return {
@@ -17,6 +18,7 @@ export default {
       Links: Array,
       Graph: {}, //邻接表
       parents: {},
+      ready: false
     };
   },
   mounted() {
@@ -55,6 +57,11 @@ export default {
       console.log(this.parents);
     },
     getData() {
+      //this.ready = false;
+      if (this.loading) {
+        console.log("not yet!");
+        return;
+      }
       //获取邻接表
       //this.aid = "37940";
       console.log("-------NetworkChart--------")
@@ -120,6 +127,7 @@ export default {
         nodes.push(nodetmp);
       }
       this.Nodes = nodes; //结点
+      //this.ready = true;
     },
     create_chart() {
       var options = this.chart_option;
@@ -172,6 +180,17 @@ export default {
             ]
         }
         return op;
+    },
+
+  },
+  watch: {
+      ndata() {
+      },
+    loading() {
+      if (!this.loading) {
+        this.getData();
+        this.create_chart();
+      }
     }
   }
 };
