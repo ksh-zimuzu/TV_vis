@@ -61,6 +61,7 @@ export default {
     this.resizeFunc = _.debounce(this.$refs.main_chart.resize, 500);
     this.resizeFunc();
     this.$parent.$on("resized", this.resizeEvent);
+    this.$parent.$on("container-resized", this.resizeEvent);
   },
   watch: {
     SankeyData: function() {

@@ -1,11 +1,13 @@
 <template>
   <GridLayout
-    :layout="layout"
+    :layout.sync="layout"
     :col-num="12"
     @layout-updated="saveLayout"
     style="margin-bottom:50px"
     :is-draggable="!dragLock"
     :is-resizable="!dragLock"
+    responsive
+    vertical-compact
   >
     <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
       <ActorPlot :plot="plot" :highlightRole="heighlightAt" :roles="roles" />
@@ -193,6 +195,8 @@ export default {
     } else {
       this.layout = this.defaultLayout;
     }
+    this.$EventBus.$on("episode-focus", this.focus);
+    this.$EventBus.$on("actor-focus", this.hover);
   },
   mounted: function() {
     this.refreshData();
@@ -300,8 +304,9 @@ export default {
       load_data.popularity
         .then(res => (this.popularity = res.data))
         .then(() => (this.popularityLoading = false));
-      this.$EventBus.$on("episode-focus", this.focus);
-      this.$EventBus.$on("actor-focus", this.hover);
+      this.$EventBus.$emit("episode-focus", {
+        focusIndex: 0
+      });
     }
   },
   watch: {
