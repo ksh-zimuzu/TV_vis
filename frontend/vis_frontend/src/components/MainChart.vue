@@ -423,6 +423,8 @@ export default {
       if (!this.loading) {
         this.dataFormat();
         this.create_chart();
+      } else {
+        this.$EventBus.$emit("loading", { source: "MainChart" });
       }
     }
   }

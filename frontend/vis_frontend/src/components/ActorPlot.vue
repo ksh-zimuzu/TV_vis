@@ -7,6 +7,7 @@
 
 
 <script>
+import _ from "lodash";
 export default {
   name: "ActorPlot",
   props: {
@@ -23,6 +24,19 @@ export default {
       type: String,
       required: false,
       default: "#cf312c"
+    },
+    roles: {
+      default: () => ({})
+    },
+    colors: {
+      default: () => [
+        "#9a3e25",
+        "#166b90",
+        "#708259",
+        "#bd2d28",
+        "#0f8c79",
+        "#5c8100"
+      ]
     }
   },
   computed: {
@@ -34,13 +48,34 @@ export default {
         if (typeof highlightRole == "string") {
           highlightRole = [highlightRole];
         }
+        var that = this;
+        highlightRole = highlightRole.map(function(role) {
+          return that.roles[role] ? [role].concat(that.roles[role]) : [role];
+        });
+        highlightRole = _.flatten(highlightRole);
         var re = new RegExp(highlightRole.join("|"), "g");
         return this.plot.replace(
           re,
           match =>
-            `<span class="font-weight-black" style="color:${this.highlightColor}">${match}</span>`
+            `<mark class="font-weight-black" style="background-color:${this.roleColors.get(
+              match
+            )};color:white">${match}</mark>`
         );
       }
+    },
+    roleColors: function() {
+      return new Map(
+        _.chain(this.roles)
+          .toPairs()
+          .map(([role, alias]) => {
+            var color = _.sample(this.colors);
+            var aliasColor = alias.map(t => [t, color]);
+            var roleColor = aliasColor.concat([[role, color]]);
+            return roleColor;
+          })
+          .flatten()
+          .value()
+      );
     }
   },
   methods: {
@@ -61,7 +96,7 @@ export default {
   watch: {
     raw_html() {
       this.$nextTick(() => {
-        this.$vuetify.goTo("span.font-weight-black", {
+        this.$vuetify.goTo("mark.font-weight-black", {
           container: this.$el
         });
       });

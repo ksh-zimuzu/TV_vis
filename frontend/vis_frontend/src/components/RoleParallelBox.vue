@@ -44,8 +44,13 @@ export default {
       nodes = msg;
       preChartData = this.preChartData();
       this.chartData = this.getChartData(preChartData);
+      this.loading = false;
     });
-    this.loading = false;
+    this.$EventBus.$on("loading", msg => {
+      if (msg.source == "MainChart") {
+        this.loading = true;
+      }
+    });
   },
   computed: {},
   methods: {
