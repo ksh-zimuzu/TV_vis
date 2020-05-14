@@ -7,6 +7,7 @@
     :is-draggable="!dragLock"
     :is-resizable="!dragLock"
     responsive
+    vertical-compact
   >
     <GridItem :i="layout[4].i" :x="layout[4].x" :y="layout[4].y" :w="layout[4].w" :h="layout[4].h">
       <ActorPlot :plot="plot" :highlightRole="heighlightAt" :roles="roles" />
