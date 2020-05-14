@@ -10,7 +10,7 @@
               :is-resizable="false"
               :min-w="4"
       >
-        <world-map v-on:getCountry="getCountryName" />
+        <mapBox />
       </GridItem>
       <GridItem
               :i="layout[1].i"
@@ -21,7 +21,18 @@
               :is-resizable="false"
               :min-w="4"
       >
-        <liner :countryName="countryName" />
+        <lineBox />
+      </GridItem>
+      <GridItem
+              :i="layout[2].i"
+              :x="layout[2].x"
+              :y="layout[2].y"
+              :w="layout[2].w"
+              :h="layout[2].h"
+              :is-resizable="false"
+              :min-w="4"
+      >
+        <mapButtons />
       </GridItem>
     </GridLayout>
   </v-app>
@@ -29,31 +40,27 @@
 
 <script>
   import VueGridLayout from "vue-grid-layout";
-  import worldMap from "./worldMap";
-  import Liner from "./Liner";
+  import mapBox from "./mapBox";
+  import lineBox from "./lineBox"
+  import mapButtons from "./mapButtons";
 
   export default {
     name: "MainInterface",
     components: {
       GridLayout: VueGridLayout.GridLayout,
       GridItem: VueGridLayout.GridItem,
-      worldMap,
-      Liner
+      mapBox,
+      lineBox,
+      mapButtons
     },
     data: function() {
       return {
         layout: [
-          { x: 2, y: 0, w: 6, h: 3, i: "世界剧集热度地图" },
-          { x: 2, y: 1, w: 6, h: 2, i: "部分剧集热度折线图" },
-        ],
-        countryName: 'China'
+          { x: 3, y: 0, w: 7, h: 2, i: "世界剧集热度地图" },
+          { x: 2, y: 1, w: 8, h: 2, i: "部分剧集热度折线图" },
+          { x: 2, y: 0, w: 1, h: 2, i: "地图按钮" }
+        ]
       };
-    },
-    methods: {
-      getCountryName: function (childValue) {
-        this.countryName = childValue
-        console.log(childValue + '0')
-      }
     }
   };
 </script>

@@ -4,13 +4,11 @@
 
 <script>
 import echarts from "echarts";
-import _ from "lodash";
 var chart = null;
 export default {
   name: "RoleParallel",
   mounted: function() {
     chart = echarts.init(this.$el, null);
-    this.$EventBus.$on("actor-focus", this.onFocus);
   },
   data: () => ({
     //chart: undefined,
@@ -18,10 +16,6 @@ export default {
   }),
   props: {
     chartData: {
-      type: Array,
-      required: true
-    },
-    parallelAxis: {
       type: Array,
       required: true
     },
@@ -97,25 +91,12 @@ export default {
   watch: {
     option: function() {
       chart.setOption(this.option, true);
+    },
+    loaclOption: function() {
+      chart.setOption(this.loaclOption);
     }
   },
   methods: {
-    onFocus: function(msg) {
-      var character = msg.character;
-      if (_.isArray(character)) {
-        character = character.join("-");
-      }
-      if (character.length > 0) {
-        chart.dispatchAction({
-          type: "highlight",
-          seriesName: character
-        });
-      } else {
-        chart.dispatchAction({
-          type: "downplay"
-        });
-      }
-    },
     resize: function() {
       chart.resize();
     }

@@ -1,7 +1,5 @@
 <template>
-  <div class="echarts">
-    <div :style="{height:height,width:width}" ref="myEchart"></div>
-  </div>
+  <div style="width:100%; height:100%"></div>
 </template>
 
 <script>
@@ -9,10 +7,6 @@
     import '../../node_modules/echarts/map/js/world.js'    //引入组件
     export default {
       name: "worldMap",
-      props: {
-        width: {type: String, default: "1000px" },
-        height: {type: String, default: "450px"}
-      },
       data() {
         return {
           chart: null,
@@ -151,17 +145,9 @@
           ]
         };
       },
-      mounted() {
-        this.initChart()
-        this.getCountry()
-      },
-      methods: {
-        initChart() {
-          this.chart = echarts.init(this.$refs.myEchart);
-          window.onresize = echarts.init(this.$refs.myEchart).resize;
-          // 把配置和数据放这里
-          var option = {
-            //b8dfe6
+      computed:{
+        options: function () {
+          return{
             backgroundColor: "#B8DFE6",
             title: {    //地图显示标题
               text: 'TMDB全球剧集数量',
@@ -173,6 +159,8 @@
             visualMap: {   //图列显示柱
               type: 'piecewise',
               splitNumber: 15,
+              itemHeight: 8,
+              itemGap: 5,
               pieces:[
                 {lte: 0},
                 {gt: 0, lte: 5},
@@ -192,7 +180,7 @@
               ],
               min: 0,
               max: 17606,
-              left: 75,
+              left: 50,
               bottom: 10,
               text:['高','低'],
               realtime: false,
@@ -212,6 +200,7 @@
                 min: 0.5,
                 max: 2.0
               },
+              aspectScale: 1.5,
               data: this.data,   //绑定数据
               nameMap:{ //自定义地区的名称映射
                 'Afghanistan':'阿富汗',
@@ -419,28 +408,40 @@
                   borderWidth: 1
                 }
               }
-            }],
+            }]
           }
-          this.chart.setOption(option);
-        },
+        }
+      },
+      watch: {
+        options: function() {
+          this.chart.setOption(this.options);
+        }
+      },
+      mounted() {
+        this.chart = echarts.init(this.$el);
+        this.chart.setOption(this.options);
+        this.getCountry();
+      },
+      methods: {
         getCountry(){
           this.chart.on('click', (params) => {
             console.log(params.name);
             switch (params.name) {
               case '中国':
-                this.$emit('getCountry', 'China')
+                this.$EventBus.$emit('getCountry', '中国')
+                //this.$emit('getCountry', 'China')
                 break;
               case '美国':
-                this.$emit('getCountry', 'United States')
+                this.$EventBus.$emit('getCountry', '美国')
                 break;
               case '英国':
-                this.$emit('getCountry', 'United Kingdom')
+                this.$EventBus.$emit('getCountry', '英国')
                 break;
               case '日本':
-                this.$emit('getCountry', 'Japan')
+                this.$EventBus.$emit('getCountry', '日本')
                 break;
               case '韩国':
-                this.$emit('getCountry', 'Korea')
+                this.$EventBus.$emit('getCountry', '韩国')
                 break;
             }
           });
@@ -448,9 +449,3 @@
       }
     }
 </script>
-
-
-
-<style scoped>
-
-</style>

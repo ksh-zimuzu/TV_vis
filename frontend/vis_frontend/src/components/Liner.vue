@@ -1,58 +1,44 @@
 <template>
-    <div class="echarts">
-    <div :style="{height:height,width:width}" ref="myEchart"></div>
-  </div>
+  <div style="width:100%; height:100%"></div>
 </template>
 
 <script>
 import echarts from 'echarts' // 引入组件
 import '../../node_modules/echarts/lib/chart/line'
-import China from '../data/China.json'
-import America from '../data/America.json'
-import English from '../data/English.json'
-import Japan from '../data/Japan.json'
-import Korea from '../data/Korea.json'
+import China from '../../public/data_popularity/China.json'
+import America from '../../public/data_popularity/America.json'
+import English from '../../public/data_popularity/English.json'
+import Japan from '../../public/data_popularity/Japan.json'
+import Korea from '../../public/data_popularity/Korea.json'
 export default {
   name: 'Liner',
-  props: {
-    width: { type: String, default: '1000px' },
-    height: {type: String, default: '280px'},
-    countryName: {
-        type: String,
-        default: 'China'
-    }
-  },
   data () {
     return {
       chart: null,
       se: [],
       nameo: [],
       da: [],
-      currentCountry: this.countryName,
+      countryName: '中国'
     }
   },
   mounted () {
     this.initChart()
     this.change(this.countryName)
+    this.$EventBus.$on("getCountry",(val) => {
+      this.countryName = val;
+    })
   },
   watch: {
     countryName(val){
       console.log(val + '1')
-      this.currentCountry = val
-      this.change(this.currentCountry)
+      //this.currentCountry = val
+      this.change(val)
     }
-    /*,
-    other: {
-        handler (newVal) {
-          console.log(newVal + '2')
-          this.change(this.countryName)
-      }
-    }*/
   },
   methods: {
     initChart () {
-      this.chart = echarts.init(this.$refs.myEchart)
-      window.onresize = echarts.init(this.$refs.myEchart).resize
+      this.chart = echarts.init(this.$el)
+      this.chart.resize()
       // 绘制图表
       var option = {
       // 标题
@@ -131,15 +117,15 @@ export default {
       this.se = []
       this.da = []
       var coun
-      if (country === 'China') {
+      if (country === '中国') {
         coun = China
-      } else if (country === 'United States') {
+      } else if (country === '美国') {
         coun = America
-      } else if (country === 'United Kingdom') {
+      } else if (country === '英国') {
         coun = English
-      } else if (country === 'Japan') {
+      } else if (country === '日本') {
         coun = Japan
-      } else if (country === 'Korea') {
+      } else if (country === '韩国') {
         coun = Korea
       }
       var beginDt = new Date('2019-11-20')
@@ -163,7 +149,7 @@ export default {
       var option = {
       // 标题
         title: {
-          text: 'TMDB部分剧集热度',
+          text: 'TMDB部分'+ this.countryName + '剧集热度',
           left: 15,
         },
         tooltip: {

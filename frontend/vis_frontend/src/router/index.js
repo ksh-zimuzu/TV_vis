@@ -10,7 +10,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/map',
+      path: '/',
       name: '全球趋势',
       component: HelloWorld
     },

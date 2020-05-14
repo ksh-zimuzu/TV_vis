@@ -188,6 +188,7 @@ export default {
       //return Math.pow(4.12 + (501 * t) / (max - min), 0.71);
     },
     calFoldThreshold(nodes, threshold, minV, maxV) {
+      /*
       var res = nodes.map(node => ({
         symbolSize: this.calSymbolSize(node.value, minV, maxV, threshold),
         label: {
@@ -204,9 +205,42 @@ export default {
         _.toPairs(_.countBy(res, t => t.symbolSize)),
         t => t[0] * t[1]
       );
-      return totalR > 900
+      return totalR > 900 && threshold <= maxV
         ? this.calFoldThreshold(nodes, threshold + 1, minV, maxV)
         : res;
+        */
+      for (var ingoreT = 1; ingoreT <= maxV; ingoreT++) {
+        for (var foldT = ingoreT + 1; foldT <= maxV; foldT++) {
+          var res = this.calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV);
+          var totalR = _.sumBy(
+            _.toPairs(_.countBy(res, t => t.symbolSize)),
+            t => t[0] * t[1]
+          );
+          if (totalR <= threshold) {
+            return [res, ingoreT];
+          }
+        }
+      }
+    },
+    calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV) {
+      var res = _.filter(nodes, node => node.value >= ingoreT).map(node => ({
+        symbolSize: this.calSymbolSize(
+          node.value - ingoreT + 1,
+          minV,
+          maxV,
+          foldT
+        ),
+        label: {
+          normal: {
+            show: node.value - ingoreT + 1 >= foldT
+          }
+        },
+        category: node.category,
+        id: node.id,
+        name: node.name,
+        value: node.value
+      }));
+      return res;
     },
     unFocusNode() {
       //加载期间不响应事件
@@ -257,7 +291,12 @@ export default {
         var values = Nodes[c].map(t => t.value);
         var minV = _.min(values);
         var maxV = _.max(values);
-        var NodeRes = this.calFoldThreshold(Nodes[c], 2, minV, maxV);
+        var [NodeRes, ingoreT] = this.calFoldThreshold(
+          Nodes[c],
+          900,
+          minV,
+          maxV
+        );
         /*
         Nodes[c].forEach(node => {
           node.itemStyle = null;
@@ -270,6 +309,12 @@ export default {
         });
         */
         Nodes[c] = NodeRes;
+
+        Links[c] = Links[c].map(t => {
+          t = _.cloneDeep(t);
+          t.lineStyle.width -= ingoreT - 1;
+          return t;
+        });
       }
       var categories = [];
       //var colors=["#f2da57","#f6b656","#e25a42","#dcbdcf","#b396ad",
@@ -378,6 +423,8 @@ export default {
       if (!this.loading) {
         this.dataFormat();
         this.create_chart();
+      } else {
+        this.$EventBus.$emit("loading", { source: "MainChart" });
       }
     }
   }
