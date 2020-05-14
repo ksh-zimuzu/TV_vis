@@ -1,7 +1,7 @@
 <template>
   <div class="season-meta">
     <v-list no-action>
-      <v-list-item-group @change="change" v-model="model" ref="epList">
+      <v-list-item-group @change.prevent.stop="change" v-model="model" ref="epList">
         <EpisodeMeta
           v-for="(record,index) in zippedEp"
           :episode="record[0]"
@@ -46,6 +46,9 @@ export default {
   },
   methods: {
     change(msg) {
+      if (msg >= this.episodes.length) {
+        return;
+      }
       msg = msg >= 0 ? msg : -1;
       this.$EventBus.$emit("episode-focus", {
         focusIndex: msg

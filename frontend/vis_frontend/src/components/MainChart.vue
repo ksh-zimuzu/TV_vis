@@ -183,7 +183,7 @@ export default {
       if (n < threshold) {
         return 2.73 * Math.pow(n, 0.71);
       } else {
-        return Math.pow(36 + (450 * (n - threshold)) / max - threshold, 0.71);
+        return Math.pow(36 + (450 * (n - threshold)) / (max - threshold), 0.71);
       }
       //return Math.pow(4.12 + (501 * t) / (max - min), 0.71);
     },
@@ -357,7 +357,9 @@ export default {
             })(times),
             axisType: "category",
             autoPlay: false,
-            playInterval: 3000
+            playInterval: 3000,
+            left: "10%",
+            right: "10%"
           }
         },
         options: (function() {

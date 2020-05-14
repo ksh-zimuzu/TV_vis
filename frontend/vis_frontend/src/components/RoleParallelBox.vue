@@ -282,6 +282,7 @@ export default {
     this.resizeFunc = _.debounce(this.$refs.roleparallel.resize, 500);
     this.resizeFunc();
     this.$parent.$on("resized", this.resizeEvent);
+    this.$parent.$on("container-resized", this.resizeEvent);
     this.$EventBus.$on("actor-focus", this.onFocus);
   }
 };

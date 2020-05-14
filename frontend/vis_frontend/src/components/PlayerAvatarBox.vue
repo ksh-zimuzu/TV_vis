@@ -37,6 +37,7 @@ export default {
     this.resizeFunc = _.debounce(this.$refs.avatarChart.chart.resize, 500);
     this.resizeFunc();
     this.$parent.$on("resized", this.resizeEvent); //接收外层resize事件
+    this.$parent.$on("container-resized", this.resizeEvent);
   }
 };
 </script>
