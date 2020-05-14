@@ -221,6 +221,7 @@ export default {
           }
         }
       }
+      return [this.calFoldAndIgnore(nodes, maxV, maxV, minV, maxV), maxV];
     },
     calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV) {
       var res = _.filter(nodes, node => node.value >= ingoreT).map(node => ({
