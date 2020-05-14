@@ -21,10 +21,6 @@ export default {
       type: Array,
       required: true
     },
-    parallelAxis: {
-      type: Array,
-      required: true
-    },
     colors: {
       default: () => [
         "#E3BA22",

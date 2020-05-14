@@ -204,7 +204,7 @@ export default {
         _.toPairs(_.countBy(res, t => t.symbolSize)),
         t => t[0] * t[1]
       );
-      return totalR > 900
+      return totalR > 900 && threshold <= maxV
         ? this.calFoldThreshold(nodes, threshold + 1, minV, maxV)
         : res;
     },

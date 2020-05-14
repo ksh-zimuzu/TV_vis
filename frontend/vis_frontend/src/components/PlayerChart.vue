@@ -72,8 +72,14 @@ export default {
                 show: true
               }
             },
-            data: _.toPairs(this.chartData).map(([, item]) => item.rating.豆瓣),
-            color: this.colors
+            data: _.toPairs(this.chartData).map(([key, item]) => ({
+              name: key,
+              value: item.rating.豆瓣
+            })),
+            color: this.colors,
+            tooltip: {
+              show: true
+            }
           }
         ],
         /*
