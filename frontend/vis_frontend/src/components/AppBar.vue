@@ -62,7 +62,13 @@ export default {
   computed: {
     title: function() {
       var title = this.$route.name;
-      var sub = this.$route.path.split("/")[2];
+      var sub = "";
+      if (title == "剧集详情") {
+        sub = this.$route.path.split("/")[2];
+      } else if (title == "演员详情") {
+        sub = this.$route.query.name;
+      }
+
       return sub ? `${title} | ${sub}` : title;
     },
     show_back: function() {

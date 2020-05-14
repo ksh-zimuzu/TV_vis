@@ -99,7 +99,8 @@ export default {
     //this.$EventBus.on("actor-focus")
     this.chart.on("click", params => {
       this.$router.push({
-        path: "/actor/" + this.players[params.dataIndex].id
+        path: "/actor/" + this.players[params.dataIndex].id,
+        query: { name: this.players[params.dataIndex].name }
       });
     });
   },

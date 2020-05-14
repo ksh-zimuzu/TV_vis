@@ -1,16 +1,19 @@
 <template>
   <v-app id="app">
     <AppBar />
-    <v-content>
-      <keep-alive>
-        <router-view />
-      </keep-alive>
+    <v-content class="fill-height">
+      <v-container fluid>
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+      </v-container>
+      <v-snackbar v-model="snackbar">
+        {{ snackbar_text }}
+        <v-btn color="pink" text @click="snackbar = false">关闭</v-btn>
+      </v-snackbar>
     </v-content>
-    <v-snackbar v-model="snackbar">
-      {{ snackbar_text }}
-      <v-btn color="pink" text @click="snackbar = false">关闭</v-btn>
-    </v-snackbar>
-    <v-footer absolute>
+
+    <v-footer>
       <router-link to="/" class="footer-link">地图</router-link>
       <v-spacer></v-spacer>
       <img src="./assets/images/algolia.svg" class="algolia" />可视化字幕组
