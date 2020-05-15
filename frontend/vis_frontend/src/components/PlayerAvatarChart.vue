@@ -10,6 +10,17 @@ import _ from "lodash";
 
 var IMG_BASE_URL = "https://image.tmdb.org/t/p/w300";
 
+function buildSymbolSizer(level, that) {
+  function symbolSizer(value, params) {
+    var n = params.name;
+    return (
+      Math.pow(402 + (1635 * (n - that.minP)) / (that.maxP - that.minP), 0.71) /
+      level
+    );
+  }
+  return symbolSizer;
+}
+
 export default {
   props: {
     players: Array //{name:"xxx","role":"yyy","popularity":10}
@@ -18,49 +29,73 @@ export default {
     return {
       chart: undefined,
       options: {
-        animation: true,
-        tooltip: {
-          //position: "top",
-          show: true,
-          formatter: params => {
-            console.log(params);
-            var popularity = this.player_infos[params.dataIndex].popularity;
-            var name = params.name;
-            return `${name}: ${popularity}`;
-          }
-        },
-        title: [],
-        singleAxis: {
-          type: "category",
-          height: "80%",
-          top: "0%",
-          //data: this.players.map(item => item.name),
-          axisLabel: {
-            interval: 0,
-            formatter: (value, index) => {
-              console.log(value, index);
-              var character = this.players[index].character;
-              return `${value}\n${character}`;
-              //return `{player|${value}}\n{character|${character}}`;
-            },
-            rich: {
-              player: {
-                fontWeight: "bold"
+        baseOption: {
+          animation: true,
+          tooltip: {
+            //position: "top",
+            show: true,
+            formatter: params => {
+              var popularity = this.player_infos[params.dataIndex].popularity;
+              var name = params.value[0];
+              return `${name}: ${popularity}`;
+            }
+          },
+          title: [],
+          singleAxis: {
+            type: "category",
+            height: "80%",
+            top: "0%",
+            //data: this.players.map(item => item.name),
+            axisLabel: {
+              interval: 0,
+              formatter: (value, index) => {
+                var character = this.players[index].character;
+                return `${value}\n${character}`;
+                //return `{player|${value}}\n{character|${character}}`;
               },
-              character: {
-                fontWeight: "lighter"
-              }
-            },
-            fontWeight: "lighter",
-            fontSize: 14
-          }
+              rich: {
+                player: {
+                  fontWeight: "bold"
+                },
+                character: {
+                  fontWeight: "lighter"
+                }
+              },
+              fontWeight: "lighter",
+              fontSize: 14
+            }
+          },
+          series: [
+            {
+              data: [],
+              type: "scatter",
+              coordinateSystem: "singleAxis",
+              symbolKeepAspect: true
+              //symbolSize: buildSymbolSizer(1,this)
+            }
+          ]
         },
-        series: [
+        media: [
           {
-            data: [],
-            type: "scatter",
-            coordinateSystem: "singleAxis",
-            symbolKeepAspect: true
+            option: {
+              series: [
+                {
+                  symbolSize: buildSymbolSizer(1, this)
+                }
+              ]
+            }
+          },
+          {
+            query: {
+              maxWidth: 600
+            },
+            option: {
+              series: [
+                {
+                  symbolSize: buildSymbolSizer(2, this)
+                }
+              ]
+            }
           }
         ]
       },
@@ -130,19 +165,18 @@ export default {
               return img.circle().getBase64Async(Jimp.MIME_PNG);
             })
             .then(src => {
-              this.$set(this.options.series[0].data, index, {
+              this.$set(this.options.baseOption.series[0].data, index, {
                 value: [item.name],
                 symbol: "image://" + src,
-                name: item.name,
-                symbolKeepAspect: true,
-                symbolSize: this.calSymbolSize(item.popularity)
+                name: item.popularity,
+                symbolKeepAspect: true
               });
             })
             .catch(err => {
               console.log(err);
             });
         } else {
-          this.$set(this.options.series[0].data, index, {
+          this.$set(this.options.baseOption.series[0].data, index, {
             value: [item.name],
             //symbol: "image://" + src,
             label: {
@@ -175,7 +209,8 @@ export default {
       });
       return Promise.all(promises).then(this.updateOption);
     },
-    calSymbolSize(n) {
+    calSymbolSize(value, params) {
+      var n = params.name;
       return Math.pow(
         402 + (1635 * (n - this.minP)) / (this.maxP - this.minP),
         0.71

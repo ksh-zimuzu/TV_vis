@@ -30,39 +30,64 @@ export default {
   computed: {
     options: function() {
       return {
-        yAxis: {
-          type: "category",
-          data: this.tvs.map(t => t.name),
-          axisLabel: {
-            interval: 0,
-            show: false
+        baseOption: {
+          yAxis: {
+            type: "category",
+            data: this.tvs.map(t => t.name),
+            axisLabel: {
+              interval: 0
+            }
+          },
+          xAxis: {
+            type: "value"
+          },
+          series: [
+            {
+              data: this.tvs.map((t, i) => ({
+                value: t.popularity,
+                itemStyle: {
+                  color: i ? this.other_color : this.active_color
+                }
+              })),
+              type: "bar"
+            }
+          ],
+          tooltip: {
+            show: true,
+            position: "inside",
+            trigger: "axis"
+          },
+          grid: {
+            right: "5%",
+            top: "5%",
+            bottom: "30"
           }
         },
-        xAxis: {
-          type: "value"
-        },
-        series: [
+        media: [
           {
-            data: this.tvs.map((t, i) => ({
-              value: t.popularity,
-              itemStyle: {
-                color: i ? this.other_color : this.active_color
+            query: {
+              minWidth: 400
+            },
+            option: {
+              yAxis: {
+                show: true
+              },
+              grid: {
+                left: "20%"
               }
-            })),
-            type: "bar"
+            }
+          },
+          {
+            option: {
+              yAxis: {
+                show: false
+              },
+              grid: {
+                left: "5%"
+              }
+            }
           }
-        ],
-        tooltip: {
-          show: true,
-          position: "inside",
-          trigger: "axis"
-        },
-        grid: {
-          left: "5%",
-          right: "5%",
-          top: "5%",
-          bottom: "30"
-        }
+        ]
       };
     },
     tvs: function() {

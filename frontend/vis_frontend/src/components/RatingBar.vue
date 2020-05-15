@@ -26,54 +26,106 @@ export default {
   computed: {
     option: function() {
       return {
-        color: this.color,
-        tooltip: {
-          show: true
-        },
-        radiusAxis: {
-          type: "category",
-          axisLabel: {
-            show: false
+        baseOption: {
+          color: this.color,
+          tooltip: {
+            show: true
           },
-          inverse: true,
-          axisLine: {
-            show: false
+          radiusAxis: {
+            type: "category",
+            axisLabel: {
+              show: false
+            },
+            inverse: true,
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            }
           },
-          axisTick: {
-            show: false
+          angleAxis: {
+            max: 100,
+            min: -0.01,
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            }
+            // startAngle:85
+          },
+          polar: {},
+          series: _.keys(this.ratings)
+            .sort()
+            .map(key => ({
+              name: key,
+              type: "bar",
+              data: [this.ratings[key]],
+              coordinateSystem: "polar",
+              roundCap: true
+            })),
+          legend: {
+            data: _.keys(this.ratings)
           }
         },
-        angleAxis: {
-          max: 100,
-          min: -0.01,
-          axisTick: {
-            show: false
+        media: [
+          {
+            query: {
+              minHeight: 100,
+              minAspectRatio: 3
+            },
+            option: {
+              legend: {
+                show: true,
+                left: "left",
+                orient: "vertical",
+                bottom: "auto"
+              }
+            }
           },
-          axisLabel: {
-            show: false
+          {
+            query: {
+              maxHeight: 250,
+              maxWidth: 400
+            },
+            option: {
+              legend: {
+                show: false
+              }
+            }
           },
-          splitLine: {
-            show: false
+          {
+            query: {
+              minWidth: 400,
+              minHeight: 250
+            },
+            option: {
+              legend: {
+                show: true,
+                bottom: 0,
+                left: "center",
+                orient: "horizontal"
+              }
+            }
           },
-          axisLine: {
-            show: false
+          {
+            option: {
+              legend: {
+                show: true,
+                bottom: 0,
+                left: "center",
+                orient: "horizontal"
+              }
+            }
           }
-          // startAngle:85
-        },
-        polar: {},
-        series: _.keys(this.ratings)
-          .sort()
-          .map(key => ({
-            name: key,
-            type: "bar",
-            data: [this.ratings[key]],
-            coordinateSystem: "polar",
-            roundCap: true
-          })),
-        legend: {
-          show: false,
-          data: _.keys(this.ratings)
-        }
+        ]
       };
     }
   },

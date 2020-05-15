@@ -35,7 +35,7 @@
         :y="layout[1].y"
         :w="layout[1].w"
         :h="layout[1].h"
-        :minW="5"
+        :minW="4"
         :minH="2"
       >
         <PlayerAvatarBox :players="slicedActors" />
