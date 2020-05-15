@@ -9,7 +9,8 @@
 import _ from "lodash";
 import WordCloud from "./WordCloud";
 
-import "../utils/require-jieba-js";
+//import "../utils/require-jieba-js";
+import jieba from "../utils/main";
 
 import stopwords from "raw-loader!../assets/edited_baidu_stopwords.txt";
 
@@ -51,7 +52,7 @@ export default {
         return;
       }
       this.loading = true;
-      call_jieba_cut(this.plot, this.userDict, res => {
+      jieba.jieba_cut(this.plot, this.userDict, res => {
         res = _.filter(
           res,
           word =>
