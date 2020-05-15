@@ -21,6 +21,8 @@ function buildSymbolSizer(level, that) {
   return symbolSizer;
 }
 
+var chart = null;
+
 export default {
   props: {
     players: Array //{name:"xxx","role":"yyy","popularity":10}
@@ -111,19 +113,19 @@ export default {
     });
   },
   mounted: function() {
-    this.chart = echarts.init(this.$el, null, { renderer: "svg" });
+    chart = echarts.init(this.$el, null, { renderer: "svg" });
     this.reloadPlayerInfo().then(() => {
       this.updateOption();
       this.updateImg();
     });
-    this.chart.on("mouseover", params => {
+    chart.on("mouseover", params => {
       this.$EventBus.$emit("actor-focus", {
         name: this.players[params.dataIndex].name,
         character: this.players[params.dataIndex].character,
         source: "PlayerAvatarChart"
       });
     });
-    this.chart.on("mouseout", () => {
+    chart.on("mouseout", () => {
       this.$EventBus.$emit("actor-focus", {
         character: "",
         name: "",
@@ -132,7 +134,7 @@ export default {
     });
     this.$EventBus.$on("actor-focus", this.focusActor);
     //this.$EventBus.on("actor-focus")
-    this.chart.on("click", params => {
+    chart.on("click", params => {
       this.$router.push({
         path: "/actor/" + this.players[params.dataIndex].id,
         query: { name: this.players[params.dataIndex].name }
@@ -194,7 +196,7 @@ export default {
         .then(this.loadComplete);
     },
     updateOption() {
-      this.chart.setOption(this.options);
+      chart.setOption(this.options);
     },
     reloadPlayerInfo() {
       this.player_infos = [];
@@ -225,13 +227,13 @@ export default {
         }
         var index = this.players.findIndex(t => t.character == msg.character);
         if (index != -1) {
-          this.chart.dispatchAction({
+          chart.dispatchAction({
             type: "highlight",
             seriesIndex: 0,
             dataIndex: index
           });
         } else {
-          this.chart.dispatchAction({
+          chart.dispatchAction({
             type: "downplay",
             seriesIndex: 0
           });
@@ -240,10 +242,13 @@ export default {
     },
     loadComplete: function() {
       this.$emit("loaded");
+    },
+    resize() {
+      chart.resize();
     }
   },
   beforeDestroy() {
-    this.chart.isDisposed() || this.chart.dispose();
+    chart.isDisposed() || chart.dispose();
   }
 };
 </script>
