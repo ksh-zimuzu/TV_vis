@@ -210,7 +210,7 @@ export default {
         : res;
         */
       for (var ingoreT = 1; ingoreT <= maxV; ingoreT++) {
-        for (var foldT = ingoreT + 1; foldT <= maxV; foldT++) {
+        for (var foldT = 2; foldT <= maxV; foldT++) {
           var res = this.calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV);
           var totalR = _.sumBy(
             _.toPairs(_.countBy(res, t => t.symbolSize)),

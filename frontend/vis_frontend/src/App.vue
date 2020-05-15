@@ -1,7 +1,7 @@
 <template>
   <v-app id="app">
     <AppBar />
-    <v-content class="fill-height">
+    <v-content>
       <v-container fluid>
         <keep-alive>
           <router-view />

@@ -1,6 +1,6 @@
 <template>
-  <smart-widget v-if="non === 0" title="演员生涯分析">
-    <PlayerChart :chartData="chartData" ref="player_chart" />
+  <smart-widget v-if="non === 0" title="演员生涯分析" :loading = "loading">
+    <PlayerChart :chartData="chartData" ref="player_chart"/>
   </smart-widget>
   <smart-widget v-else-if="non === 1" title="演员生涯分析">
     <img class="img" src="../../public/error.jpg" />
@@ -64,7 +64,8 @@ export default {
         }
       },
       da: {},
-      non: 0
+      non: 0,
+      loading: true
     };
   },
   components: {
@@ -96,6 +97,7 @@ export default {
         }
       }
       this.chartData = da;
+      this.loading = false;
       console.log("chartData");
       console.log(this.chartData);
     },
@@ -113,7 +115,7 @@ export default {
         .catch(err => {
           this.non = 1;
           console.log(err);
-          alert("该演员生涯分析缺失，制作组正在征集数据噢awa");
+          alert("该演员生涯分析缺失，制作组正在征集数据噢qwq");
         });
       console.log("da");
       console.log(this.da);
@@ -136,15 +138,16 @@ export default {
     chartData: {
       handler: function(val) {
         console.log(val);
-        this.resizeFunc = _.debounce(this.$refs.player_chart.resize, 500);
-        console.log("重绘");
-        this.resizeFunc(); //绘制完成后修改一下尺寸
-        this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
-        this.$parent.$on("container-resized", this.resizeEvent);
+          this.resizeFunc = _.debounce(this.$refs.player_chart.resize, 500);
+          console.log("重绘");
+          this.resizeFunc(); //绘制完成后修改一下尺寸
+          this.$parent.$on("resize", this.resizeEvent); //接收外层resize事件
+          this.$parent.$on("container-resized", this.resizeEvent);
       },
       deep: true
     },
     actorid: async function() {
+      this.loading = true;
       await this.refresh_data();
     }
   }

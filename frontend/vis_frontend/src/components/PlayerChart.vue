@@ -42,7 +42,7 @@ export default {
       /*使用option刷新chart
        */
       var options = this.options;
-      chart.setOption(options);
+      chart.setOption(options, true);
     },
     color_picker: function() {
       var i = 1;
