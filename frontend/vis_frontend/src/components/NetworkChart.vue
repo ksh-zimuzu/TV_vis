@@ -1,5 +1,7 @@
 <template>
-  <div style="width:100%;height:100%" id="networkchart" class="networkchart"></div>
+  <div v-if="exist===1" style="width:100%;height:100%" id="networkchart" class="networkchart"></div>
+  <img v-else-if="exist ===0" class="img" src="../../public/networkDataError.jpg" />
+  
 </template>
 
 <script>
@@ -18,7 +20,7 @@ export default {
       Links: Array,
       Graph: {}, //邻接表
       parents: {},
-      ready: false
+      exist:1
     };
   },
   mounted() {
@@ -27,6 +29,9 @@ export default {
     this.create_chart();
   },
   methods: {
+    showExist(){
+      console.log(this.exist);
+    },
     BFS(graph) {
       var queue = [];
       var seen = new Set();
@@ -57,7 +62,7 @@ export default {
       console.log(this.parents);
     },
     getData() {
-      //this.ready = false;
+      this.exist =1;
       if (this.loading) {
         console.log("not yet!");
         return;
@@ -71,7 +76,7 @@ export default {
       var id_name_dic = {}; //id-name字典
       var id_value_dic = {}; //id-值字典
       var nodes = [];
-      for (let i = 0; i < this.ndata.length; i++) {
+      for (let i = 0; i <this.ndata.length; i++) {
         actorList.add(this.ndata[i]["actor1"]["id"]);
         actorList.add(this.ndata[i]["actor2"]["id"]);
         id_name_dic[this.ndata[i]["actor1"]["id"]] = this.ndata[i]["actor1"][
@@ -80,6 +85,14 @@ export default {
         id_name_dic[this.ndata[i]["actor2"]["id"]] = this.ndata[i]["actor2"][
           "name"
         ];
+      }
+      console.log("actorList");
+      console.log(actorList);
+      if(!actorList.has(this.acid)){
+        this.exist=0;
+        console.log("演员网络数据未包含该演员");
+        //alert("演员网络数据没有包含该演员");
+        return;
       }
       var graph = {};
       var links = [];
@@ -114,6 +127,7 @@ export default {
         links.push(tmp);
       }
       this.Links = links;
+
       this.BFS(graph);
       for (let actor in this.parents) {
         //只考虑parents数组中的演员
@@ -202,7 +216,7 @@ export default {
         this.getData();
         this.create_chart();
       }
-    }
+    },
   },
   beforeDestroy() {
     this.chart.isDisposed() || this.chart.dispose();

@@ -58,6 +58,7 @@ export default {
                 this.resizeFunc();
                 this.$refs.network_chart.getData();
                 this.$refs.network_chart.create_chart();
+               // this.$refs.network_chart.showExist();
                 this.showData();
             }
         },
