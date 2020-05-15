@@ -182,9 +182,9 @@ export default {
             label: {
               show: true
             },
-            name: item.name,
-            symbolKeepAspect: true,
-            symbolSize: this.calSymbolSize(item.popularity)
+            name: item.popularity,
+            symbolKeepAspect: true
+            //symbolSize: this.calSymbolSize(item.popularity)
           });
         }
       });
