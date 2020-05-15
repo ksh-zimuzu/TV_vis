@@ -52,7 +52,7 @@ export default {
         return;
       }
       this.loading = true;
-      jieba.jieba_cut(this.plot, this.userDict, res => {
+      jieba.jieba_cut(this.plot, res => {
         res = _.filter(
           res,
           word =>
@@ -78,6 +78,7 @@ export default {
       this.refreshWordFreq();
     },
     userDict: function() {
+      jieba.build_dict(this.userDict);
       this.refreshWordFreq();
     }
   }

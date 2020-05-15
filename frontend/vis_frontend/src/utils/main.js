@@ -235,15 +235,22 @@ var jieba_parsing = function (dictionary, _callback) {
     return jieba_cut;
 };
 
+var default_dictionary=require("../assets/dictionary.json")
+
 export default {
     jieba_parsing,
-    dictionary:require("../assets/dictionary.json"),
-    jieba_cut:function(text,dict,callback){
-        var cut=jieba_parsing(this.dictionary.concat(dict));
-        var res=cut(text);
+    
+    jieba_cut:function(text,callback){
+        var res=this.jieba(text);
         callback(res)
         return res;
-    }
+    },
+    build_dict:function(dict){
+        this.last_dict=default_dictionary.concat(dict);
+        this.jieba=jieba_parsing(this.last_dict);
+    },
+    last_dict:null,
+    jieba:jieba_parsing(default_dictionary),
 }
 
 /*
