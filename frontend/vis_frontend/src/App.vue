@@ -1,10 +1,10 @@
 <template>
   <v-app id="app">
     <AppBar />
-    <v-content class="fill-height">
+    <v-content>
       <v-container fluid>
         <keep-alive>
-          <router-view />
+          <router-view :mobile="isMobile" />
         </keep-alive>
       </v-container>
       <v-snackbar v-model="snackbar">
@@ -40,6 +40,14 @@ export default {
       this.snackbar_text = msg;
       this.snackbar = true;
     });
+  },
+  computed: {
+    isMobile() {
+      let flag = navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      );
+      return flag;
+    }
   }
 };
 </script>

@@ -35,7 +35,7 @@
         :y="layout[1].y"
         :w="layout[1].w"
         :h="layout[1].h"
-        :minW="5"
+        :minW="4"
         :minH="2"
       >
         <PlayerAvatarBox :players="slicedActors" />
@@ -93,14 +93,17 @@
           <div class="d-flex justify-center">
             <div class="mx-2">
               <v-btn fab color="error" x-large @click="resetLayout">
-                <v-icon>{{mdiRefresh}}</v-icon>
+                <v-icon name="rotate">{{mdiRefresh}}</v-icon>
               </v-btn>
               <div class="subtitle-1 text-center pt-3">重置布局</div>
             </div>
             <div class="mx-2">
               <v-btn fab color="primary" x-large @click="dragLock=!dragLock">
-                <v-icon v-if="dragLock">{{mdiLock}}</v-icon>
-                <v-icon v-else>{{mdiLockOpenVariant}}</v-icon>
+                <transition name="slide-fade">
+                  <v-icon v-if="dragLock" key="lock">{{mdiLock}}</v-icon>
+                  <v-icon v-if="!dragLock" key="unlock">{{mdiLockOpenVariant}}</v-icon>
+                </transition>
+                <transition name="slide-fade"></transition>
               </v-btn>
               <div v-if="!dragLock" class="subtitle-1 text-center pt-3">锁定布局</div>
               <div v-else class="subtitle-1 text-center pt-3">解锁布局</div>
@@ -160,6 +163,9 @@ export default {
     tv_name: {
       required: true,
       type: String
+    },
+    mobile: {
+      required: false
     }
   },
   components: {
@@ -227,6 +233,7 @@ export default {
     }
     this.$EventBus.$on("episode-focus", this.focus);
     this.$EventBus.$on("actor-focus", this.hover);
+    this.dragLock = this.mobile != null;
   },
   mounted: function() {
     this.refreshData();
@@ -352,3 +359,17 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.slide-fade-enter-active {
+  transform: translateX(10px);
+  opacity: 0;
+}
+.slide-fade-leave-active {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+.rotate:hover {
+  transform: rotate(360deg);
+}
+</style>
