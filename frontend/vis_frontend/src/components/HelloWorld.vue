@@ -7,6 +7,7 @@
               :y="layout[0].y"
               :w="layout[0].w"
               :h="layout[0].h"
+              :is-draggable="false"
               :is-resizable="false"
               :min-w="4"
       >
@@ -18,6 +19,7 @@
               :y="layout[1].y"
               :w="layout[1].w"
               :h="layout[1].h"
+              :is-draggable="false"
               :is-resizable="false"
               :min-w="4"
       >
@@ -29,6 +31,7 @@
               :y="layout[2].y"
               :w="layout[2].w"
               :h="layout[2].h"
+              :is-draggable="false"
               :is-resizable="false"
               :min-w="4"
       >
@@ -56,9 +59,9 @@
     data: function() {
       return {
         layout: [
-          { x: 3, y: 0, w: 7, h: 2, i: "世界剧集热度地图" },
+          { x: 3, y: 0, w: 7, h: 3, i: "世界剧集热度地图" },
           { x: 2, y: 1, w: 8, h: 2, i: "部分剧集热度折线图" },
-          { x: 2, y: 0, w: 1, h: 2, i: "地图按钮" }
+          { x: 2, y: 0, w: 1, h: 3, i: "地图按钮" }
         ]
       };
     }
