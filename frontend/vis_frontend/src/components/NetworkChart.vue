@@ -91,7 +91,7 @@ export default {
       if(!actorList.has(this.acid)){
         this.exist=0;
         console.log("演员网络数据未包含该演员");
-        //alert("演员网络数据没有包含该演员");
+        alert("该演员网络数据缺失，制作组正在征集数据噢qwq");
         return;
       }
       var graph = {};
@@ -149,7 +149,7 @@ export default {
     },
     create_chart() {
       var options = this.chart_option;
-      this.chart.setOption(options);
+      this.chart.setOption(options,true);//避免生成之前数据的图表
     }
   },
   computed: {
@@ -175,7 +175,7 @@ export default {
       var Links = this.Links;
       Nodes.forEach(function(node) {
         node.itemStyle = null;
-        node.symbolSize = 5; //如果映射nodes.values的话，效果较差
+        node.symbolSize =5*Math.log(node.value);//10; //如果映射node.value的话，效果较差
         node.x = node.y = null; //random
         node.draggable = true;
       });

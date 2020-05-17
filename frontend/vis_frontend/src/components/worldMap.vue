@@ -160,7 +160,7 @@
               type: 'piecewise',
               splitNumber: 15,
               itemHeight: 8,
-              itemGap: 5,
+              itemGap: 8,
               pieces:[
                 {lte: 0},
                 {gt: 0, lte: 5},
@@ -181,7 +181,7 @@
               min: 0,
               max: 17606,
               left: 50,
-              bottom: 10,
+              bottom: 20,
               text:['高','低'],
               realtime: false,
               calculable : true,
@@ -200,7 +200,6 @@
                 min: 0.5,
                 max: 2.0
               },
-              aspectScale: 1.5,
               data: this.data,   //绑定数据
               nameMap:{ //自定义地区的名称映射
                 'Afghanistan':'阿富汗',
