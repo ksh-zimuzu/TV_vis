@@ -2,10 +2,97 @@
   <div style="width:100%;height:100%" id="sankeychart" class="mainchart"></div>
 </template>
 
+
 <script>
 import echarts from "echarts";
 import _ from "lodash";
 var chart = null;
+
+function calSymbolSize(nodes, target) {
+  /**
+   * 优化node_size，使之尽可能达到小于target的最大值
+   * 约束条件：
+   * 1. 不能折叠全部节点
+   * 2. 不能忽略全部节点
+   *
+   * 返回结果:
+   * 尽可能接近target的节点列表等
+   *
+   * nodes: 节点数组
+   * target: 优化目标
+   */
+  var values = nodes.map(t => t.value);
+  var minV = _.min(values);
+  var maxV = _.max(values);
+
+  function calSymbolSize(n, min, max, threshold) {
+    if (n < threshold) {
+      return 2.73 * Math.pow(n, 0.71);
+    } else {
+      return Math.pow(36 + (450 * (n - threshold)) / (max - threshold), 0.71);
+    }
+  }
+
+  function calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV) {
+    var res = _.filter(nodes, node => node.value >= ingoreT).map(node => ({
+      symbolSize: calSymbolSize(node.value - ingoreT + 1, minV, maxV, foldT),
+      label: {
+        normal: {
+          show: node.value - ingoreT + 1 >= foldT
+        }
+      },
+      category: node.category,
+      id: node.id,
+      name: node.name,
+      value: node.value
+    }));
+    return res;
+  }
+
+  function backtrack(T, I) {
+    var res = calFoldAndIgnore(nodes, T, I, minV, maxV);
+    var totalR = _.sumBy(
+      _.toPairs(_.countBy(res, t => t.symbolSize)),
+      t => t[0] * t[1]
+    );
+    //如果已经小于优化目标，立刻返回避免继续下降
+    //T>=maxV表示不允许全部折叠，去掉等号表示允许全部折叠
+    if (totalR <= target || T >= maxV) {
+      return {
+        T,
+        I,
+        nodes: res,
+        total: totalR
+      };
+    } else {
+      //如果I的下一个值>=T，则理论上应该比(T+1,I+1),(T+1,I)
+      //但显然后者比前者大。若后者已经小于等于target，那完全不必比较前者
+      //若后者比target大，后者自然会去搜索(T+1,I+1)的情况，也无需操作
+      //因此这里可以直接剪掉前者分支
+      if (I + 1 >= T) {
+        return backtrack(T + 1, I);
+      }
+      //否则，需要计算(T+1,I)和(T,I+1)的值。他们应该尽其所能返回最接近target的值
+      //因此若他们都小于target，则返回值较大的一个；
+      //若有一个小于target，则返回小于target的一个；
+      //如果都大于target，则返回值较小的一个
+      else {
+        var res1 = backtrack(T + 1, I);
+        var res2 = backtrack(T, I + 1);
+        if (res1.total <= target && res2.total <= target) {
+          return res1.total > res2.total ? res1 : res2;
+        } else if (res1.total <= target || res2.total <= target) {
+          return res1.total <= target ? res1 : res2;
+        } else {
+          return res1.total < res2.total ? res1 : res2;
+        }
+      }
+    }
+  }
+
+  return backtrack(2, 1);
+}
+
 export default {
   name: "MainChart",
   props: {
@@ -289,15 +376,20 @@ export default {
       var Nodes = this.Nodes.map(item => _.filter(item, t => t.value > 0));
       var Links = this.Links;
       for (var c = 0; c < Nodes.length; c++) {
-        var values = Nodes[c].map(t => t.value);
-        var minV = _.min(values);
-        var maxV = _.max(values);
+        //var values = Nodes[c].map(t => t.value);
+        //var minV = _.min(values);
+        //var maxV = _.max(values);
+        var res = calSymbolSize(Nodes[c], 900);
+        /*
         var [NodeRes, ingoreT] = this.calFoldThreshold(
           Nodes[c],
           900,
           minV,
           maxV
         );
+        */
+        var NodeRes = res.nodes;
+        var ingoreT = res.I;
         /*
         Nodes[c].forEach(node => {
           node.itemStyle = null;
