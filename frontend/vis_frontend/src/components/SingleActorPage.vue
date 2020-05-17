@@ -1,5 +1,5 @@
 <template>
-  <GridLayout :layout="layout" :col-num="12">
+  <GridLayout :layout.sync="layout" :col-num="12" responsive>
     <GridItem
       :i="layout[0].i"
       :x="layout[0].x"
