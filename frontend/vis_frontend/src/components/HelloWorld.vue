@@ -49,6 +49,9 @@ import mapButtons from "./mapButtons";
 
 export default {
   name: "MainInterface",
+  metaInfo: {
+    title: "全球趋势"
+  },
   components: {
     GridLayout: VueGridLayout.GridLayout,
     GridItem: VueGridLayout.GridItem,

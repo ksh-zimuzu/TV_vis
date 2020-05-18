@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <title>影视分析系统</title>
     <AppBar />
     <v-content>
       <v-container fluid>
@@ -48,6 +49,12 @@ export default {
       );
       return flag;
     }
+  },
+  metaInfo: {
+    // if no subcomponents specify a metaInfo.title, this title will be used
+    title: "剧情可视化系统",
+    // all titles will be injected into this template
+    titleTemplate: "%s | 可视化字幕组"
   }
 };
 </script>

@@ -159,6 +159,9 @@ import { mdiRefresh, mdiLock, mdiLockOpenVariant } from "@mdi/js";
 
 export default {
   name: "TVDetailPage",
+  metaInfo: {
+    title: "剧集详情"
+  },
   props: {
     tv_name: {
       required: true,

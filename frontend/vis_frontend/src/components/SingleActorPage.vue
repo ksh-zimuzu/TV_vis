@@ -36,6 +36,9 @@ import single_actor from "../services/single_actor";
 import PlayerChartBox from "./PlayerChartBox";
 export default {
   name: "SingleActorPage",
+  metaInfo: {
+    title: "演员详情"
+  },
   components: {
     NetworkChartBox,
     PlayerChartBox
