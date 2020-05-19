@@ -155,6 +155,12 @@ export default {
         tooltip: {
           trigger: 'axis',
           // 当鼠标移动到数值时候，在X轴Y轴显示数值
+		  backgroundColor: 'rgba(255,255,255,0.7)',
+          borderColor: '#0F8C79',
+          borderWidth: 3,
+          textStyle: {
+            color: '#000000'
+          },
           axisPointer: {
             type: 'cross'
           },
