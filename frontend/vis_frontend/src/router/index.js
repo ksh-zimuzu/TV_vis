@@ -37,7 +37,8 @@ export default new Router({
       component: MetadataEditPage
     }
   ],
-  mode: 'history'
+  mode: 'history',
+  base: process.env.publicPath
 })
 
 
