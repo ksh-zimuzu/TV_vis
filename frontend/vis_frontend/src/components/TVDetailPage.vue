@@ -4,7 +4,7 @@
       :layout.sync="layout"
       :col-num="12"
       @layout-updated="saveLayout"
-      style="margin-bottom:50px"
+      style="margin-bottom: 50px"
       :is-draggable="!dragLock"
       :is-resizable="!dragLock"
       responsive
@@ -27,7 +27,11 @@
         :h="layout[0].h"
         id="season-meta"
       >
-        <SeasonMeta :tv_id="meta.tv_id" :season="meta.season" :episodes="meta.episodes" />
+        <SeasonMeta
+          :tv_id="meta.tv_id"
+          :season="meta.season"
+          :episodes="meta.episodes"
+        />
       </GridItem>
       <GridItem
         :i="layout[1].i"
@@ -47,7 +51,11 @@
         :w="layout[2].w"
         :h="layout[2].h"
       >
-        <WordCloudBox :plot="plot" :userDict="userDict" :simple="layout[2].h<2" />
+        <WordCloudBox
+          :plot="plot"
+          :userDict="userDict"
+          :simple="layout[2].h < 2"
+        />
       </GridItem>
       <GridItem
         :i="layout[3].i"
@@ -70,7 +78,7 @@
         :w="layout[5].w"
         :h="layout[5].h"
       >
-        <SimilarTVBox :current_tv_id="meta.tv_id" :simple="layout[5].h<2" />
+        <SimilarTVBox :current_tv_id="meta.tv_id" :simple="layout[5].h < 2" />
       </GridItem>
       <GridItem
         :i="layout[6].i"
@@ -79,7 +87,11 @@
         :w="layout[6].w"
         :h="layout[6].h"
       >
-        <RatingBox :ratings="ratings" :simple="layout[6].h<2" :loading="ratingLoading" />
+        <RatingBox
+          :ratings="ratings"
+          :simple="layout[6].h < 2"
+          :loading="ratingLoading"
+        />
       </GridItem>
       <GridItem
         :i="layout[7].i"
@@ -93,19 +105,23 @@
           <div class="d-flex justify-center">
             <div class="mx-2">
               <v-btn fab color="error" x-large @click="resetLayout">
-                <v-icon name="rotate">{{mdiRefresh}}</v-icon>
+                <v-icon name="rotate">{{ mdiRefresh }}</v-icon>
               </v-btn>
               <div class="subtitle-1 text-center pt-3">重置布局</div>
             </div>
             <div class="mx-2">
-              <v-btn fab color="primary" x-large @click="dragLock=!dragLock">
+              <v-btn fab color="primary" x-large @click="dragLock = !dragLock">
                 <transition name="slide-fade">
-                  <v-icon v-if="dragLock" key="lock">{{mdiLock}}</v-icon>
-                  <v-icon v-if="!dragLock" key="unlock">{{mdiLockOpenVariant}}</v-icon>
+                  <v-icon v-if="dragLock" key="lock">{{ mdiLock }}</v-icon>
+                  <v-icon v-if="!dragLock" key="unlock">{{
+                    mdiLockOpenVariant
+                  }}</v-icon>
                 </transition>
                 <transition name="slide-fade"></transition>
               </v-btn>
-              <div v-if="!dragLock" class="subtitle-1 text-center pt-3">锁定布局</div>
+              <div v-if="!dragLock" class="subtitle-1 text-center pt-3">
+                锁定布局
+              </div>
               <div v-else class="subtitle-1 text-center pt-3">解锁布局</div>
             </div>
           </div>
@@ -122,7 +138,7 @@
         <PopularityBox
           :loading="popularityLoading"
           :popularity="popularity"
-          :simple="layout[8].h<2"
+          :simple="layout[8].h < 2"
         />
       </GridItem>
       <GridItem
@@ -133,7 +149,7 @@
         :h="layout[9].h"
         :minW="2"
       >
-        <RoleParallelBox :simple="layout[9].h<2" />
+        <RoleParallelBox :simple="layout[9].h < 2" />
       </GridItem>
     </GridLayout>
   </keep-alive>
@@ -160,16 +176,16 @@ import { mdiRefresh, mdiLock, mdiLockOpenVariant } from "@mdi/js";
 export default {
   name: "TVDetailPage",
   metaInfo: {
-    title: "剧集详情"
+    title: "剧集详情",
   },
   props: {
     tv_name: {
       required: true,
-      type: String
+      type: String,
     },
     mobile: {
-      required: false
-    }
+      required: false,
+    },
   },
   components: {
     GridLayout: VueGridLayout.GridLayout,
@@ -182,13 +198,13 @@ export default {
     SeasonMeta,
     RatingBox,
     PopularityBox,
-    RoleParallelBox
+    RoleParallelBox,
   },
   data: () => ({
     meta: {
       season: 1,
       episodes: [0],
-      tv_id: 0
+      tv_id: 0,
     },
     plots: {},
     CPs: {},
@@ -210,7 +226,7 @@ export default {
       { x: 0, y: 5, w: 2, h: 1, i: "评价玉珏图" },
       { x: 2, y: 5, w: 2, h: 1, i: "重置按钮" },
       { x: 4, y: 5, w: 3, h: 1, i: "热度变化曲线" },
-      { x: 7, y: 5, w: 5, h: 1, i: "角色平行坐标" }
+      { x: 7, y: 5, w: 5, h: 1, i: "角色平行坐标" },
     ],
     mdiRefresh,
     mdiLock,
@@ -219,9 +235,9 @@ export default {
     dragLock: false,
     popularity: [],
     popularityLoading: true,
-    ratingLoading: true
+    ratingLoading: true,
   }),
-  created: function() {
+  created: function () {
     var layout = localStorage.getItem("layout");
     if (layout != null) {
       layout = JSON.parse(layout);
@@ -238,60 +254,60 @@ export default {
     this.$EventBus.$on("actor-focus", this.hover);
     this.dragLock = this.mobile != null;
   },
-  mounted: function() {
+  mounted: function () {
     this.refreshData();
   },
   computed: {
-    slicedActors: function() {
+    slicedActors: function () {
       return _.slice(this.actors, 0, 5);
     },
-    heighlightActors: function() {
-      return this.actors.map(actor => ({
+    heighlightActors: function () {
+      return this.actors.map((actor) => ({
         name: actor.name,
         content: actor.character,
-        show: actor.character == this.heighlightAt
+        show: actor.character == this.heighlightAt,
       }));
     },
-    roleNames: function() {
+    roleNames: function () {
       return _.keys(this.roles)
-        .map(t => t.trim())
-        .concat(_.flatten(_.values(this.roles)).map(t => t.trim()));
+        .map((t) => t.trim())
+        .concat(_.flatten(_.values(this.roles)).map((t) => t.trim()));
     },
-    userDict: function() {
-      return this.roleNames.map(t => [t, 999999, "nr"]);
-    }
+    userDict: function () {
+      return this.roleNames.map((t) => [t, 999999, "nr"]);
+    },
   },
   methods: {
-    focus: function(msg) {
+    focus: function (msg) {
       this.plot = this.plots[msg.focusIndex + 1];
       if (msg.focusIndex >= 0) {
         this.$EventBus.$emit("snackbar", `你选择了第${msg.focusIndex + 1}集`);
       }
     },
-    hover: function(msg) {
+    hover: function (msg) {
       this.heighlightAt = msg.character;
     },
-    saveLayout: function() {
+    saveLayout: function () {
       localStorage.setItem("layout", JSON.stringify(this.layout));
     },
-    resetLayout: function() {
+    resetLayout: function () {
       this.layout = this.defaultLayout;
       localStorage.removeItem("layout");
     },
-    refreshData: function() {
+    refreshData: function () {
       var load_data = TV_loader.fetch_all(this.tv_name);
       this.plots = [];
       this.plot = undefined;
       this.mainChartLoading = true;
       this.popularityLoading = true;
       this.ratingLoading = true;
-      load_data.meta.then(res => {
+      load_data.meta.then((res) => {
         this.meta = res.data;
       });
-      load_data.plots.then(plots =>
+      load_data.plots.then((plots) =>
         Promise.all(
-          plots.map(t =>
-            t.p.then(res => {
+          plots.map((t) =>
+            t.p.then((res) => {
               this.$set(this.plots, t.episode, res.data);
             })
           )
@@ -299,9 +315,11 @@ export default {
           this.plot = this.plots[1];
         })
       );
-      load_data.FPs.then(fps =>
-        fps.map(t => t.p.then(res => this.$set(this.FPs, t.episode, res.data)))
-      ).then(ps => {
+      load_data.FPs.then((fps) =>
+        fps.map((t) =>
+          t.p.then((res) => this.$set(this.FPs, t.episode, res.data))
+        )
+      ).then((ps) => {
         Promise.all(ps).then(() => (this.mainChartLoading = false));
       });
       /*
@@ -313,15 +331,15 @@ export default {
       this.word_freq = res.data;
     });
     */
-      load_data.roles.then(res => {
+      load_data.roles.then((res) => {
         this.roles = res.data;
       });
 
-      load_data.actors.then(res => {
+      load_data.actors.then((res) => {
         this.actors = res.data;
       });
 
-      load_data.ratings.then(res => {
+      load_data.ratings.then((res) => {
         this.$set(this.ratings, "imDb", res.data.imDb ? res.data.imDb * 10 : 0);
         this.$set(
           this.ratings,
@@ -342,24 +360,24 @@ export default {
       });
 
       load_data.popularity
-        .then(res => (this.popularity = res.data))
+        .then((res) => (this.popularity = res.data))
         .then(() => (this.popularityLoading = false));
       this.$EventBus.$emit("episode-focus", {
-        focusIndex: 0
+        focusIndex: 0,
       });
-    }
+    },
   },
   watch: {
-    tv_name: function() {
+    tv_name: function () {
       this.refreshData();
-    }
+    },
   },
   beforeDestroy(to, from, next) {
     this.$EventBus.$off("episode-focus");
     this.$EventBus.$off("actor-focus");
     this.$EventBus.$off("loading");
     next();
-  }
+  },
 };
 </script>
 

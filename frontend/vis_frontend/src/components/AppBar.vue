@@ -1,9 +1,9 @@
 <template>
-  <v-app-bar dark color="teal">
+  <v-app-bar dark color="teal" app>
     <v-btn icon v-if="show_back" @click="$router.go(-1)">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
-    <v-toolbar-title>{{title}}</v-toolbar-title>
+    <v-toolbar-title>{{ title }}</v-toolbar-title>
     <v-autocomplete
       v-model="select"
       :loading="loading"
@@ -17,7 +17,7 @@
       label="搜索剧集"
       solo-inverted
     ></v-autocomplete>
-    <v-btn icon :disabled="select==null" @click="jumpTo">
+    <v-btn icon :disabled="select == null" @click="jumpTo">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
   </v-app-bar>
@@ -32,7 +32,7 @@ export default {
       loading: false,
       items: [],
       search: null,
-      select: null
+      select: null,
     };
   },
   watch: {
@@ -41,26 +41,26 @@ export default {
     },
     select() {
       console.log(this.select);
-    }
+    },
   },
   methods: {
     querySelections(v) {
       this.loading = true;
       // Simulated ajax query
 
-      index.search(v).then(hits => {
+      index.search(v).then((hits) => {
         console.log(hits);
-        this.items = hits.hits.map(t => t.name);
+        this.items = hits.hits.map((t) => t.name);
         this.loading = false;
       });
     },
     jumpTo() {
       this.$router.push(`/tv/${this.select}`);
-    }
+    },
   },
   props: {},
   computed: {
-    title: function() {
+    title: function () {
       var title = this.$route.name;
       var sub = "";
       if (title == "剧集详情") {
@@ -71,9 +71,9 @@ export default {
 
       return sub ? `${title} | ${sub}` : title;
     },
-    show_back: function() {
+    show_back: function () {
       return this.$route.path.split("/").length > 2;
-    }
-  }
+    },
+  },
 };
 </script>

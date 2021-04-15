@@ -18,7 +18,7 @@
       <router-link to="/" class="footer-link">地图</router-link>
       <v-spacer></v-spacer>
       <img src="./assets/images/algolia.svg" class="algolia" />可视化字幕组
-      <div style="margin-left:5px">&copy; 2020</div>
+      <div style="margin-left: 5px">&copy; 2020</div>
     </v-footer>
   </v-app>
 </template>
@@ -28,16 +28,16 @@ import AppBar from "./components/AppBar";
 export default {
   name: "App",
   components: {
-    AppBar
+    AppBar,
   },
-  data: function() {
+  data: function () {
     return {
       snackbar: false,
-      snackbar_text: "没事啊"
+      snackbar_text: "没事啊",
     };
   },
   created() {
-    this.$EventBus.$on("snackbar", msg => {
+    this.$EventBus.$on("snackbar", (msg) => {
       this.snackbar_text = msg;
       this.snackbar = true;
     });
@@ -48,14 +48,14 @@ export default {
         /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
       );
       return flag;
-    }
+    },
   },
   metaInfo: {
     // if no subcomponents specify a metaInfo.title, this title will be used
     title: "剧情可视化系统",
     // all titles will be injected into this template
-    titleTemplate: "%s | 可视化字幕组"
-  }
+    titleTemplate: "%s | 可视化字幕组",
+  },
 };
 </script>
 
