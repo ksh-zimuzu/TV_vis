@@ -8,6 +8,8 @@ import MetadataEditPage from '@/components/MetadataEdit/MetadataEditPage'
 
 Vue.use(Router)
 
+console.log(process.env.BASE_URL);
+
 export default new Router({
   routes: [
     {
@@ -38,7 +40,7 @@ export default new Router({
     }
   ],
   mode: 'history',
-  base: process.env.publicPath
+  base: process.env.BASE_URL
 })
 
 
