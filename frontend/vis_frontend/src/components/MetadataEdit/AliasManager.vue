@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" width="300">
+  <v-card class="mx-auto">
     <v-app-bar color="teal" dark>
       <v-toolbar-title>角色别名</v-toolbar-title>
       <v-spacer></v-spacer>
@@ -165,8 +165,18 @@ import { Role, Alias } from "./model/role";
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
 export default {
+  model: {
+    prop: "roles",
+    event: "input",
+  },
+  props: {
+    roles: {
+      type: Array,
+      require: false,
+      default: () => new Array(),
+    },
+  },
   data: () => ({
-    roles: [],
     mdiAccountCircle,
     mdiPencil,
     mdiClose,

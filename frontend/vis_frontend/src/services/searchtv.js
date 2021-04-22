@@ -3,26 +3,39 @@ import Axios from "axios"
 var baseURL = process.env.BASE_URL;
 var API_KEY = process.env.VUE_APP_TMDBKEY;
 
+const SEARCH_URL = "https://tmdbapi.kxxh.workers.dev/3/search/tv";
+
 export default {
     fetch(actor_id) {
         return Axios.get(`${baseURL}data_id/${actor_id}.json`);
     },
-    pop(b){
+    pop(b) {
         return new Promise((resolve, reject) => {
-            Axios.get(`https://tmdbapi.kxxh.workers.dev/3/search/tv?api_key=${API_KEY}&query=${b}&translate=false&language=zh-CN`).then((t)=>{
-            var re = t.data.results;
-            console.log(re);
-            if(re[0] == undefined){
-                console.log("0");
-                resolve(undefined);
-            } else{
-                console.log(re[0].vote_average);
-                var pop = re[0].vote_average
-                resolve(pop);
-            }
-            }).catch((err) =>{
+            Axios.get(`https://tmdbapi.kxxh.workers.dev/3/search/tv?api_key=${API_KEY}&query=${b}&translate=false&language=zh-CN`).then((t) => {
+                var re = t.data.results;
+                console.log(re);
+                if (re[0] == undefined) {
+                    console.log("0");
+                    resolve(undefined);
+                } else {
+                    console.log(re[0].vote_average);
+                    var pop = re[0].vote_average
+                    resolve(pop);
+                }
+            }).catch((err) => {
                 reject(err)
             })
         })
+    },
+    async search(query) {
+        let res = await Axios.get(SEARCH_URL, {
+            params: {
+                api_key: API_KEY,
+                query: query,
+                language: "zh-CN",
+                translate: false
+            }
+        });
+        return res.data;
     }
 }

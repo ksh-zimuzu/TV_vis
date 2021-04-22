@@ -171,6 +171,8 @@ import RoleParallelBox from "./RoleParallelBox";
 
 import TV_loader from "../services/TV_loader";
 
+import { mapMutations } from "vuex";
+
 import { mdiRefresh, mdiLock, mdiLockOpenVariant } from "@mdi/js";
 
 export default {
@@ -179,7 +181,7 @@ export default {
     title: "剧集详情",
   },
   props: {
-    tv_name: {
+    tv_id: {
       required: true,
       type: String,
     },
@@ -215,7 +217,12 @@ export default {
     roles: undefined,
     plot: "",
     heighlightAt: "",
-    ratings: {},
+    ratings: {
+      metacritic: 0,
+      theMovieDb: 0,
+      rottenTomatoes: 0,
+      imDb: 0,
+    },
     defaultLayout: [
       { x: 0, y: 0, w: 2, h: 3, i: "元数据" },
       { x: 2, y: 2, w: 7, h: 2, i: "气泡图" },
@@ -236,6 +243,7 @@ export default {
     popularity: [],
     popularityLoading: true,
     ratingLoading: true,
+    tv_name: "",
   }),
   created: function () {
     var layout = localStorage.getItem("layout");
@@ -294,81 +302,105 @@ export default {
       this.layout = this.defaultLayout;
       localStorage.removeItem("layout");
     },
-    refreshData: function () {
-      var load_data = TV_loader.fetch_all(this.tv_name);
-      this.plots = [];
-      this.plot = undefined;
+    refreshData: async function () {
       this.mainChartLoading = true;
       this.popularityLoading = true;
       this.ratingLoading = true;
-      load_data.meta.then((res) => {
-        this.meta = res.data;
-      });
-      load_data.plots.then((plots) =>
-        Promise.all(
-          plots.map((t) =>
-            t.p.then((res) => {
-              this.$set(this.plots, t.episode, res.data);
-            })
-          )
-        ).then(() => {
-          this.plot = this.plots[1];
-        })
-      );
-      load_data.FPs.then((fps) =>
-        fps.map((t) =>
-          t.p.then((res) => this.$set(this.FPs, t.episode, res.data))
-        )
-      ).then((ps) => {
-        Promise.all(ps).then(() => (this.mainChartLoading = false));
-      });
-      /*
-    load_data.CPs.then(cps =>
-      cps.map(t => t.p.then(res => this.$set(this.CPs, t.episode, res.data)))
-    );
-    
-    load_data.word_freq.then(res => {
-      this.word_freq = res.data;
-    });
-    */
-      load_data.roles.then((res) => {
-        this.roles = res.data;
-      });
-
-      load_data.actors.then((res) => {
-        this.actors = res.data;
-      });
-
-      load_data.ratings.then((res) => {
-        this.$set(this.ratings, "imDb", res.data.imDb ? res.data.imDb * 10 : 0);
-        this.$set(
-          this.ratings,
-          "metacritic",
-          res.data.metacritic ? res.data.metacritic : 0
-        );
-        this.$set(
-          this.ratings,
-          "theMovieDb",
-          res.data.theMovieDb ? res.data.theMovieDb * 10 : 0
-        );
-        this.$set(
-          this.ratings,
-          "rottenTomatoes",
-          res.data.rottenTomatoes ? res.data.rottenTomatoes : 0
-        );
-        this.ratingLoading = false;
-      });
-
-      load_data.popularity
-        .then((res) => (this.popularity = res.data))
-        .then(() => (this.popularityLoading = false));
+      let loaded_data = await TV_loader.fetch_all(this.tv_id);
+      this.plots = loaded_data.plots;
+      this.plot = this.plots[1];
+      this.FPs = loaded_data.FPs;
+      this.roles = loaded_data.roles;
+      this.actors = loaded_data.actors;
+      this.ratings.metacritic = loaded_data.ratings.metacritic || 0;
+      this.ratings.imDb = loaded_data.ratings.imDb * 10 || 0;
+      this.ratings.theMovieDb = loaded_data.ratings.theMovieDb * 10 || 0;
+      this.ratings.rottenTomatoes = loaded_data.ratings.rottenTomatoes || 0;
+      this.popularity = loaded_data.popularity.data;
+      this.meta = loaded_data.meta;
+      this.tv_name = loaded_data.name;
+      this.setSubtitle(this.tv_name);
       this.$EventBus.$emit("episode-focus", {
         focusIndex: 0,
       });
+      this.mainChartLoading = false;
+      this.popularityLoading = false;
+      this.ratingLoading = false;
+      //   var load_data = TV_loader.fetch_all(this.tv_name);
+      //   this.plots = [];
+      //   this.plot = undefined;
+      //   this.mainChartLoading = true;
+      //   this.popularityLoading = true;
+      //   this.ratingLoading = true;
+      //   load_data.meta.then((res) => {
+      //     this.meta = res.data;
+      //   });
+      //   load_data.plots.then((plots) =>
+      //     Promise.all(
+      //       plots.map((t) =>
+      //         t.p.then((res) => {
+      //           this.$set(this.plots, t.episode, res.data);
+      //         })
+      //       )
+      //     ).then(() => {
+      //       this.plot = this.plots[1];
+      //     })
+      //   );
+      //   load_data.FPs.then((fps) =>
+      //     fps.map((t) =>
+      //       t.p.then((res) => this.$set(this.FPs, t.episode, res.data))
+      //     )
+      //   ).then((ps) => {
+      //     Promise.all(ps).then(() => (this.mainChartLoading = false));
+      //   });
+      //   /*
+      // load_data.CPs.then(cps =>
+      //   cps.map(t => t.p.then(res => this.$set(this.CPs, t.episode, res.data)))
+      // );
+
+      // load_data.word_freq.then(res => {
+      //   this.word_freq = res.data;
+      // });
+      // */
+      //   load_data.roles.then((res) => {
+      //     this.roles = res.data;
+      //   });
+
+      //   load_data.actors.then((res) => {
+      //     this.actors = res.data;
+      //   });
+
+      //   load_data.ratings.then((res) => {
+      //     this.$set(this.ratings, "imDb", res.data.imDb ? res.data.imDb * 10 : 0);
+      //     this.$set(
+      //       this.ratings,
+      //       "metacritic",
+      //       res.data.metacritic ? res.data.metacritic : 0
+      //     );
+      //     this.$set(
+      //       this.ratings,
+      //       "theMovieDb",
+      //       res.data.theMovieDb ? res.data.theMovieDb * 10 : 0
+      //     );
+      //     this.$set(
+      //       this.ratings,
+      //       "rottenTomatoes",
+      //       res.data.rottenTomatoes ? res.data.rottenTomatoes : 0
+      //     );
+      //     this.ratingLoading = false;
+      //   });
+
+      //   load_data.popularity
+      //     .then((res) => (this.popularity = res.data))
+      //     .then(() => (this.popularityLoading = false));
+      //   this.$EventBus.$emit("episode-focus", {
+      //     focusIndex: 0,
+      //   });
     },
+    ...mapMutations(["setSubtitle"]),
   },
   watch: {
-    tv_name: function () {
+    tv_id: function () {
       this.refreshData();
     },
   },

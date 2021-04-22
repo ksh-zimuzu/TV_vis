@@ -18,4 +18,7 @@ export default {
     fetch_external_id(tv_id) {
         return requests.get(`/tv/${tv_id}/external_ids`);
     },
+    async fetch_cast(tv_id) {
+        return await requests.get(`/tv/${tv_id}/credits`);
+    }
 }

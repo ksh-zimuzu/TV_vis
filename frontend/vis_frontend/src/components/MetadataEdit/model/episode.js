@@ -9,6 +9,18 @@ class Episode {
         this.frequent_pattern = new Map();
         this.order = Episode.count++;
     }
+
+    toString() {
+        return new String(this.ep);
+    }
+
+    toJSON() {
+        return {
+            index: this.id,
+            FP: this.frequent_pattern,
+            plot: this.plot
+        }
+    }
 }
 
 export default Episode;

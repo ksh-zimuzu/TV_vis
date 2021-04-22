@@ -39,7 +39,8 @@
 
               <v-card-text style="height: calc(100% - 64px)">
                 <v-textarea
-                  v-model="ep.plot"
+                  :value="ep.plot"
+                  @input="changePlot(index, $event)"
                   ref="textarea"
                   height="100%"
                   no-resize
@@ -52,7 +53,7 @@
           <plot-analysis
             class="plot-analysis"
             :plot="ep.plot"
-            :roleDict="roles"
+            :roleDict="roleDict"
           ></plot-analysis>
         </v-window-item>
       </v-window>
@@ -76,7 +77,11 @@
                       icon
                       @click="calIsReverse(ep, index, toggle)"
                     >
-                      <v-icon>mdi-record</v-icon>
+                      <v-avatar color="#757575" size="20" dark
+                        ><span class="white--text text-caption">{{
+                          ep.ep
+                        }}</span></v-avatar
+                      >
                     </v-btn>
                   </v-item>
                 </v-slide-y-reverse-transition>
@@ -96,26 +101,48 @@
         </v-card-actions>
       </v-card>
     </div>
-
-    <alias-manager
-      class="alias-manager"
-      @input="roles = $event"
-    ></alias-manager>
-    <v-btn @click="auth">点击引爆</v-btn>
+    <div class="alias-manager">
+      <alias-manager
+        v-model="roles"
+        class="my-2"
+        style="height: 90%"
+      ></alias-manager>
+      <v-btn block color="green" depressed dark @click="$emit('uploadData')"
+        >提交！</v-btn
+      >
+    </div>
   </div>
 </template>
 
 <script>
 import AliasManager from "./AliasManager";
-import PlotAnalysis from "./PlotAnalysis.vue";
+import PlotAnalysis from "./PlotAnalysis";
 import draggable from "vuedraggable";
 import Episode from "./model/episode";
-import githubApi from "../../services/github-api";
+
+import { roleArray2dict } from "@/utils/dataFormatter";
+
+import _ from "lodash";
 
 export default {
+  props: {
+    episodes_prop: {
+      type: Array,
+      required: false,
+      default: () => new Array(),
+    },
+    roles: {
+      type: Array,
+      require: false,
+      default: () => new Object(),
+    },
+  },
+  created: function () {
+    this.episodes = this.episodes_prop.map((item) =>
+      _.extend(new Episode(), item)
+    );
+  },
   data: () => ({
-    plot: "",
-    roles: {},
     showTextMenu: false,
     x: null,
     y: null,
@@ -132,13 +159,26 @@ export default {
     ep_num: function () {
       return this.episodes.length;
     },
+    roleDict: function () {
+      return roleArray2dict(this.roles);
+    },
   },
   methods: {
     prev() {
-      this.onboarding = (this.onboarding - 1 + this.ep_num) % this.ep_num;
+      const currentIndex = this.episodes.findIndex(
+        (item) => item.id == this.onboarding,
+        this
+      );
+      const prevIndex = Math.max(currentIndex - 1, 0);
+      this.onboarding = this.episodes[prevIndex].id;
     },
     next() {
-      this.onboarding = (this.onboarding + 1 + this.ep_num) % this.ep_num;
+      const currentIndex = this.episodes.findIndex(
+        (item) => item.id == this.onboarding,
+        this
+      );
+      const nextIndex = Math.min(currentIndex + 1, this.episodes.length - 1);
+      this.onboarding = this.episodes[nextIndex].id;
     },
     addEp() {
       const ep_num = this.episodes[this.ep_num - 1].ep + 1;
@@ -174,8 +214,18 @@ export default {
       );
       toggleFunc();
     },
-    auth() {
-      githubApi.redirectAuth();
+    changePlot(index, plot) {
+      let episode = this.episodes[index];
+      episode.plot = plot;
+      this.$set(this.episodes, index, episode);
+    },
+  },
+  watch: {
+    episodes_prop: function (val) {
+      this.episodes = _.extend(val);
+    },
+    episodes: function (val) {
+      this.$emit("update:episodes_prop", val);
     },
   },
 };
@@ -184,7 +234,7 @@ export default {
 <style scoped>
 .container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 300px repeat(2, 1fr);
   grid-gap: 10px;
   grid-auto-rows: 40vh;
 }

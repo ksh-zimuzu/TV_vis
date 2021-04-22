@@ -1,5 +1,9 @@
 <template>
-  <div style="width:100%;height:100%" id="sankeychart" class="mainchart"></div>
+  <div
+    style="width: 100%; height: 100%"
+    id="sankeychart"
+    class="mainchart"
+  ></div>
 </template>
 
 
@@ -21,7 +25,7 @@ function calSymbolSize(nodes, target) {
    * nodes: 节点数组
    * target: 优化目标
    */
-  var values = nodes.map(t => t.value);
+  var values = nodes.map((t) => t.value);
   var minV = _.min(values);
   var maxV = _.max(values);
 
@@ -34,17 +38,17 @@ function calSymbolSize(nodes, target) {
   }
 
   function calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV) {
-    var res = _.filter(nodes, node => node.value >= ingoreT).map(node => ({
+    var res = _.filter(nodes, (node) => node.value >= ingoreT).map((node) => ({
       symbolSize: calSymbolSize(node.value - ingoreT + 1, minV, maxV, foldT),
       label: {
         normal: {
-          show: node.value - ingoreT + 1 >= foldT
-        }
+          show: node.value - ingoreT + 1 >= foldT,
+        },
       },
       category: node.category,
       id: node.id,
       name: node.name,
-      value: node.value
+      value: node.value,
     }));
     return res;
   }
@@ -52,8 +56,8 @@ function calSymbolSize(nodes, target) {
   function backtrack(T, I) {
     var res = calFoldAndIgnore(nodes, T, I, minV, maxV);
     var totalR = _.sumBy(
-      _.toPairs(_.countBy(res, t => t.symbolSize)),
-      t => t[0] * t[1]
+      _.toPairs(_.countBy(res, (t) => t.symbolSize)),
+      (t) => t[0] * t[1]
     );
     //如果已经小于优化目标，立刻返回避免继续下降
     //T>=maxV表示不允许全部折叠，去掉等号表示允许全部折叠
@@ -62,7 +66,7 @@ function calSymbolSize(nodes, target) {
         T,
         I,
         nodes: res,
-        total: totalR
+        total: totalR,
       };
     } else {
       //如果I的下一个值>=T，则理论上应该比(T+1,I+1),(T+1,I)
@@ -98,22 +102,22 @@ export default {
   props: {
     sdata: Object,
     edata: Number,
-    loading: Boolean
+    loading: Boolean,
   },
-  data: function() {
+  data: function () {
     return {
       chart: undefined,
       Nodes: Array,
       Links: Array,
       relationNumber: Number, //最大关系
-      ready: false
+      ready: false,
     };
   },
-  mounted: function() {
+  mounted: function () {
     chart = echarts.init(this.$el);
-    chart.on("timelinechanged", params => {
+    chart.on("timelinechanged", (params) => {
       this.$EventBus.$emit("episode-focus", {
-        focusIndex: params.currentIndex
+        focusIndex: params.currentIndex,
       });
     });
     chart.on("focusnodeadjacency", this.focusNode);
@@ -141,7 +145,7 @@ export default {
       for (var m = 1; m <= this.edata; m++) {
         var data = this.sdata[m];
         for (var i = 0; i < data.length; i++) {
-          data[i].forEach(function(x) {
+          data[i].forEach(function (x) {
             var re = new RegExp(",", "g");
             allNodes.push(x[0].join().replace(re, "-"));
           });
@@ -152,13 +156,13 @@ export default {
       var num = 0;
       var NewNodes = [];
       var reverseNodes = {}; //倒排索引
-      allNodes.forEach(function(node) {
+      allNodes.forEach(function (node) {
         reverseNodes[node] = num;
         NewNodes.push({
           id: String(num++),
           name: node,
           category: relation(node, "-"),
-          value: 0
+          value: 0,
         });
         if (relation(node, "-") > n) {
           n = relation(node, "-");
@@ -188,8 +192,8 @@ export default {
                   ),
                   value: ndata[j][k][1],
                   lineStyle: {
-                    width: ndata[j][k][1]
-                  }
+                    width: ndata[j][k][1],
+                  },
                 });
               }
             }
@@ -224,15 +228,15 @@ export default {
         var option = {
           timeline: [
             {
-              currentIndex: msg.focusIndex
-            }
-          ]
+              currentIndex: msg.focusIndex,
+            },
+          ],
         };
         chart.setOption(option);
       }
       //console.log(msg, chart.getOption());
     },
-    focusRole: function(msg) {
+    focusRole: function (msg) {
       //加载期间不响应事件
       if (this.loading && !this.ready) {
         return;
@@ -246,17 +250,17 @@ export default {
         chart.off("focusNodeAdjacency", this.focusNode);
         var index = chart
           .getOption()
-          .series[0].data.findIndex(t => t.name == msg.character);
+          .series[0].data.findIndex((t) => t.name == msg.character);
         if (index != -1) {
           chart.dispatchAction({
             type: "focusNodeAdjacency",
             seriesIndex: 0,
-            dataIndex: index
+            dataIndex: index,
           });
         } else {
           chart.dispatchAction({
             type: "unfocusNodeAdjacency",
-            seriesIndex: 0
+            seriesIndex: 0,
           });
         }
         chart.on("unfocusNodeAdjacency", this.unFocusNode);
@@ -300,8 +304,8 @@ export default {
         for (var foldT = 2; foldT <= maxV; foldT++) {
           var res = this.calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV);
           var totalR = _.sumBy(
-            _.toPairs(_.countBy(res, t => t.symbolSize)),
-            t => t[0] * t[1]
+            _.toPairs(_.countBy(res, (t) => t.symbolSize)),
+            (t) => t[0] * t[1]
           );
           if (totalR <= threshold) {
             return [res, ingoreT];
@@ -311,23 +315,25 @@ export default {
       return [this.calFoldAndIgnore(nodes, maxV, maxV, minV, maxV), maxV];
     },
     calFoldAndIgnore(nodes, foldT, ingoreT, minV, maxV) {
-      var res = _.filter(nodes, node => node.value >= ingoreT).map(node => ({
-        symbolSize: this.calSymbolSize(
-          node.value - ingoreT + 1,
-          minV,
-          maxV,
-          foldT
-        ),
-        label: {
-          normal: {
-            show: node.value - ingoreT + 1 >= foldT
-          }
-        },
-        category: node.category,
-        id: node.id,
-        name: node.name,
-        value: node.value
-      }));
+      var res = _.filter(nodes, (node) => node.value >= ingoreT).map(
+        (node) => ({
+          symbolSize: this.calSymbolSize(
+            node.value - ingoreT + 1,
+            minV,
+            maxV,
+            foldT
+          ),
+          label: {
+            normal: {
+              show: node.value - ingoreT + 1 >= foldT,
+            },
+          },
+          category: node.category,
+          id: node.id,
+          name: node.name,
+          value: node.value,
+        })
+      );
       return res;
     },
     unFocusNode() {
@@ -337,10 +343,10 @@ export default {
       }
       this.$EventBus.$emit("actor-focus", {
         character: "",
-        source: "MainChart"
+        source: "MainChart",
       });
     },
-    focusNode: function(params) {
+    focusNode: function (params) {
       //加载期间不响应事件
       if (this.loading && !this.ready) {
         return;
@@ -354,26 +360,26 @@ export default {
           this.$EventBus.$emit("actor-focus", {
             character: node.name,
             source: "MainChart",
-            index: params.dataIndex
+            index: params.dataIndex,
           });
         } else {
           this.$EventBus.$emit("actor-focus", {
             character: node.name.split("-"),
             source: "MainChart",
-            index: params.dataIndex
+            index: params.dataIndex,
           });
         }
       }
     },
-    resize: function() {
+    resize: function () {
       chart.resize();
-    }
+    },
   },
 
   computed: {
     animate_option() {
       var times = this.edata;
-      var Nodes = this.Nodes.map(item => _.filter(item, t => t.value > 0));
+      var Nodes = this.Nodes.map((item) => _.filter(item, (t) => t.value > 0));
       var Links = this.Links;
       for (var c = 0; c < Nodes.length; c++) {
         //var values = Nodes[c].map(t => t.value);
@@ -403,7 +409,7 @@ export default {
         */
         Nodes[c] = NodeRes;
 
-        Links[c] = Links[c].map(t => {
+        Links[c] = Links[c].map((t) => {
           t = _.cloneDeep(t);
           t.lineStyle.width -= ingoreT - 1;
           return t;
@@ -421,7 +427,7 @@ export default {
         "#42a5b3",
         "#0f8c79",
         "#6bbba1",
-        "#5c8100"
+        "#5c8100",
       ];
       var color = 0;
       //var na=["","单","二","三","四","五","六","七","八","九","十"];
@@ -429,8 +435,8 @@ export default {
         categories[i] = {
           name: String(i + 1) + "人关系",
           itemStyle: {
-            color: colors[color++]
-          }
+            color: colors[color++],
+          },
         };
       }
       categories[0].name = "单人";
@@ -439,9 +445,9 @@ export default {
         baseOption: {
           timeline: {
             controlStyle: {
-              color: "#000000"
+              color: "#000000",
             },
-            data: (function(times) {
+            data: (function (times) {
               var data = [];
               for (var i = 1; i <= times; i++) {
                 data.push("第" + String(i) + "集");
@@ -452,20 +458,20 @@ export default {
             autoPlay: false,
             playInterval: 3000,
             left: "10%",
-            right: "10%"
-          }
+            right: "10%",
+          },
         },
-        options: (function() {
+        options: (function () {
           var opt = [];
           for (var i = 0; i < times; i++) {
             opt.push({
               tooltip: {},
               legend: [
                 {
-                  data: categories.map(function(a) {
+                  data: categories.map(function (a) {
                     return a.name;
-                  })
-                }
+                  }),
+                },
               ],
               animationDurationUpdate: 2000,
               animationEasingUpdate: "quinticInOut",
@@ -474,7 +480,7 @@ export default {
                   type: "graph",
                   layout: "circular",
                   circular: {
-                    rotateLabel: true
+                    rotateLabel: true,
                   },
                   data: Nodes[i].sort(cmp),
                   links: Links[i],
@@ -482,38 +488,34 @@ export default {
                   roam: true,
                   label: {
                     position: "right",
-                    formatter: "{b}"
+                    formatter: "{b}",
                   },
                   lineStyle: {
                     color: "target",
                     //width: 0,
-                    curveness: 0.3
+                    curveness: 0.3,
                   },
-                  focusNodeAdjacency: true
-                }
-              ]
+                  focusNodeAdjacency: true,
+                },
+              ],
             });
           }
           return opt;
-        })(times)
+        })(times),
       };
       return op;
-    }
+    },
   },
   watch: {
-    /*
-    sdata() {
-      this.dataFormat();
-      this.create_chart();
-    },
-    */
+    // sdata() {
+    //   this.dataFormat();
+    //   this.create_chart();
+    // },
 
-    edata() {
-      /*
-      this.dataFormat();
-      this.create_chart();
-      */
-    },
+    // edata() {
+    //   this.dataFormat();
+    //   this.create_chart();
+    // },
     loading() {
       if (!this.loading) {
         this.dataFormat();
@@ -521,11 +523,11 @@ export default {
       } else {
         this.$EventBus.$emit("loading", { source: "MainChart" });
       }
-    }
+    },
   },
   beforeDestroy() {
     chart.isDisposed() || chart.dispose();
-  }
+  },
 };
 
 function cmp(a, b) {

@@ -6,6 +6,12 @@ class Role {
         this.name = name;
         this.aliases = []; //aliases是Array(Alias)
     }
+
+    toJSON() {
+        return {
+            [this.name]: this.aliases.map(item => item.toString())
+        }
+    }
 }
 
 class Alias {
@@ -14,6 +20,10 @@ class Alias {
     constructor(name) {
         this.name = name;
         this.id = Alias.count++;
+    }
+
+    toString() {
+        return this.name;
     }
 }
 
