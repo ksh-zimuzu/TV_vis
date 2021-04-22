@@ -31,7 +31,7 @@ export default {
         setUser(state, user) {
             state.user.login = user.login;
             state.user.avatar_url = user.avatar_url;
-            state.user.role = user.role;
+            state.user.role = user.role || TOURIST;
         }
     },
     actions: {
