@@ -6,7 +6,7 @@ const githubBaseURL = "https://github.com"
 const githubAPIBaseURL = "https://api.github.com";
 const redirectAuthURL = "/login/oauth/authorize";
 const getTokenURL = "/login/oauth/access_token";
-const redirectURL = process.env.NODE_ENV === 'gh-pages' ? "https://vis.kxxh.site/TV_vis" : "http://localhost:8080/callback";
+const redirectURL = process.env.NODE_ENV === 'gh-pages' ? "https://vis.kxxh.site/TV_vis/callback" : "http://localhost:8080/callback";
 const client_secret = "91ac995bf3bcb860b867aed77cfa799b432014c5";
 const cors_free = {
     "http:": "https://cors-free-http.kxxh.workers.dev/",
