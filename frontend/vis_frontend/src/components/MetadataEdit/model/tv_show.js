@@ -80,8 +80,8 @@ class TV_Show {
         this.loading = true;
         let res = await tmdb_api.fetch_cast(this.id);
         let { cast } = res.data;
-        this.actors = cast.map(item => new Cast(item.id, item.name, item.original_name));
-        this.roles = cast.map(item => new Role(item.name));
+        this.actors = cast.map(item => new Cast(item.id, item.character, item.original_name));
+        this.roles = cast.map(item => new Role(item.character));
         this.loading = false;
     }
 
