@@ -22,6 +22,8 @@
       label="搜索剧集"
       solo-inverted
       @keydown.enter="jumpTo"
+      item-text="name"
+      item-value="url"
     ></v-autocomplete>
     <v-btn icon :disabled="select == null" @click="jumpTo">
       <v-icon>mdi-magnify</v-icon>
@@ -108,12 +110,12 @@ export default {
 
       index.search(v).then((hits) => {
         console.log(hits);
-        this.items = hits.hits.map((t) => t.name);
+        this.items = hits.hits;
         this.loading = false;
       });
     },
     jumpTo() {
-      this.$router.push(`/tv/${this.select}`);
+      this.$router.push(this.select);
     },
     addTV() {
       this.$router.push("/add");
