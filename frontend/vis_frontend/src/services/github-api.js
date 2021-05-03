@@ -48,7 +48,7 @@ async function getUser(access_token) {
     const url = githubAPIBaseURL + "/user";
     //cors_free_client.defaults.headers.common['Authorization'] = "token " + access_token;
     const res = await cors_free_client.get(url, { headers: { Authorization: "token " + access_token } });
-    return res.data;
+    return Object.assign(res.data, { role: "user" });
 }
 
 

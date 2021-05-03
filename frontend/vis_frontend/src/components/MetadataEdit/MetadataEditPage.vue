@@ -103,7 +103,8 @@
     </div>
     <div class="alias-manager">
       <alias-manager
-        v-model="roles"
+        :roles="roles"
+        @input="$emit('update:roles', $event)"
         class="my-2"
         style="height: 90%"
       ></alias-manager>
