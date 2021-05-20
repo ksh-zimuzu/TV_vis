@@ -15,10 +15,10 @@
     </v-content>
 
     <v-footer>
-      <router-link to="/" class="footer-link">地图</router-link>
+      <router-link to="/trend" class="footer-link">地图</router-link>
       <v-spacer></v-spacer>
-      <img src="./assets/images/algolia.svg" class="algolia" />可视化字幕组
-      <div style="margin-left: 5px">&copy; 2020</div>
+      <img src="./assets/images/algolia.svg" class="algolia" />VCL318
+      <div style="margin-left: 5px">&copy; 2021</div>
     </v-footer>
   </v-app>
 </template>

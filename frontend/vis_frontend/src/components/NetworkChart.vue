@@ -1,26 +1,37 @@
 <template>
-  <div v-if="exist===1" style="width:100%;height:100%" id="networkchart" class="networkchart"></div>
-  <img v-else-if="exist ===0" class="img" src="../../public/networkDataError.jpg" />
-  
+  <div
+    v-if="exist === 1"
+    style="width: 100%; height: 100%"
+    id="networkchart"
+    class="networkchart"
+  ></div>
+  <img
+    v-else-if="exist === 0"
+    class="img"
+    src="../../public/networkDataError.jpg"
+  />
 </template>
 
 <script>
 import echarts from "echarts";
+
+const LEVEL = 4;
+
 export default {
   name: "NetworkChart",
   props: {
     acid: String,
     ndata: Array,
-    loading: Boolean
+    loading: Boolean,
   },
-  data: function() {
+  data: function () {
     return {
       chart: undefined,
       Nodes: Array,
       Links: Array,
       Graph: {}, //邻接表
       parents: {},
-      exist:1
+      exist: 1,
     };
   },
   mounted() {
@@ -29,7 +40,7 @@ export default {
     this.create_chart();
   },
   methods: {
-    showExist(){
+    showExist() {
       console.log(this.exist);
     },
     BFS(graph) {
@@ -41,7 +52,7 @@ export default {
       seen.add(sid);
       p[sid] = "NONE";
       var count = 0;
-      while (queue.length > 0 && count < 6) {
+      while (queue.length > 0 && count < LEVEL) {
         //使用BFS时，只考虑6层联系内的演员
         var vertex = queue.shift();
         var vertexnodes = graph[String(vertex)];
@@ -62,7 +73,7 @@ export default {
       console.log(this.parents);
     },
     getData() {
-      this.exist =1;
+      this.exist = 1;
       if (this.loading) {
         console.log("not yet!");
         return;
@@ -76,7 +87,7 @@ export default {
       var id_name_dic = {}; //id-name字典
       var id_value_dic = {}; //id-值字典
       var nodes = [];
-      for (let i = 0; i <this.ndata.length; i++) {
+      for (let i = 0; i < this.ndata.length; i++) {
         actorList.add(this.ndata[i]["actor1"]["id"]);
         actorList.add(this.ndata[i]["actor2"]["id"]);
         id_name_dic[this.ndata[i]["actor1"]["id"]] = this.ndata[i]["actor1"][
@@ -88,8 +99,8 @@ export default {
       }
       console.log("actorList");
       console.log(actorList);
-      if(!actorList.has(this.acid)){
-        this.exist=0;
+      if (!actorList.has(this.acid)) {
+        this.exist = 0;
         console.log("演员网络数据未包含该演员");
         alert("该演员网络数据缺失，制作组正在征集数据噢qwq");
         return;
@@ -149,8 +160,8 @@ export default {
     },
     create_chart() {
       var options = this.chart_option;
-      this.chart.setOption(options,true);//避免生成之前数据的图表
-    }
+      this.chart.setOption(options, true); //避免生成之前数据的图表
+    },
   },
   computed: {
     chart_option() {
@@ -160,22 +171,22 @@ export default {
         "#e3ba22",
         "#0f8c79",
         "#42a5b3",
-        "#8e6c8a"
+        "#8e6c8a",
       ];
       var categories = [];
-      for (var i = 0; i < 6; i++) {
+      for (var i = 0; i < LEVEL - 1; i++) {
         categories[i] = {
           name: "第" + String(i + 1) + "层",
           itemStyle: {
-            color: colors[i]
-          }
+            color: colors[i],
+          },
         };
       }
       var Nodes = this.Nodes;
       var Links = this.Links;
-      Nodes.forEach(function(node) {
+      Nodes.forEach(function (node) {
         node.itemStyle = null;
-        node.symbolSize =5*Math.log(node.value);//10; //如果映射node.value的话，效果较差
+        node.symbolSize = 5 * Math.log(node.value); //10; //如果映射node.value的话，效果较差
         node.x = node.y = null; //random
         node.draggable = true;
       });
@@ -183,10 +194,10 @@ export default {
         tooltip: {},
         legend: [
           {
-            data: categories.map(function(a) {
+            data: categories.map(function (a) {
               return a.name;
-            })
-          }
+            }),
+          },
         ],
         animation: false,
         series: [
@@ -198,16 +209,16 @@ export default {
             categories: categories,
             roam: true,
             label: {
-              position: "right"
+              position: "right",
             },
             force: {
-              repulsion: 100
-            }
-          }
-        ]
+              repulsion: 100,
+            },
+          },
+        ],
       };
       return op;
-    }
+    },
   },
   watch: {
     ndata() {},
@@ -220,6 +231,6 @@ export default {
   },
   beforeDestroy() {
     this.chart.isDisposed() || this.chart.dispose();
-  }
+  },
 };
 </script>
